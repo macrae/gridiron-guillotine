@@ -1,151 +1,139 @@
-import streamlit as st
+import matplotlib.pyplot as plt
 import pandas as pd
-import math
-from pathlib import Path
+import seaborn as sns
+import streamlit as st
+from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
-
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+# Set page title
+st.set_page_config(page_title="Fantasy Football Player Stats", layout="wide")
 
 @st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+def load_data():
+    return pd.read_csv("data/merged_player_ratings.csv")
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+df = load_data()
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+st.title("Fantasy Football Player Stats Dashboard")
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+# Sidebar for filtering and player rating
+st.sidebar.header("Filters")
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+# Position filter
+positions = ["All"] + sorted(df["pos"].unique().tolist())
+selected_position = st.sidebar.selectbox("Select Position", positions)
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+# Team filter
+teams = ["All"] + sorted(df["team"].unique().tolist())
+selected_team = st.sidebar.selectbox("Select Team", teams)
 
-    return gdp_df
+# Apply filters
+filtered_df = df.copy()
+if selected_position != "All":
+    filtered_df = filtered_df[filtered_df["pos"] == selected_position]
+if selected_team != "All":
+    filtered_df = filtered_df[filtered_df["team"] == selected_team]
 
-gdp_df = get_gdp_data()
+# Main content
+st.header("Player Stats")
 
-# -----------------------------------------------------------------------------
-# Draw the actual page
+# Search box
+search_term = st.text_input("Search Players", "")
+if search_term:
+    filtered_df = filtered_df[filtered_df["index"].str.contains(search_term, case=False)]
 
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
+# Configure AgGrid
+gb = GridOptionsBuilder.from_dataframe(filtered_df)
+gb.configure_selection('single', use_checkbox=False)
+gb.configure_column("index", header_name="Player Name")
 
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
+# Add color-coding based on rating_label
+cellstyle_jscode = JsCode("""
+function(params) {
+    if (params.value === 'mega bullish') {
+        return {
+            'color': 'white',
+            'backgroundColor': 'darkgreen'
+        }
+    } else if (params.value === 'bullish') {
+        return {
+            'color': 'black',
+            'backgroundColor': 'lightgreen'
+        }
+    } else if (params.value === 'bearish') {
+        return {
+            'color': 'black',
+            'backgroundColor': 'lightcoral'
+        }
+    } else if (params.value === 'mega bearish') {
+        return {
+            'color': 'white',
+            'backgroundColor': 'darkred'
+        }
+    }
+    return {
+        'color': 'black',
+        'backgroundColor': 'white'
+    }
+}
+""")
 
-# Add some spacing
-''
-''
+gb.configure_column("rating_label", cellStyle=cellstyle_jscode)
 
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
+grid_options = gb.build()
 
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
+# Display AgGrid
+grid_response = AgGrid(
+    filtered_df,
+    gridOptions=grid_options,
+    height=400,
+    width='100%',
+    data_return_mode='AS_INPUT',
+    update_mode='SELECTION_CHANGED',
+    fit_columns_on_grid_load=True,
+    allow_unsafe_jscode=True
 )
 
-''
-''
+# Player Rating Section (in sidebar)
+st.sidebar.header("Player Rating")
+selected_rows = grid_response['selected_rows']
 
+if isinstance(selected_rows, pd.DataFrame) and not selected_rows.empty:
+    selected_player = selected_rows.iloc[0]
 
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
+    if 'index' in selected_player:
+        player_name = selected_player['index']
+        st.sidebar.markdown(f"**{player_name}**")
+        if 'rating' in selected_player:
+            st.sidebar.markdown(selected_player['rating'])
         else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
+            st.sidebar.error(f"No rating found for player: {player_name}")
+    else:
+        st.sidebar.error("Player name ('index') not found in selected data")
+else:
+    st.sidebar.info("Select a player to view their rating.")
 
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+# Create two columns for the remaining content
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    # Display summary stats grouped by position
+    st.header("Summary Statistics by Position")
+    summary_stats = filtered_df.groupby('pos').agg({
+        'weighted_mean': ['mean', 'std', 'min', 'max'],
+        'discounted_ci_lower': ['mean', 'min', 'max'],
+        'ci_upper': ['mean', 'min', 'max'],
+        'vbd': ['mean', 'min', 'max']
+    }).round(2)
+
+    # Flatten column names
+    summary_stats.columns = ['_'.join(col).strip() for col in summary_stats.columns.values]
+    st.write(summary_stats)
+
+with col2:
+    # Histogram of fantasy points
+    st.header("Distribution of Fantasy Points")
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.histplot(data=filtered_df, x='weighted_mean', kde=True, ax=ax)
+    ax.set_xlabel('Fantasy Points (Weighted Mean)')
+    ax.set_ylabel('Frequency')
+    st.pyplot(fig)
