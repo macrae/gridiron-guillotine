@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Indianapolis ColtsIND,IND@MIN,27.00,7.0,2,0,1,1,2,39,426,92,518
+New York GiantsNYG,NYG@WAS,20.00,3.0,0,0,2,0,1,12,228,159,387
+Cleveland BrownsCLE,BAL@CLE,19.00,3.0,1,0,1,1,0,3,126,198,324
+Detroit LionsDET,DET@NYJ,16.00,4.0,1,0,0,0,1,17,287,50,337
+Green Bay PackersGB,LA@GB,14.00,5.0,1,0,0,0,0,12,84,72,156
+Denver BroncosDEN,ARI@DEN,13.00,3.0,3,0,0,0,0,15,167,73,240
+Jacksonville JaguarsJAX,DAL@JAX,13.00,3.0,2,0,0,0,1,34,243,154,397
+Philadelphia EaglesPHI,PHI@CHI,12.00,6.0,0,0,1,0,0,20,91,157,248
+Arizona CardinalsARI,ARI@DEN,12.00,7.0,1,0,1,0,0,24,156,168,324
+San Francisco 49ersSF,SF@SEA,12.00,3.0,0,0,1,0,0,13,207,70,277
+Las Vegas RaidersLV,NE@LV,11.00,0.0,0,0,1,1,1,24,112,206,318
+Tennessee TitansTEN,TEN@LAC,11.00,3.0,2,0,0,0,0,17,291,74,365
+New England PatriotsNE,NE@LV,11.00,3.0,1,0,0,0,1,30,211,97,308
+Los Angeles ChargersLAC,TEN@LAC,10.00,4.0,1,0,0,0,0,14,157,127,284
+New Orleans SaintsNO,ATL@NO,10.00,4.0,0,0,1,0,0,18,89,231,320
+Cincinnati BengalsCIN,CIN@TB,10.00,1.0,2,0,2,0,0,23,304,92,396
+Baltimore RavensBAL,BAL@CLE,10.00,3.0,0,0,0,0,0,13,140,143,283
+Los Angeles RamsLA,LA@GB,8.00,3.0,1,0,1,0,0,24,207,138,345
+Chicago BearsCHI,PHI@CHI,8.00,1.0,2,0,1,0,0,25,309,112,421
+Pittsburgh SteelersPIT,PIT@CAR,8.00,4.0,0,0,0,0,0,16,188,21,209
+Dallas CowboysDAL,DAL@JAX,7.00,1.0,1,0,2,0,0,40,311,192,503
+Houston TexansHOU,KC@HOU,6.00,2.0,0,0,2,0,0,30,313,189,502
+Minnesota VikingsMIN,IND@MIN,5.00,3.0,0,0,1,0,0,36,170,171,341
+Atlanta FalconsATL,ATL@NO,5.00,2.0,0,0,1,0,0,21,214,134,348
+Tampa Bay BuccaneersTB,CIN@TB,4.00,2.0,1,0,0,0,0,34,184,53,237
+Washington CommandersWAS,NYG@WAS,4.00,0.0,0,0,0,0,0,20,160,128,288
+New York JetsNYJ,DET@NYJ,4.00,0.0,0,0,0,0,0,20,252,107,359
+Miami DolphinsMIA,MIA@BUF,4.00,2.0,0,0,1,0,0,32,296,150,446
+Kansas City ChiefsKC,KC@HOU,4.00,1.0,0,0,1,0,0,24,125,94,219
+Seattle SeahawksSEA,SF@SEA,2.00,1.0,0,0,0,0,0,21,211,170,381
+Carolina PanthersCAR,PIT@CAR,2.00,1.0,0,0,0,0,0,24,169,156,325
+Buffalo BillsBUF,MIA@BUF,2.00,2.0,0,0,0,0,0,29,217,188,405

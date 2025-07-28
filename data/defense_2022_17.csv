@@ -1,0 +1,31 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Green Bay PackersGB,MIN@GB,26.00,2.0,3,0,1,0,2,17,244,102,346
+New Orleans SaintsNO,NO@PHI,21.00,6.0,1,0,0,0,1,10,246,67,313
+Seattle SeahawksSEA,NYJ@SEA,20.00,4.0,2,0,1,0,0,6,204,75,279
+Jacksonville JaguarsJAX,JAX@HOU,20.00,2.0,0,0,1,0,1,3,193,84,277
+Detroit LionsDET,CHI@DET,18.00,7.0,1,0,1,0,0,10,30,200,230
+New York GiantsNYG,IND@NYG,17.00,2.0,1,0,0,0,1,10,124,128,252
+Cleveland BrownsCLE,CLE@WAS,16.00,3.0,3,0,0,0,0,10,124,136,260
+Philadelphia EaglesPHI,NO@PHI,13.00,7.0,1,0,0,0,0,20,184,129,313
+New England PatriotsNE,MIA@NE,13.00,2.0,2,0,0,0,1,21,247,86,333
+Dallas CowboysDAL,DAL@TEN,13.00,2.0,1,0,1,0,0,13,220,97,317
+Los Angeles ChargersLAC,LA@LAC,12.00,3.0,0,0,1,0,0,10,111,166,277
+Pittsburgh SteelersPIT,PIT@BAL,10.00,1.0,1,0,0,0,0,13,120,120,240
+Tampa Bay BuccaneersTB,CAR@TB,9.00,2.0,1,0,2,0,0,24,326,74,400
+Kansas City ChiefsKC,DEN@KC,9.00,4.0,1,0,1,0,0,24,190,117,307
+Tennessee TitansTEN,DAL@TEN,8.00,1.0,2,0,1,0,0,27,274,87,361
+Atlanta FalconsATL,ARI@ATL,8.00,2.0,0,0,0,1,0,19,213,126,339
+Denver BroncosDEN,DEN@KC,7.00,0.0,1,0,1,1,0,27,328,46,374
+Carolina PanthersCAR,CAR@TB,7.00,3.0,0,0,1,1,0,30,411,67,478
+Arizona CardinalsARI,ARI@ATL,7.00,1.0,0,0,1,0,0,20,166,132,298
+Washington CommandersWAS,CLE@WAS,6.00,5.0,0,0,0,0,0,24,155,146,301
+Houston TexansHOU,JAX@HOU,6.00,2.0,2,0,0,0,0,31,168,169,337
+Baltimore RavensBAL,PIT@BAL,6.00,2.0,0,0,0,0,0,16,153,198,351
+New York JetsNYJ,NYJ@SEA,5.00,4.0,0,0,0,0,0,23,148,198,346
+Miami DolphinsMIA,MIA@NE,4.00,3.0,0,0,0,0,0,23,173,76,249
+San Francisco 49ersSF,SF@LV,4.00,0.0,2,0,0,0,0,34,365,135,500
+Minnesota VikingsMIN,MIN@GB,3.00,1.0,0,0,0,1,0,41,152,163,315
+Las Vegas RaidersLV,SF@LV,2.00,0.0,1,0,0,0,0,37,284,170,454
+Indianapolis ColtsIND,IND@NYG,2.00,0.0,0,0,1,0,0,38,177,217,394
+Chicago BearsCHI,CHI@DET,2.00,2.0,0,0,0,0,0,41,239,265,504
+Los Angeles RamsLA,LA@LAC,0.00,0.0,0,0,0,0,0,31,239,192,431

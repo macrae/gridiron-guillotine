@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Seattle SeahawksSEA,SEA@NYG,33.00,11.0,2,0,1,0,1,3,136,112,248
+Dallas CowboysDAL,NE@DAL,30.00,2.0,2,0,1,0,2,3,200,53,253
+Jacksonville JaguarsJAX,ATL@JAX,23.00,4.0,2,0,1,0,1,7,160,127,287
+Baltimore RavensBAL,BAL@CLE,20.00,4.0,3,0,0,0,0,3,73,93,166
+Minnesota VikingsMIN,MIN@CAR,20.00,5.0,0,0,1,0,1,13,149,83,232
+Los Angeles ChargersLAC,LV@LAC,17.00,7.0,1,0,2,0,0,17,188,76,264
+Tampa Bay BuccaneersTB,TB@NO,16.00,3.0,1,0,2,0,0,9,127,70,197
+Tennessee TitansTEN,CIN@TEN,15.00,3.0,0,0,1,0,0,3,139,72,211
+Houston TexansHOU,PIT@HOU,15.00,3.0,1,0,0,0,0,6,111,114,225
+Denver BroncosDEN,DEN@CHI,14.00,4.0,1,0,1,0,1,28,300,171,471
+Carolina PanthersCAR,MIN@CAR,13.00,2.0,2,0,0,0,1,21,130,135,265
+Detroit LionsDET,DET@GB,13.00,5.0,2,0,0,0,0,20,203,27,230
+Buffalo BillsBUF,MIA@BUF,12.00,4.0,1,0,1,0,0,20,251,142,393
+New York JetsNYJ,KC@NYJ,8.00,1.0,2,1,0,0,0,23,197,204,401
+Kansas City ChiefsKC,KC@NYJ,8.00,2.0,0,0,1,0,0,20,228,108,336
+Cincinnati BengalsCIN,CIN@TEN,6.00,3.0,1,0,0,0,0,27,227,173,400
+Philadelphia EaglesPHI,WAS@PHI,5.00,5.0,0,0,0,0,0,31,258,107,365
+San Francisco 49ersSF,ARI@SF,5.00,1.0,0,0,0,0,0,16,257,105,362
+Cleveland BrownsCLE,BAL@CLE,5.00,3.0,0,0,1,0,0,28,165,131,296
+Los Angeles RamsLA,LA@IND,5.00,2.0,0,0,1,0,0,23,196,133,329
+Las Vegas RaidersLV,LV@LAC,5.00,2.0,1,0,0,0,0,24,150,155,305
+Indianapolis ColtsIND,LA@IND,4.00,2.0,1,0,0,0,0,29,303,164,467
+New Orleans SaintsNO,TB@NO,4.00,1.0,1,0,0,0,0,26,239,114,353
+Green Bay PackersGB,DET@GB,4.00,2.0,1,0,0,0,0,34,190,211,401
+Atlanta FalconsATL,ATL@JAX,3.00,2.0,0,0,0,0,0,23,195,105,300
+Washington CommandersWAS,WAS@PHI,3.00,3.0,0,0,0,0,0,34,311,104,415
+New York GiantsNYG,SEA@NYG,3.00,2.0,0,0,0,0,0,24,160,121,281
+New England PatriotsNE,NE@DAL,3.00,3.0,0,0,0,0,0,38,253,124,377
+Miami DolphinsMIA,MIA@BUF,2.00,2.0,0,0,0,0,0,48,310,104,414
+Chicago BearsCHI,DEN@CHI,1.00,1.0,0,0,0,0,0,31,214,97,311
+Arizona CardinalsARI,ARI@SF,1.00,1.0,0,0,0,0,0,35,271,124,395
+Pittsburgh SteelersPIT,PIT@HOU,0.00,0.0,0,0,0,0,0,30,312,139,451

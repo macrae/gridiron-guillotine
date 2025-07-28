@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Los Angeles RamsLA,DEN@LA,24.00,6.0,4,0,0,0,1,14,219,104,323
+Los Angeles ChargersLAC,LAC@IND,23.00,7.0,3,0,0,0,0,3,104,69,173
+Jacksonville JaguarsJAX,JAX@NYJ,17.00,3.0,1,0,1,0,0,3,161,66,227
+Pittsburgh SteelersPIT,LV@PIT,16.00,3.0,3,0,0,0,0,10,143,58,201
+New England PatriotsNE,CIN@NE,15.00,2.0,2,0,1,0,1,22,369,73,442
+Philadelphia EaglesPHI,PHI@DAL,14.00,6.0,1,0,0,0,1,40,304,115,419
+Houston TexansHOU,HOU@TEN,14.00,4.0,2,0,1,0,0,14,88,184,272
+Green Bay PackersGB,GB@MIA,14.00,2.0,3,0,1,0,0,20,294,82,376
+Buffalo BillsBUF,BUF@CHI,13.00,2.0,1,0,1,0,0,13,129,80,209
+Indianapolis ColtsIND,LAC@IND,12.00,4.0,1,0,1,0,0,20,213,101,314
+Tampa Bay BuccaneersTB,TB@ARI,11.00,1.0,1,0,2,0,0,16,204,121,325
+Kansas City ChiefsKC,SEA@KC,11.00,2.0,1,0,0,0,0,10,200,133,333
+New Orleans SaintsNO,NO@CLE,11.00,2.0,1,0,0,0,0,10,125,124,249
+Baltimore RavensBAL,ATL@BAL,11.00,2.0,0,0,1,0,0,9,212,115,327
+Cincinnati BengalsCIN,CIN@NE,10.00,4.0,0,0,1,0,0,18,224,61,285
+Minnesota VikingsMIN,NYG@MIN,10.00,3.0,1,0,1,1,0,24,319,126,445
+San Francisco 49ersSF,WAS@SF,10.00,2.0,1,0,1,0,0,20,270,79,349
+Las Vegas RaidersLV,LV@PIT,9.00,0.0,1,0,0,0,0,13,244,106,350
+Dallas CowboysDAL,PHI@DAL,8.00,0.0,2,0,2,0,0,34,355,87,442
+Arizona CardinalsARI,TB@ARI,8.00,0.0,2,0,0,0,0,19,281,115,396
+Tennessee TitansTEN,HOU@TEN,7.00,1.0,1,0,0,0,0,19,215,70,285
+Chicago BearsCHI,BUF@CHI,7.00,1.0,2,0,1,0,0,35,172,254,426
+New York JetsNYJ,JAX@NYJ,7.00,1.0,0,0,1,0,0,19,218,147,365
+Cleveland BrownsCLE,NO@CLE,6.00,0.0,1,0,0,0,0,17,92,152,244
+Atlanta FalconsATL,ATL@BAL,6.00,0.0,0,0,0,1,0,17,115,184,299
+Washington CommandersWAS,WAS@SF,5.00,3.0,1,0,0,0,0,37,218,153,371
+New York GiantsNYG,NYG@MIN,5.00,4.0,0,0,0,0,0,27,270,83,353
+Miami DolphinsMIA,GB@MIA,5.00,2.0,1,0,0,0,0,26,222,79,301
+Carolina PanthersCAR,DET@CAR,5.00,2.0,0,0,1,0,0,23,336,45,381
+Seattle SeahawksSEA,SEA@KC,2.00,1.0,0,0,0,0,0,24,220,77,297
+Detroit LionsDET,DET@CAR,0.00,0.0,0,0,0,0,0,37,250,320,570
+Denver BroncosDEN,DEN@LA,0.00,0.0,0,0,0,0,0,51,230,158,388

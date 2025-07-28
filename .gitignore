@@ -1,0 +1,8 @@
+.venv/
+.ipynb_checkpoints/
+.pytest_cache/
+.vscode/
+*.log
+__pycache__/
+*.pyc
+.DS_Store

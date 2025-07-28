@@ -1,0 +1,33 @@
+Team,Opp,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Atlanta FalconsAtlanta,vs NYG,28,3.0,2,0,1,0,2,7,189,45,234
+Cincinnati BengalsCincinnati,vs CLE,21,5.0,2,0,1,0,0,6,125,148,273
+Baltimore RavensBaltimore,vs PIT,17,3.0,1,0,1,0,1,17,198,117,315
+Green Bay PackersGreen Bay,vs NO,17,3.0,1,0,1,0,0,0,129,67,196
+Buffalo BillsBuffalo,vs NE,15,2.0,1,0,2,0,1,21,253,126,379
+Los Angeles RamsLA Rams,@ NYJ,12,1.0,0,0,2,0,0,9,246,75,321
+Philadelphia EaglesPhiladelphia,@ WAS,11,1.0,2,0,3,0,0,36,255,113,368
+Kansas City ChiefsKansas City,vs HOU,10,2.0,2,0,0,0,0,19,227,84,311
+Detroit LionsDetroit,@ CHI,10,2.0,0,0,2,0,0,17,323,59,382
+Miami DolphinsMiami,vs SF,9,3.0,1,0,0,0,0,17,293,81,374
+Las Vegas RaidersLas Vegas,vs JAX,9,1.0,0,0,2,0,0,14,236,72,308
+Dallas CowboysDallas,vs TB,9,4.0,1,0,1,0,0,24,276,134,410
+Washington CommandersWashington,vs PHI,8,4.0,1,0,1,0,0,33,127,211,338
+Indianapolis ColtsIndianapolis,vs TEN,7,1.0,3,0,0,0,0,30,242,65,307
+Carolina PanthersCarolina,vs ARI,7,3.0,1,0,1,0,0,30,176,206,382
+Cleveland BrownsCleveland,@ CIN,7,4.0,0,0,1,0,0,24,210,116,326
+Minnesota VikingsMinnesota,@ SEA,7,2.0,2,0,0,0,0,24,302,59,361
+New York JetsNY Jets,vs LA,6,0.0,1,0,0,0,0,19,110,132,242
+Jacksonville JaguarsJacksonville,@ LV,6,2.0,0,0,0,0,0,19,245,69,314
+New England PatriotsNew England,@ BUF,4,1.0,1,0,0,0,0,24,152,172,324
+Denver BroncosDenver,@ LAC,4,2.0,1,0,0,0,0,34,263,117,380
+Seattle SeahawksSeattle,vs MIN,4,3.0,0,0,0,0,0,27,217,81,298
+Arizona CardinalsArizona,@ CAR,3,3.0,0,0,0,0,0,36,149,243,392
+Pittsburgh SteelersPittsburgh,@ BAL,3,1.0,1,0,0,0,0,34,198,220,418
+Los Angeles ChargersLA Chargers,vs DEN,3,2.0,0,0,0,0,0,27,245,110,355
+Tennessee TitansTennessee,@ IND,3,1.0,1,0,0,0,0,38,123,335,458
+New York GiantsNY Giants,@ ATL,2,0.0,1,0,0,0,0,34,202,127,329
+Tampa Bay BuccaneersTampa Bay,@ DAL,2,1.0,0,0,0,0,0,26,286,31,317
+Houston TexansHouston,@ KC,2,1.0,0,0,0,0,0,27,251,124,375
+Chicago BearsChicago,vs DET,1,1.0,0,0,0,0,0,34,329,146,475
+New Orleans SaintsNew Orleans,@ GB,0,0.0,0,0,0,0,0,34,216,188,404
+San Francisco 49ersSan Francisco,@ MIA,0,0.0,0,0,0,0,0,29,215,166,381

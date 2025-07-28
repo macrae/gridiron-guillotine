@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Las Vegas RaidersLV,LV@KC,24.00,4.0,1,0,1,0,2,14,223,85,308
+Tampa Bay BuccaneersTB,JAX@TB,19.00,4.0,2,0,2,0,0,12,268,37,305
+Baltimore RavensBAL,BAL@SF,18.00,4.0,5,0,0,0,0,19,308,121,429
+Pittsburgh SteelersPIT,CIN@PIT,16.00,3.0,3,0,0,0,0,11,309,59,368
+New England PatriotsNE,NE@DEN,16.00,5.0,0,0,2,0,1,23,193,83,276
+Atlanta FalconsATL,IND@ATL,15.00,6.0,1,0,0,0,0,10,170,92,262
+Detroit LionsDET,DET@MIN,13.00,4.0,4,0,0,0,0,24,373,17,390
+New York GiantsNYG,NYG@PHI,11.00,1.0,1,0,1,0,1,33,295,170,465
+Houston TexansHOU,CLE@HOU,11.00,1.0,2,0,0,0,1,36,364,54,418
+Miami DolphinsMIA,DAL@MIA,10.00,4.0,0,0,1,0,0,20,242,97,339
+Seattle SeahawksSEA,SEA@TEN,10.00,6.0,0,0,0,0,0,17,125,162,287
+New York JetsNYJ,WAS@NYJ,9.00,1.0,2,0,1,1,0,28,143,102,245
+Los Angeles ChargersLAC,BUF@LAC,8.00,1.0,1,0,2,0,0,24,230,105,335
+Cleveland BrownsCLE,CLE@HOU,8.00,3.0,2,0,0,0,0,22,178,72,250
+Tennessee TitansTEN,SEA@TEN,7.00,3.0,0,0,0,0,0,20,215,58,273
+Buffalo BillsBUF,BUF@LAC,6.00,5.0,0,0,0,0,0,22,175,98,273
+Kansas City ChiefsKC,LV@KC,6.00,2.0,0,0,0,0,0,20,48,157,205
+Chicago BearsCHI,ARI@CHI,6.00,2.0,0,0,0,0,0,16,213,93,306
+Denver BroncosDEN,NE@DEN,5.00,2.0,0,0,1,0,0,26,230,59,289
+Los Angeles RamsLA,NO@LA,5.00,2.0,1,0,0,0,0,22,304,35,339
+Minnesota VikingsMIN,DET@MIN,5.00,1.0,0,0,1,1,0,30,246,143,389
+Philadelphia EaglesPHI,NYG@PHI,4.00,1.0,1,0,0,0,0,25,186,106,292
+Arizona CardinalsARI,ARI@CHI,4.00,1.0,1,0,0,0,0,27,170,250,420
+San Francisco 49ersSF,BAL@SF,4.00,2.0,0,1,0,0,0,33,241,102,343
+Washington CommandersWAS,WAS@NYJ,4.00,0.0,1,0,1,0,0,30,217,164,381
+Dallas CowboysDAL,DAL@MIA,2.00,1.0,0,0,0,0,0,22,284,91,375
+Jacksonville JaguarsJAX,JAX@TB,2.00,2.0,0,0,0,0,0,30,265,70,335
+Green Bay PackersGB,GB@CAR,2.00,2.0,0,0,0,0,0,30,298,96,394
+New Orleans SaintsNO,NO@LA,1.00,1.0,0,0,0,0,0,30,325,133,458
+Cincinnati BengalsCIN,CIN@PIT,1.00,1.0,0,0,0,0,0,34,284,113,397
+Carolina PanthersCAR,GB@CAR,1.00,1.0,0,0,0,0,0,33,207,162,369
+Indianapolis ColtsIND,IND@ATL,1.00,1.0,0,0,0,0,0,29,229,177,406

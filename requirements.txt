@@ -1,0 +1,12 @@
+beautifulsoup4 
+requests 
+pandas 
+tqdm 
+seaborn
+selenium
+scipy
+streamlit
+streamlit-aggrid
+webdriver_manager
+yahoo_fantasy_api
+yahoo_oauth

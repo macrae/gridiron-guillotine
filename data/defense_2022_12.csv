@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Miami DolphinsMIA,HOU@MIA,21.00,5.0,2,0,1,0,1,15,174,36,210
+San Francisco 49ersSF,NO@SF,15.00,1.0,0,0,2,0,0,0,197,63,260
+Carolina PanthersCAR,DEN@CAR,14.00,3.0,0,0,2,0,0,10,125,121,246
+Kansas City ChiefsKC,LA@KC,14.00,3.0,2,0,0,0,0,10,82,116,198
+Pittsburgh SteelersPIT,PIT@IND,13.00,3.0,1,0,1,1,0,17,180,110,290
+New York JetsNYJ,CHI@NYJ,11.00,2.0,1,0,0,0,0,10,165,127,292
+Washington CommandersWAS,ATL@WAS,10.00,1.0,1,0,0,0,0,13,165,167,332
+Minnesota VikingsMIN,NE@MIN,10.00,3.0,0,0,0,0,1,26,364,45,409
+Buffalo BillsBUF,BUF@DET,9.00,2.0,0,1,2,0,0,25,230,96,326
+New Orleans SaintsNO,NO@SF,8.00,1.0,0,0,0,0,0,13,221,96,317
+Houston TexansHOU,HOU@MIA,7.00,5.0,0,0,1,0,0,30,273,66,339
+Tampa Bay BuccaneersTB,TB@CLE,7.00,4.0,1,0,0,0,0,23,178,189,367
+Cleveland BrownsCLE,TB@CLE,7.00,3.0,0,0,0,0,0,17,229,96,325
+Philadelphia EaglesPHI,GB@PHI,7.00,3.0,2,0,0,0,0,33,236,106,342
+Las Vegas RaidersLV,LV@SEA,7.00,3.0,1,0,1,0,0,34,307,65,372
+Dallas CowboysDAL,NYG@DAL,7.00,3.0,0,0,0,0,0,20,210,90,300
+Atlanta FalconsATL,ATL@WAS,6.00,0.0,1,0,0,0,0,19,138,176,314
+Los Angeles ChargersLAC,LAC@ARI,6.00,1.0,1,0,1,0,0,24,185,181,366
+Baltimore RavensBAL,BAL@JAX,6.00,4.0,0,0,1,0,0,28,294,38,332
+Jacksonville JaguarsJAX,BAL@JAX,6.00,1.0,0,0,2,0,0,27,253,162,415
+Los Angeles RamsLA,LA@KC,5.00,0.0,1,0,1,0,0,26,320,117,437
+Seattle SeahawksSEA,LV@SEA,5.00,1.0,2,0,0,0,0,40,293,283,576
+Cincinnati BengalsCIN,CIN@TEN,5.00,1.0,0,0,0,0,0,16,281,63,344
+Tennessee TitansTEN,CIN@TEN,5.00,1.0,0,0,0,0,0,20,266,108,374
+Detroit LionsDET,BUF@DET,5.00,3.0,1,0,0,0,0,28,237,164,401
+Arizona CardinalsARI,LAC@ARI,5.00,4.0,0,0,0,0,0,25,246,65,311
+New York GiantsNYG,NYG@DAL,4.00,0.0,2,0,0,0,0,28,261,169,430
+Indianapolis ColtsIND,PIT@IND,4.00,3.0,0,0,0,0,0,24,151,172,323
+Green Bay PackersGB,GB@PHI,4.00,2.0,0,0,1,0,0,40,137,363,500
+New England PatriotsNE,NE@MIN,3.00,1.0,1,0,0,0,0,33,301,57,358
+Denver BroncosDEN,DEN@CAR,3.00,0.0,0,0,1,0,0,23,164,185,349
+Chicago BearsCHI,CHI@NYJ,1.00,1.0,0,0,0,0,0,31,308,158,466

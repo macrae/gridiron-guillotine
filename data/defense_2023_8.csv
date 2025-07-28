@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Denver BroncosDEN,KC@DEN,20.00,3.0,2,0,3,0,0,9,212,62,274
+Dallas CowboysDAL,LA@DAL,18.00,2.0,1,1,0,1,1,20,188,92,280
+New York GiantsNYG,NYJ@NYG,15.00,4.0,0,0,2,0,0,13,193,58,251
+Las Vegas RaidersLV,LV@DET,14.00,1.0,1,0,2,0,1,26,264,222,486
+Jacksonville JaguarsJAX,JAX@PIT,14.00,3.0,2,0,0,0,0,10,191,70,261
+Minnesota VikingsMIN,MIN@GB,13.00,4.0,1,0,0,0,0,10,196,74,270
+Seattle SeahawksSEA,CLE@SEA,13.00,3.0,2,0,1,0,0,20,230,155,385
+Pittsburgh SteelersPIT,JAX@PIT,13.00,3.0,1,0,2,0,0,20,271,106,377
+Detroit LionsDET,LV@DET,12.00,6.0,1,0,0,0,0,14,77,80,157
+Los Angeles ChargersLAC,CHI@LAC,12.00,1.0,2,0,0,0,0,13,222,73,295
+Cincinnati BengalsCIN,CIN@SF,12.00,2.0,2,0,1,0,0,17,347,113,460
+Carolina PanthersCAR,HOU@CAR,11.00,2.0,0,0,1,0,0,13,119,110,229
+Kansas City ChiefsKC,KC@DEN,11.00,6.0,0,0,1,1,0,24,87,153,240
+New York JetsNYJ,NYJ@NYG,11.00,4.0,0,0,0,0,0,10,-9,203,194
+Houston TexansHOU,HOU@CAR,10.00,6.0,0,0,0,0,0,15,180,44,224
+Miami DolphinsMIA,NE@MIA,9.00,3.0,1,0,0,0,0,17,141,77,218
+Buffalo BillsBUF,TB@BUF,9.00,3.0,0,0,0,1,0,18,224,78,302
+Tennessee TitansTEN,ATL@TEN,9.00,6.0,0,0,1,0,0,23,202,140,342
+Green Bay PackersGB,MIN@GB,8.00,3.0,0,0,1,1,0,24,284,62,346
+Baltimore RavensBAL,BAL@ARI,7.00,2.0,2,0,0,0,0,24,181,129,310
+Washington CommandersWAS,PHI@WAS,6.00,2.0,0,0,2,0,0,38,315,59,374
+New England PatriotsNE,NE@MIA,6.00,2.0,1,0,1,0,0,31,312,78,390
+Cleveland BrownsCLE,CLE@SEA,6.00,1.0,2,0,0,0,0,24,248,114,362
+New Orleans SaintsNO,NO@IND,5.00,2.0,1,0,0,0,0,27,207,164,371
+San Francisco 49ersSF,CIN@SF,5.00,3.0,0,0,1,0,0,31,266,134,400
+Los Angeles RamsLA,LA@DAL,5.00,3.0,1,0,0,0,0,43,285,102,387
+Tampa Bay BuccaneersTB,TB@BUF,5.00,2.0,1,0,0,0,0,24,312,115,427
+Atlanta FalconsATL,ATL@TEN,4.00,2.0,0,0,1,0,0,28,226,149,375
+Arizona CardinalsARI,BAL@ARI,4.00,4.0,0,0,0,0,0,31,138,130,268
+Philadelphia EaglesPHI,PHI@WAS,3.00,1.0,1,0,0,0,0,31,388,84,472
+Indianapolis ColtsIND,NO@IND,3.00,1.0,0,0,1,0,0,38,350,161,511
+Chicago BearsCHI,CHI@LAC,2.00,0.0,0,0,1,0,0,30,298,54,352

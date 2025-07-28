@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Las Vegas RaidersLV,LAC@LV,26.00,3.0,1,0,4,0,2,21,234,92,326
+Miami DolphinsMIA,NYJ@MIA,24.00,6.0,2,0,2,0,0,0,80,23,103
+Chicago BearsCHI,CHI@CLE,20.00,4.0,3,0,0,0,1,20,348,29,377
+New Orleans SaintsNO,NYG@NO,17.00,7.0,0,0,0,0,0,6,133,60,193
+Indianapolis ColtsIND,PIT@IND,17.00,4.0,2,0,1,0,0,13,142,74,216
+Tennessee TitansTEN,HOU@TEN,16.00,4.0,1,0,0,0,1,19,192,148,340
+San Francisco 49ersSF,SF@ARI,13.00,3.0,2,0,0,0,1,29,202,234,436
+Cleveland BrownsCLE,CHI@CLE,13.00,3.0,2,0,1,0,0,17,148,88,236
+Houston TexansHOU,HOU@TEN,13.00,7.0,1,0,0,0,0,16,138,66,204
+Baltimore RavensBAL,BAL@JAX,12.00,1.0,0,0,2,0,0,7,258,75,333
+Buffalo BillsBUF,DAL@BUF,12.00,3.0,1,0,0,0,0,10,106,89,195
+Carolina PanthersCAR,ATL@CAR,11.00,0.0,1,0,1,0,0,7,152,52,204
+Atlanta FalconsATL,ATL@CAR,10.00,3.0,0,0,0,0,0,9,154,129,283
+Kansas City ChiefsKC,KC@NE,10.00,4.0,1,0,0,0,0,17,154,52,206
+Los Angeles RamsLA,WAS@LA,9.00,1.0,1,0,0,1,0,20,218,79,297
+Detroit LionsDET,DEN@DET,8.00,2.0,0,0,1,0,0,17,204,83,287
+Minnesota VikingsMIN,MIN@CIN,8.00,5.0,1,0,0,0,0,27,298,80,378
+New England PatriotsNE,KC@NE,8.00,3.0,2,0,0,0,0,27,283,43,326
+Tampa Bay BuccaneersTB,TB@GB,8.00,2.0,0,0,1,0,0,20,261,60,321
+Seattle SeahawksSEA,PHI@SEA,8.00,0.0,2,0,0,0,0,17,143,178,321
+Cincinnati BengalsCIN,MIN@CIN,8.00,3.0,2,0,0,0,0,24,281,143,424
+Green Bay PackersGB,TB@GB,7.00,5.0,0,0,1,0,0,34,353,99,452
+Washington CommandersWAS,WAS@LA,7.00,3.0,0,0,2,0,0,28,249,196,445
+Philadelphia EaglesPHI,PHI@SEA,6.00,2.0,0,0,0,0,0,20,197,100,297
+Jacksonville JaguarsJAX,BAL@JAX,6.00,3.0,1,0,0,0,0,23,145,251,396
+Pittsburgh SteelersPIT,PIT@IND,5.00,3.0,0,0,0,1,0,30,202,170,372
+New York JetsNYJ,NYJ@MIA,3.00,3.0,0,0,0,0,0,30,213,77,290
+New York GiantsNYG,NYG@NO,2.00,1.0,0,0,0,0,0,24,209,87,296
+Denver BroncosDEN,DEN@DET,2.00,2.0,0,0,0,0,0,42,263,185,448
+Los Angeles ChargersLAC,LAC@LV,1.00,1.0,0,0,0,0,0,63,254,124,378
+Dallas CowboysDAL,DAL@BUF,1.00,1.0,0,0,0,0,0,31,85,266,351
+Arizona CardinalsARI,SF@ARI,0.00,0.0,0,0,0,0,0,45,262,144,406

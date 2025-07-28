@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Pittsburgh SteelersPIT,CLE@PIT,27.00,6.0,1,0,3,0,2,22,210,198,408
+Tampa Bay BuccaneersTB,CHI@TB,20.00,6.0,2,0,0,0,1,17,169,67,236
+Dallas CowboysDAL,NYJ@DAL,18.00,3.0,3,0,1,0,0,10,151,64,215
+Seattle SeahawksSEA,SEA@DET,14.00,2.0,1,0,2,0,1,31,316,102,418
+Buffalo BillsBUF,LV@BUF,13.00,0.0,2,0,1,0,0,10,185,55,240
+Kansas City ChiefsKC,KC@JAX,13.00,4.0,0,0,1,0,0,9,197,74,271
+Miami DolphinsMIA,MIA@NE,12.00,4.0,1,0,1,0,0,17,200,88,288
+Indianapolis ColtsIND,IND@HOU,12.00,6.0,0,0,1,0,0,20,337,52,389
+Washington CommandersWAS,WAS@DEN,11.00,7.0,1,0,1,0,0,33,277,122,399
+Jacksonville JaguarsJAX,KC@JAX,11.00,1.0,1,0,2,0,0,17,298,101,399
+New Orleans SaintsNO,NO@CAR,10.00,4.0,0,0,1,0,0,17,139,100,239
+Carolina PanthersCAR,NO@CAR,10.00,4.0,1,0,0,0,0,20,207,134,341
+Philadelphia EaglesPHI,MIN@PHI,10.00,2.0,0,0,4,0,0,28,346,28,374
+Cleveland BrownsCLE,CLE@PIT,7.00,2.0,1,0,1,0,0,26,200,55,255
+Cincinnati BengalsCIN,BAL@CIN,7.00,0.0,0,0,0,0,1,27,237,178,415
+San Francisco 49ersSF,SF@LA,6.00,1.0,2,0,0,0,0,23,297,89,386
+Minnesota VikingsMIN,MIN@PHI,6.00,4.0,1,0,0,0,0,34,171,259,430
+New England PatriotsNE,MIA@NE,6.00,1.0,1,0,0,1,0,24,244,145,389
+Los Angeles ChargersLAC,LAC@TEN,6.00,5.0,0,0,0,0,0,27,200,141,341
+Arizona CardinalsARI,NYG@ARI,5.00,3.0,1,0,0,0,0,31,312,127,439
+Green Bay PackersGB,GB@ATL,4.00,1.0,1,0,0,0,0,25,235,211,446
+Tennessee TitansTEN,LAC@TEN,4.00,3.0,0,0,0,0,0,24,281,61,342
+Baltimore RavensBAL,BAL@CIN,4.00,1.0,1,0,0,0,0,24,216,66,282
+Denver BroncosDEN,WAS@DEN,4.00,4.0,0,0,0,0,0,35,266,122,388
+Chicago BearsCHI,CHI@TB,3.00,0.0,0,0,0,1,0,27,317,120,437
+Las Vegas RaidersLV,LV@BUF,2.00,2.0,0,0,0,0,0,38,267,183,450
+Atlanta FalconsATL,GB@ATL,2.00,1.0,0,0,0,0,0,24,140,84,224
+New York JetsNYJ,NYJ@DAL,1.00,1.0,0,0,0,0,0,30,248,134,382
+Los Angeles RamsLA,SF@LA,1.00,1.0,0,0,0,0,0,30,206,159,365
+Detroit LionsDET,SEA@DET,1.00,1.0,0,0,0,0,0,37,311,82,393
+New York GiantsNYG,NYG@ARI,0.00,0.0,0,0,0,0,0,28,228,151,379
+Houston TexansHOU,IND@HOU,0.00,0.0,0,0,0,0,0,31,227,126,353

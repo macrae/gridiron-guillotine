@@ -1,0 +1,33 @@
+Team,Game,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Dallas CowboysDAL,DAL@NYG,37.00,7.0,2,0,1,1,2,0,63,108,171
+New York JetsNYJ,BUF@NYJ,23.00,5.0,3,0,1,0,1,16,217,97,314
+Arizona CardinalsARI,ARI@WAS,22.00,6.0,1,0,2,0,1,20,156,92,248
+Green Bay PackersGB,GB@CHI,18.00,4.0,1,0,1,0,1,20,189,122,311
+San Francisco 49ersSF,SF@PIT,16.00,5.0,2,0,0,0,0,7,198,41,239
+Philadelphia EaglesPHI,PHI@NE,16.00,2.0,1,0,1,0,1,20,306,76,382
+Atlanta FalconsATL,CAR@ATL,15.00,2.0,2,0,1,0,0,10,127,154,281
+Baltimore RavensBAL,HOU@BAL,14.00,5.0,0,0,1,0,0,9,196,72,268
+New Orleans SaintsNO,TEN@NO,13.00,3.0,3,0,0,0,0,15,181,104,285
+Tennessee TitansTEN,TEN@NO,12.00,4.0,1,0,1,0,0,16,282,69,351
+Tampa Bay BuccaneersTB,TB@MIN,12.00,2.0,1,0,2,0,0,17,328,41,369
+Cleveland BrownsCLE,CIN@CLE,12.00,2.0,0,0,0,0,0,3,67,75,142
+Detroit LionsDET,DET@KC,12.00,0.0,1,0,0,0,1,20,226,90,316
+Indianapolis ColtsIND,JAX@IND,12.00,2.0,1,0,1,0,1,31,237,105,342
+Washington CommandersWAS,ARI@WAS,11.00,3.0,0,0,2,0,0,16,114,96,210
+Jacksonville JaguarsJAX,JAX@IND,11.00,4.0,1,0,2,0,0,21,215,65,280
+Los Angeles RamsLA,LA@SEA,9.00,2.0,0,0,0,0,0,13,95,85,180
+Houston TexansHOU,HOU@BAL,9.00,4.0,1,0,1,0,0,25,155,110,265
+Cincinnati BengalsCIN,CIN@CLE,8.00,3.0,1,0,1,0,0,24,144,206,350
+Denver BroncosDEN,LV@DEN,6.00,0.0,1,0,0,0,0,17,200,61,261
+Buffalo BillsBUF,BUF@NYJ,6.00,3.0,1,0,0,0,0,22,117,172,289
+Las Vegas RaidersLV,LV@DEN,6.00,2.0,0,0,0,0,0,16,166,94,260
+New England PatriotsNE,PHI@NE,6.00,3.0,0,0,1,0,0,25,154,97,251
+Pittsburgh SteelersPIT,SF@PIT,5.00,3.0,0,0,1,0,0,30,203,188,391
+Minnesota VikingsMIN,TB@MIN,5.00,1.0,0,0,0,0,0,20,169,73,242
+Carolina PanthersCAR,CAR@ATL,5.00,4.0,0,0,0,0,0,24,91,130,221
+Kansas City ChiefsKC,DET@KC,4.00,1.0,0,0,1,0,0,21,250,118,368
+Los Angeles ChargersLAC,MIA@LAC,4.00,0.0,1,0,1,0,0,36,466,70,536
+Miami DolphinsMIA,MIA@LAC,3.00,3.0,0,0,0,0,0,34,200,233,433
+Seattle SeahawksSEA,LA@SEA,2.00,0.0,0,0,0,1,0,30,334,92,426
+Chicago BearsCHI,GB@CHI,1.00,1.0,0,0,0,0,0,38,237,92,329
+New York GiantsNYG,DAL@NYG,0.00,0.0,0,0,0,0,0,40,143,122,265
