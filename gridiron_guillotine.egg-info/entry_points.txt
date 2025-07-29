@@ -1,0 +1,2 @@
+[console_scripts]
+gridiron = gridiron_guillotine.cli.main:main

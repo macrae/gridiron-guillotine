@@ -1,14 +1,7 @@
-from score_data import clean_player_name
+from gridiron_guillotine.data.scrapers.players import clean_player_name
 import os
-import sys
-
 import pandas as pd
 import pytest
-
-# Append the path of your script to ensure it can be imported outside its directory
-sys.path.append(os.path.abspath('../'))
-
-# Now import the function clean_player_name from your script
 
 # Path to the directory containing player files
 DATA_DIRECTORY = './data/'

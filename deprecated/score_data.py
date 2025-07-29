@@ -82,9 +82,10 @@ def read_and_label_csvs(directory, player_directory):
                 # Apply cleaning to the 'Player' column if present
                 if 'Player' in df.columns:
                     df['Player'] = df['Player'].apply(clean_player_name)
-                    df[['Home', 'Away']] = df['Game'].apply(
-                        lambda x: pd.Series(split_game(x)))
-                    df.drop('Game', axis=1, inplace=True)
+                    if 'Game' in df.columns:
+                        df[['Home', 'Away']] = df['Game'].apply(
+                            lambda x: pd.Series(split_game(x)))
+                        df.drop('Game', axis=1, inplace=True)
 
                 # Rename the columns while retaining 'Player', 'Home', 'Away' without prefix
                 df.columns = [prefix + col if col not in ['Player',
@@ -179,15 +180,17 @@ def read_defense_data(directory):
                 away, home = game.split('@')
                 return pd.Series({'Away': away, 'Home': home})
 
-            # Apply the split_game function
-            df[['Away', 'Home']] = df['Game'].apply(split_game)
+            # Apply the split_game function if Game column exists
+            if 'Game' in df.columns:
+                df[['Away', 'Home']] = df['Game'].apply(split_game)
 
             # Rename columns to add 'Def_' prefix
             df.columns = ['Def_' + col if col not in ['Team',
                                                       'Home', 'Away', 'Game'] else col for col in df.columns]
 
             # Drop the 'Game' column as we've extracted what we need
-            df = df.drop('Game', axis=1)
+            if 'Game' in df.columns:
+                df = df.drop('Game', axis=1)
 
             # Assuming format 'defense_2020_1.csv'
             year_week = filename.split('_')[1:]
