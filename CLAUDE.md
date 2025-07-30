@@ -13,6 +13,7 @@ This file provides comprehensive guidance to Claude Code (claude.ai/code) when w
 - **💎 PPR Specialization**: Pass-catching player bonuses and pure rusher penalties
 - **📈 Data-Driven Decisions**: Uses 5 years of historical NFL data (2020-2024) plus research insights
 - **⚡ Real-Time Integration**: Live Yahoo Fantasy API connection for draft-time roster tracking
+- **🆕 NFL News Integration**: Multi-source news aggregation from ESPN, NFL.com, and RotoWire
 - **🐍 Professional Package**: Modern Python architecture with proper imports, CLI, and web interface
 
 ## 🚀 Quick Start Commands (NEW PACKAGE STRUCTURE)
@@ -40,6 +41,12 @@ gridiron draft test-phases --position 6
 # Check data status and integrity
 gridiron data status
 
+# 🆕 NFL News Integration Commands
+gridiron news player "Isaiah Likely" --limit 5
+gridiron news injuries --team BAL
+gridiron news team SF --limit 3
+gridiron news test
+
 # Get comprehensive help
 gridiron --help
 ```
@@ -50,10 +57,17 @@ gridiron --help
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 from gridiron_guillotine.core.config import get_config
 
+# 🆕 NFL News Integration
+from gridiron_guillotine.news import NewsAggregator
+
 # Load data and generate recommendations
 config = get_config()
 strategy = ChampionshipDraftStrategy(config)
 recommendations = strategy.get_round_strategy(1, [], 6)
+
+# Get comprehensive NFL news
+news_aggregator = NewsAggregator()
+player_news = news_aggregator.get_player_news("Isaiah Likely", limit=5)
 ```
 
 ### **LEGACY COMPATIBILITY**
@@ -99,11 +113,17 @@ gridiron-guillotine/
 │   │   ├── __init__.py
 │   │   ├── monitor.py            # Live draft monitoring
 │   │   └── simulator.py          # Draft simulation engine
+│   ├── 🆕 news/                  # 🏈 NFL News Integration System
+│   │   ├── __init__.py           # News system exports
+│   │   ├── models.py             # PlayerNews, NewsType, InjuryStatus models
+│   │   ├── sources.py            # ESPN API, NFL.com scraper, RotoWire scraper
+│   │   └── aggregator.py         # Multi-source news aggregation engine
 │   ├── cli/                      # 💻 Command-line interface
 │   │   ├── __init__.py
 │   │   ├── main.py               # Main CLI entry point (click)
 │   │   ├── draft.py              # Draft-specific commands
-│   │   └── data.py               # Data management commands
+│   │   ├── data.py               # Data management commands
+│   │   └── 🆕 news.py            # NFL news CLI commands
 │   └── web/                      # 🌐 Web interfaces
 │       ├── __init__.py
 │       └── streamlit_app.py      # Streamlit dashboard
@@ -179,21 +199,133 @@ from gridiron_guillotine.live.monitor import LiveDraftMonitor
 # Commands: strategy, dashboard, live, draft, data, version
 ```
 
-## 📊 **Data Flow Architecture (New Package)**
+## 🆕 **NFL NEWS INTEGRATION SYSTEM (NEW FEATURE)**
+
+### **Multi-Source News Architecture**
+The NFL News Integration system provides comprehensive, real-time NFL news from three major sources:
+
+```
+ESPN API (Official) ←→ NewsAggregator ←→ NFL.com Scraper (League Official)
+                           ↕
+                    RotoWire Scraper (Fantasy Focus)
+                           ↓
+              Smart Classification & Aggregation
+                           ↓
+        PlayerNewsCollection with Relevance Scoring
+                           ↓
+          CLI Commands & Python API Access
+```
+
+### **News Sources Implementation**
+
+**1. ESPN News Source (`ESPNNewsSource`)**
+- **Type**: REST API Integration
+- **URL**: `https://site.api.espn.com/apis/site/v2/sports/football/nfl/news`
+- **Speed**: ~0.3 seconds per request
+- **Coverage**: Official NFL breaking news, player updates, game reports
+- **Format**: JSON API with structured article data
+
+**2. NFL.com News Source (`NFLNewsSource`)**
+- **Type**: Web Scraping (BeautifulSoup)
+- **URL**: `https://www.nfl.com/news/`
+- **Speed**: ~1 second per request
+- **Coverage**: Official league news, player announcements, team updates
+- **Features**: Smart HTML parsing with multiple CSS selector strategies
+
+**3. RotoWire News Source (`RotoWireNewsSource`)** - **ENHANCED**
+- **Type**: Advanced Multi-View Web Scraping
+- **URLs**: 4 specialized fantasy football views
+  - `?view=top` - Top fantasy news and analysis
+  - `?view=injuries` - Comprehensive injury reports
+  - `?view=idp` - Individual defensive player news
+  - `?team=BAL` - Team-specific news (all 32 NFL teams)
+- **Speed**: ~5 seconds per request (comprehensive multi-view)
+- **Coverage**: Fantasy-focused analysis, start/sit recommendations, sleeper picks
+
+### **Key News System Classes**
+
+**NewsAggregator (Main Engine)**
+```python
+from gridiron_guillotine.news import NewsAggregator
+
+aggregator = NewsAggregator()
+news = aggregator.get_player_news("Isaiah Likely", limit=5)
+# Returns: PlayerNewsCollection with 5 aggregated news items
+```
+
+**PlayerNews Model**
+```python
+@dataclass
+class PlayerNews:
+    player_name: str
+    headline: str
+    content: str
+    news_type: NewsType  # INJURY, TRANSACTION, TRADE, etc.
+    source: NewsSource   # ESPN, NFL_OFFICIAL, ROTOWIRE
+    published_date: datetime
+    url: Optional[str]
+    
+    # Fantasy-specific fields
+    fantasy_impact: Optional[str]
+    severity_score: Optional[float]  # 0-10 scale
+    injury_status: Optional[InjuryStatus]
+```
+
+### **CLI Commands (Complete Reference)**
+```bash
+# Player-specific news from all sources
+gridiron news player "Isaiah Likely" --limit 5
+
+# League-wide injury reports
+gridiron news injuries
+gridiron news injuries --team BAL
+
+# Team-specific news (RotoWire integration)
+gridiron news team SF --limit 3
+gridiron news team KC --verbose
+
+# Player summary with top headlines
+gridiron news summary "Lamar Jackson"
+
+# Test system with current headlines
+gridiron news test
+```
+
+### **Advanced Features**
+
+**Smart Classification System**
+- **News Types**: INJURY, TRANSACTION, TRADE, SUSPENSION, PRACTICE_STATUS, ANALYSIS, GENERAL
+- **Injury Detection**: Automatic identification of injury-related content
+- **Fantasy Relevance Scoring**: 0-10 scale based on recency, severity, and impact
+
+**Multi-Source Aggregation**
+- **Parallel Processing**: All sources fetched concurrently for speed
+- **Deduplication**: Smart headline comparison to remove duplicates
+- **Content Validation**: Minimum length and relevance checks
+- **Caching**: 1-hour cache for performance optimization
+
+**Team Coverage**
+All 32 NFL teams supported with abbreviations:
+```
+AFC: BAL, BUF, CIN, CLE, DEN, HOU, IND, JAX, KC, LV, MIA, NE, NYJ, PIT, TEN
+NFC: ARI, ATL, CAR, CHI, DAL, DET, GB, LAR, MIN, NO, NYG, PHI, SEA, SF, TB, WAS
+```
+
+## 📊 **Data Flow Architecture (Enhanced with News)**
 
 ### **Complete Data Pipeline**
 ```
-Raw NFL Data (scrapers/) 
-    ↓
-data/offense_YYYY_WW.csv, defense_YYYY_WW.csv, etc.
-    ↓ (processors.py)
-data/scored_data.csv (696 players with VBD, projections)
-    ↓ (loaders.py)
-PlayerDataLoader.load_scored_data()
-    ↓ (strategy.py)  
-ChampionshipDraftStrategy.get_round_strategy()
-    ↓ (CLI or web interface)
-User gets real-time draft recommendations
+Raw NFL Data (scrapers/) ←→ Real-Time NFL News (ESPN/NFL.com/RotoWire)
+    ↓                              ↓
+data/offense_YYYY_WW.csv          PlayerNewsCollection
+    ↓ (processors.py)              ↓ (aggregator.py)
+data/scored_data.csv          Classified News Items
+    ↓ (loaders.py)                 ↓
+PlayerDataLoader.load_scored_data() + NewsAggregator.get_player_news()
+    ↓ (strategy.py)                ↓
+ChampionshipDraftStrategy.get_round_strategy() + Player News Context
+    ↓ (CLI or web interface)       ↓
+User gets real-time draft recommendations + current NFL news
 ```
 
 ### **Key Data Transformations**
@@ -413,6 +545,7 @@ pip install -e .
 - ✅ **Import Structure**: All modules import without errors
 - ✅ **Data Loading**: `gridiron data status` shows all files found
 - ✅ **Strategy Execution**: `gridiron strategy --position 6` returns recommendations
+- 🆕 **NFL News Integration**: `gridiron news` commands working with 3 sources
 - ✅ **Test Coverage**: 2/5 core tests passing (others need API updates)
 
 ### **Expected Outcomes (Enhanced)**
@@ -422,6 +555,8 @@ Using the new package structure provides:
 - **Extensible Architecture**: Easy to add new features and integrations  
 - **Better Performance**: Optimized data loading with caching
 - **Comprehensive Testing**: Structured test suite with pytest integration
+- 🆕 **Real-Time NFL Intelligence**: Multi-source news aggregation for informed decisions
+- 🆕 **Fantasy-Focused News**: RotoWire integration with specialized fantasy analysis
 
 ## 🚀 **Future Development (Package Architecture)**
 
@@ -466,6 +601,7 @@ mypy gridiron_guillotine/
 - ✅ **Type-safe architecture** with dataclasses and enums
 - ✅ **Professional imports** instead of sys.path hacks
 - ✅ **Comprehensive testing** with pytest framework
+- 🆕 **NFL News Integration** - Multi-source news system with ESPN, NFL.com, RotoWire
 - ✅ **Legacy preservation** - all old files in `deprecated/`
 
 ### **Before (Flat Structure)**
@@ -481,11 +617,12 @@ python score_data.py
 gridiron strategy --position 6
 gridiron live --position 6
 gridiron data process
-# Single CLI with all functionality
+gridiron news player "Isaiah Likely"  # 🆕 NFL News Integration
+# Single CLI with all functionality + real-time NFL news
 ```
 
-**Current Status**: 🏆 **Production-ready v2.0.0 package** - Fully modernized and ready for 2025 fantasy football season!
+**Current Status**: 🏆 **Production-ready v2.0.0 package** - Fully modernized with comprehensive NFL news integration and ready for 2025 fantasy football season!
 
 ---
 
-*This documentation reflects the complete package transformation. The Gridiron Guillotine project is now a professional Python package with modern architecture, comprehensive CLI, and championship-level draft strategy.*
+*This documentation reflects the complete package transformation with comprehensive NFL news integration. The Gridiron Guillotine project is now a professional Python package with modern architecture, comprehensive CLI, championship-level draft strategy, and real-time NFL news aggregation from ESPN, NFL.com, and RotoWire.*

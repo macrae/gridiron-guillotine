@@ -9,6 +9,7 @@ from pathlib import Path
 from ..core.config import get_config
 from .draft import draft_cli
 from .data import data_cli
+from .news import news_cli
 
 
 def setup_logging(verbose: bool = False):
@@ -64,6 +65,10 @@ def strategy(ctx, position: int, teams: int, rounds: int, ppr: bool):
         click.echo("Loading player data...")
         player_data = load_and_prepare_data()
         
+        # Filter to fantasy-relevant positions only
+        fantasy_positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
+        player_data = player_data[player_data['position'].isin(fantasy_positions)]
+        
         # Initialize strategy
         strategy = ChampionshipDraftStrategy(position, league_settings, ctx.obj['config'])
         
@@ -79,8 +84,10 @@ def strategy(ctx, position: int, teams: int, rounds: int, ppr: bool):
         
         for i, (_, player) in enumerate(round1.iterrows(), 1):
             name = player['name']
-            pos = player['position'] 
-            team = player.get('team', '')
+            pos = str(player['position'])
+            team = str(player.get('team', ''))
+            if team == 'nan':
+                team = 'TBD'
             value = player['adjusted_value']
             click.echo(f"{i:2d}. {name:25s} ({pos}, {team:12s}) Value: {value:.1f}")
         
@@ -170,6 +177,7 @@ def live(ctx, position: int, polling_interval: int):
 # Add subcommand groups
 main.add_command(draft_cli, name='draft')
 main.add_command(data_cli, name='data')
+main.add_command(news_cli, name='news')
 
 
 @main.command()

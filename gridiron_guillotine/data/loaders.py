@@ -115,6 +115,9 @@ class PlayerDataLoader(DataLoader):
         if missing_columns:
             raise ValueError(f"Missing required columns: {missing_columns}")
         
+        # Assign positions to 2025 rookies before filtering
+        self._assign_rookie_positions(df)
+        
         # Clean up data
         df = df.dropna(subset=required_columns)
         df['projected_points'] = pd.to_numeric(df['projected_points'], errors='coerce')
@@ -132,6 +135,12 @@ class PlayerDataLoader(DataLoader):
             df['tier'] = 1
         if 'rookie' not in df.columns:
             df['rookie'] = False
+            
+        # Identify 2025 NFL Draft rookies (players with no game history 2020-2024)
+        self._identify_2025_rookies(df)
+        
+        # Scale rookie points to per-game format to match veterans
+        self._scale_rookie_points(df)
         if 'team' not in df.columns:
             df['team'] = ''
         if 'floor' not in df.columns:
@@ -145,6 +154,119 @@ class PlayerDataLoader(DataLoader):
                 df[col] = 0.0
         
         return df
+    
+    def _identify_2025_rookies(self, df: pd.DataFrame) -> None:
+        """
+        Identify and mark 2025 NFL Draft rookies based on game history
+        
+        2025 rookies are players with 0 games in all previous years (2020-2024)
+        These are college players entering their first NFL season
+        """
+        # Check if we have game count columns (only in data with rookies)
+        game_count_cols = ['game_count_2020', 'game_count_2021', 'game_count_2022', 'game_count_2023', 'game_count_2024']
+        
+        if all(col in df.columns for col in game_count_cols):
+            # Mark players with 0 games in all previous years as rookies
+            # Use <= 0 to handle floating point precision issues
+            rookie_mask = (
+                (df['game_count_2020'] <= 0) & 
+                (df['game_count_2021'] <= 0) & 
+                (df['game_count_2022'] <= 0) & 
+                (df['game_count_2023'] <= 0) & 
+                (df['game_count_2024'] <= 0)
+            )
+            
+            df.loc[rookie_mask, 'rookie'] = True
+            
+            # Log the rookies identified
+            rookies = df[df['rookie'] == True]
+            if len(rookies) > 0:
+                logger.info(f"Identified {len(rookies)} 2025 NFL Draft rookies")
+                for _, rookie in rookies.head(10).iterrows():  # Show first 10
+                    logger.debug(f"  🌟 2025 Rookie: {rookie['name']}")
+            else:
+                logger.debug("No 2025 rookies found in data")
+        else:
+            logger.debug("Game count columns not found - cannot identify 2025 rookies")
+    
+    def _assign_rookie_positions(self, df: pd.DataFrame) -> None:
+        """
+        Assign positions to 2025 rookie prospects who are missing position data
+        
+        These are college players who haven't been assigned NFL positions yet
+        """
+        # Dictionary mapping known 2025 rookie names to their likely positions
+        rookie_position_map = {
+            'Jeanty, Ashton': 'RB',      # Boise State RB - Heisman candidate
+            'Ward, Cam': 'QB',           # Miami QB - top QB prospect  
+            'Hampton, Omarion': 'RB',    # North Carolina RB
+            'Johnson, Kaleb': 'RB',      # Iowa RB
+            'Harvey, RJ': 'RB',          # UCF RB
+            'Milroe, Jalen': 'QB',       # Alabama QB
+            'Judkins, Quinshon': 'RB',   # Ohio State RB (transfer from Ole Miss)
+            'Beck, Carson': 'QB',        # Georgia QB 
+            'McMillan, Tetairoa': 'WR',  # Arizona WR
+            'Skattebo, Cam': 'RB',       # Arizona State RB
+            'Henderson, TreVeyon': 'RB', # Ohio State RB
+            'Hunter, Travis': 'WR',      # Colorado WR/CB (Heisman winner)
+            'Golden, Matthew': 'WR',     # Texas WR
+            'Brooks, Antwane': 'WR',     # Estimated WR
+            'Thompson, Bryson': 'WR',    # Wyoming WR  
+            'Warren, Tyler': 'TE',       # Penn State TE
+            'Neyor, Isaiah': 'WR',       # Texas WR
+            "Worthy, Ja'Marr": 'WR',     # Alabama WR
+            'Wilson, Malachi': 'WR',     # Virginia Tech WR
+            'Sanders, Emeka': 'WR'       # Estimated WR
+        }
+        
+        # Check if we have the position column to assign to
+        position_col = 'position' if 'position' in df.columns else 'pos'
+        if position_col not in df.columns:
+            logger.debug("No position column found for rookie position assignment")
+            return
+        
+        # Assign positions to rookies
+        assignments_made = 0
+        for name, position in rookie_position_map.items():
+            mask = (df['name'] == name) & df[position_col].isna()
+            if mask.any():
+                df.loc[mask, position_col] = position
+                assignments_made += 1
+                logger.debug(f"  🎯 Assigned position {position} to rookie {name}")
+        
+        if assignments_made > 0:
+            logger.info(f"Assigned positions to {assignments_made} 2025 rookie prospects")
+    
+    def _scale_rookie_points(self, df: pd.DataFrame) -> None:
+        """
+        Scale rookie season projections to per-game averages to match veteran format
+        
+        Rookies come with season total projections (~270 pts) while veterans have
+        per-game averages (~22 pts). Convert rookies to per-game scale.
+        """
+        rookie_mask = df['rookie'] == True
+        
+        if rookie_mask.any():
+            # Assume 17-game NFL season for rookies
+            NFL_SEASON_GAMES = 17
+            
+            # Scale rookie projected_points from season totals to per-game averages
+            df.loc[rookie_mask, 'projected_points'] = df.loc[rookie_mask, 'projected_points'] / NFL_SEASON_GAMES
+            
+            # Also scale floor and ceiling if they exist
+            if 'floor' in df.columns:
+                df.loc[rookie_mask, 'floor'] = df.loc[rookie_mask, 'floor'] / NFL_SEASON_GAMES
+            if 'ceiling' in df.columns:
+                df.loc[rookie_mask, 'ceiling'] = df.loc[rookie_mask, 'ceiling'] / NFL_SEASON_GAMES
+            
+            scaled_rookies = df[rookie_mask]
+            if len(scaled_rookies) > 0:
+                logger.info(f"Scaled {len(scaled_rookies)} rookie projections from season totals to per-game averages")
+                # Show a few examples
+                for _, rookie in scaled_rookies.head(3).iterrows():
+                    original = rookie['projected_points'] * NFL_SEASON_GAMES
+                    scaled = rookie['projected_points']
+                    logger.debug(f"  📊 {rookie['name']}: {original:.1f} season → {scaled:.1f} per-game")
     
     def load_historical_data(self, position: str, year: int, week: Optional[int] = None) -> pd.DataFrame:
         """

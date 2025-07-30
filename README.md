@@ -1,8 +1,25 @@
 # Gridiron Guillotine v2.0 🏆
 
-**Championship Fantasy Football Draft Strategy with Hero-RB and Advanced Metrics**
+```
+    🏈 CHAMPIONSHIP FANTASY FOOTBALL 🏈
+        
+     ╔═══════════════════════════════════╗
+     ║    ⚡ HERO-RB DRAFT STRATEGY ⚡    ║
+     ║                                   ║
+     ║     📊 20.2% ADVANCE RATE 📊      ║
+     ║    🎯 NFL NEWS INTEGRATION 🎯     ║
+     ║   🚀 REAL-TIME MONITORING 🚀      ║
+     ╚═══════════════════════════════════╝
+        
+      🏟️ ═══════════════════════════ 🏟️
+     📈 ESPN • NFL.com • RotoWire 📈
+    ⚡ LIVE DRAFT • WEB DASHBOARD ⚡
+   🎯 PPR OPTIMIZATION • ADVANCED METRICS 🎯
+```
 
-A research-validated fantasy football draft strategy application that combines Hero-RB methodology (20.2% advance rate vs 16.7% baseline) with advanced metrics, PPR optimization, and live draft monitoring.
+**Championship Fantasy Football Draft Strategy with Hero-RB, Advanced Metrics & Comprehensive NFL News**
+
+A research-validated fantasy football draft strategy application that combines Hero-RB methodology (20.2% advance rate vs 16.7% baseline) with advanced metrics, PPR optimization, live draft monitoring, and **comprehensive NFL news integration** from ESPN, NFL.com, and RotoWire.
 
 ## 🚀 Quick Start
 
@@ -21,6 +38,11 @@ pip install -e ".[dev]"
 ```bash
 # Show draft strategy for your position
 gridiron strategy --position 6
+
+# 🆕 Get NFL news for players
+gridiron news player "Isaiah Likely" --limit 5
+gridiron news injuries --team BAL
+gridiron news team SF --limit 3
 
 # Test Hero-RB phase transitions
 gridiron draft test-phases --position 6
@@ -53,6 +75,11 @@ gridiron_guillotine/
 │   ├── processors.py   # Score calculation, VBD
 │   ├── validators.py   # Data validation
 │   └── scrapers/       # Web scraping modules
+├── 🆕 news/            # 🏈 NFL News Integration
+│   ├── __init__.py     # News system exports
+│   ├── models.py       # PlayerNews, NewsType, InjuryStatus
+│   ├── sources.py      # ESPN, NFL.com, RotoWire scrapers
+│   └── aggregator.py   # Multi-source news aggregation
 ├── api/                # External API integrations
 │   ├── yahoo.py        # Yahoo Fantasy API
 │   └── base.py         # Base API client
@@ -62,7 +89,8 @@ gridiron_guillotine/
 ├── cli/                # Command-line interface
 │   ├── main.py         # Main CLI entry point
 │   ├── draft.py        # Draft commands
-│   └── data.py         # Data management commands
+│   ├── data.py         # Data management commands
+│   └── 🆕 news.py      # 📰 NFL news commands
 └── web/                # Web interfaces
     └── streamlit_app.py # Streamlit dashboard
 ```
@@ -76,6 +104,7 @@ gridiron_guillotine/
 ✅ **Configuration Management**: Centralized config with environment variable support  
 ✅ **Data Validation**: Comprehensive data integrity checking  
 ✅ **Modular Design**: Clear separation of concerns and reusable components  
+🆕 **NFL News Integration**: Multi-source news aggregation from ESPN, NFL.com, and RotoWire  
 
 ## 🎯 Championship Strategy Features
 
@@ -83,6 +112,18 @@ gridiron_guillotine/
 - **20.2% advance rate** vs 16.7% baseline (18% improvement)
 - **3-Phase Approach**: Hero Acquisition → Pivot → Depth
 - **Elite RB Targeting**: McCaffrey, Kamara, Achane, Taylor, Gibbs, Barkley
+
+### 🆕 NFL News Integration (COMPREHENSIVE)
+- **📡 ESPN API**: Real-time official NFL news and breaking stories
+- **🏈 NFL.com Web Scraping**: Official league news and player updates
+- **🎯 RotoWire Multi-View**: Fantasy-focused analysis from 4 specialized views
+  - `?view=top` - Top fantasy news
+  - `?view=injuries` - Comprehensive injury reports  
+  - `?view=idp` - Individual defensive player news
+  - `?team=BAL` - All 32 NFL teams supported
+- **⚡ Real-Time Processing**: Multi-source aggregation in ~6 seconds
+- **🤖 Smart Classification**: Injury detection, fantasy relevance scoring
+- **📊 News Types**: Injury, Transaction, Trade, Suspension, Analysis, General
 
 ### Advanced Metrics Integration
 - **WOPR Calculations**: 0.746 R² correlation with WR performance
@@ -172,6 +213,26 @@ gridiron draft analyze --position 6 --player "McCaffrey"
 gridiron draft simulate --position 6 --rounds 5
 ```
 
+### 🆕 NFL News Commands
+```bash
+# Get comprehensive player news from all sources
+gridiron news player "Isaiah Likely" --limit 5
+
+# Get injury reports (all teams or specific team)
+gridiron news injuries
+gridiron news injuries --team BAL
+
+# Get team-specific news from RotoWire  
+gridiron news team SF --limit 3
+gridiron news team KC --verbose
+
+# Get player summary with top headlines
+gridiron news summary "Lamar Jackson"
+
+# Test the news system with current headlines
+gridiron news test
+```
+
 ### Advanced Features
 ```bash
 # Test Hero-RB phase transitions
@@ -194,6 +255,9 @@ gridiron live --position 6 --polling-interval 15
 - ✅ **Configuration Management** - Centralized config with environment variable support
 - ✅ **Data Pipeline** - Complete processing, validation, and loading system
 - ✅ **Web Scraping Infrastructure** - All scrapers implemented (offense, defense, kickers, players)
+- 🆕 **NFL News Integration** - Multi-source news aggregation (ESPN, NFL.com, RotoWire)
+- 🆕 **Real-Time News Processing** - Smart classification, injury detection, relevance scoring
+- 🆕 **Team-Specific News** - All 32 NFL teams supported with RotoWire integration
 - ✅ **Yahoo API Integration** - Modern OAuth-based API client with live monitoring
 - ✅ **Live Draft Monitoring** - Real-time draft tracking with championship strategy
 - ✅ **Draft Simulation** - Complete simulation engine with multi-scenario testing
@@ -216,6 +280,10 @@ from gridiron_guillotine.core.config import get_config
 from gridiron_guillotine.data.loaders import PlayerDataLoader
 from gridiron_guillotine.data.processors import ScoreCalculator, VBDCalculator
 
+# 🆕 NFL News Integration
+from gridiron_guillotine.news import NewsAggregator
+from gridiron_guillotine.news.sources import ESPNNewsSource, NFLNewsSource, RotoWireNewsSource
+
 # Live draft functionality
 from gridiron_guillotine.live.monitor import LiveDraftMonitor
 from gridiron_guillotine.live.simulator import DraftSimulator
@@ -227,6 +295,11 @@ strategy = ChampionshipDraftStrategy(config)
 # Load and analyze data
 loader = PlayerDataLoader(config)
 players = loader.load_scored_data()
+
+# 🆕 Get comprehensive NFL news
+news_aggregator = NewsAggregator()
+player_news = news_aggregator.get_player_news("Isaiah Likely", limit=5)
+print(f"Found {len(player_news.news_items)} news items")
 
 # Get draft recommendations
 recommendations = strategy.get_round_strategy(

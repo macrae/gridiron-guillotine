@@ -98,7 +98,12 @@ class Config:
         Position.WR: 36,
         Position.TE: 12,
         Position.K: 12,
-        Position.DEF: 12
+        Position.DEF: 12,
+        # Non-fantasy positions (should be filtered out anyway)
+        Position.DB: 0,
+        Position.DT: 0,
+        Position.OT: 0,
+        Position.UNKNOWN: 0
     })
     
     # Logging

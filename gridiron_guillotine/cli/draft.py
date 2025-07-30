@@ -34,6 +34,10 @@ def simulate_draft(ctx, position: int, rounds: int, teams: int, ppr: bool):
         click.echo("Loading player data...")
         player_data = load_and_prepare_data()
         
+        # Filter to fantasy-relevant positions only
+        fantasy_positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
+        player_data = player_data[player_data['position'].isin(fantasy_positions)]
+        
         strategy = ChampionshipDraftStrategy(position, league_settings, config)
         
         click.echo(f"\\n🎯 DRAFT SIMULATION - POSITION {position}")
@@ -82,6 +86,10 @@ def analyze_player(ctx, position: int, player: str):
     
     try:
         player_data = load_and_prepare_data()
+        
+        # Filter to fantasy-relevant positions only
+        fantasy_positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
+        player_data = player_data[player_data['position'].isin(fantasy_positions)]
         
         # Find the player
         matches = player_data[player_data['name'].str.contains(player, case=False, na=False)]
@@ -146,6 +154,11 @@ def test_hero_phases(ctx, position: int):
     
     try:
         player_data = load_and_prepare_data()
+        
+        # Filter to fantasy-relevant positions only
+        fantasy_positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
+        player_data = player_data[player_data['position'].isin(fantasy_positions)]
+        
         strategy = ChampionshipDraftStrategy(position, league_settings, config)
         
         click.echo(f"🏆 TESTING HERO-RB PHASE TRANSITIONS")
