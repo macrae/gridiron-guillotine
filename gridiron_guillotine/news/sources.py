@@ -71,7 +71,7 @@ class BaseNewsSource(ABC):
         return text
     
     def _is_player_mentioned(self, player_name: str, text: str) -> bool:
-        """Check if player is mentioned in text"""
+        """Check if player is mentioned in text with improved matching"""
         if not player_name or not text:
             return False
         
@@ -89,20 +89,31 @@ class BaseNewsSource(ABC):
         if player_name.lower() in text_lower:
             return True
         
-        # Check first + last name combination
+        # Check first + last name combination (more reliable)
         if len(name_parts) >= 2:
-            first_last = f"{name_parts[0]} {name_parts[-1]}"
+            first_name = name_parts[0]
+            last_name = name_parts[-1]
+            first_last = f"{first_name} {last_name}"
+            
             if first_last in text_lower:
                 return True
+                
+            # For better matching, require both first and last name to be present
+            # This prevents "Nick Harris" from matching "Najee Harris"
+            words = text_lower.split()
+            if first_name in words and last_name in words:
+                # Additional check: they should be reasonably close to each other
+                try:
+                    first_idx = words.index(first_name)
+                    last_idx = words.index(last_name)
+                    # Names should be within 3 words of each other
+                    if abs(first_idx - last_idx) <= 3:
+                        return True
+                except ValueError:
+                    pass
         
-        # Check last name only (must be substantial match)
-        if len(name_parts) >= 2:
-            last_name = name_parts[-1]
-            if len(last_name) >= 4 and last_name in text_lower:
-                # Additional check to avoid false positives with common names
-                words = text_lower.split()
-                if last_name in words:  # Must be a complete word
-                    return True
+        # REMOVED: Last name only matching to prevent false positives
+        # Common last names like "Harris", "Johnson", "Williams" cause too many false matches
         
         return False
     
@@ -264,7 +275,7 @@ class ESPNNewsSource(BaseNewsSource):
             return None
     
     def _is_player_mentioned(self, player_name: str, text: str) -> bool:
-        """Check if player is mentioned in text"""
+        """Check if player is mentioned in text with improved matching"""
         if not player_name or not text:
             return False
         
@@ -282,20 +293,31 @@ class ESPNNewsSource(BaseNewsSource):
         if player_name.lower() in text_lower:
             return True
         
-        # Check first + last name combination
+        # Check first + last name combination (more reliable)
         if len(name_parts) >= 2:
-            first_last = f"{name_parts[0]} {name_parts[-1]}"
+            first_name = name_parts[0]
+            last_name = name_parts[-1]
+            first_last = f"{first_name} {last_name}"
+            
             if first_last in text_lower:
                 return True
+                
+            # For better matching, require both first and last name to be present
+            # This prevents "Nick Harris" from matching "Najee Harris"
+            words = text_lower.split()
+            if first_name in words and last_name in words:
+                # Additional check: they should be reasonably close to each other
+                try:
+                    first_idx = words.index(first_name)
+                    last_idx = words.index(last_name)
+                    # Names should be within 3 words of each other
+                    if abs(first_idx - last_idx) <= 3:
+                        return True
+                except ValueError:
+                    pass
         
-        # Check last name only (must be substantial match)
-        if len(name_parts) >= 2:
-            last_name = name_parts[-1]
-            if len(last_name) >= 4 and last_name in text_lower:
-                # Additional check to avoid false positives with common names
-                words = text_lower.split()
-                if last_name in words:  # Must be a complete word
-                    return True
+        # REMOVED: Last name only matching to prevent false positives
+        # Common last names like "Harris", "Johnson", "Williams" cause too many false matches
         
         return False
     

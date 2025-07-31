@@ -1,19 +1,20 @@
-# CLAUDE.md - Gridiron Guillotine v2.0 Project
+# CLAUDE.md - Gridiron Guillotine v2.1 Project
 
 This file provides comprehensive guidance to Claude Code (claude.ai/code) when working with the **Gridiron Guillotine** fantasy football draft strategy codebase.
 
 ## 🏈 Project Overview
 
-**Gridiron Guillotine v2.0** is a **production-ready, professional Python package** for fantasy football draft strategy that combines advanced data science techniques with real-time draft management. The system has been **completely modernized** from a collection of flat scripts into a professional package with championship-level research-validated strategies.
+**Gridiron Guillotine v2.1** is a **production-ready, professional Python package** for fantasy football draft strategy that combines advanced data science techniques with real-time draft management and **persistent intelligent database**. The system has been **completely modernized** from a collection of flat scripts into a professional package with championship-level research-validated strategies.
 
 ### Core Philosophy (2025 Championship Architecture)
 - **🏆 Hero-RB Strategy**: Research-validated approach with 20.2% advance rate vs 16.7% baseline
+- **🗄️ Persistent Database**: Pre-computed player scores with SQLite for instant draft recommendations
+- **📰 Real-Time NFL News**: Multi-source news integration with impact analysis (ESPN, NFL.com, RotoWire)
 - **📊 Advanced Metrics Integration**: WOPR calculations, Expected Fantasy Points, and offensive context
 - **📍 Draft Position Optimization**: Different strategies for early/middle/late positions
 - **💎 PPR Specialization**: Pass-catching player bonuses and pure rusher penalties
 - **📈 Data-Driven Decisions**: Uses 5 years of historical NFL data (2020-2024) plus research insights
-- **⚡ Real-Time Integration**: Live Yahoo Fantasy API connection for draft-time roster tracking
-- **🆕 NFL News Integration**: Multi-source news aggregation from ESPN, NFL.com, and RotoWire
+- **⚡ Live Draft Tracking**: Real-time draft state management with strategic pivoting
 - **🐍 Professional Package**: Modern Python architecture with proper imports, CLI, and web interface
 
 ## 🚀 Quick Start Commands (NEW PACKAGE STRUCTURE)
@@ -23,7 +24,40 @@ This file provides comprehensive guidance to Claude Code (claude.ai/code) when w
 # Install the package in development mode
 pip install -e .
 
-# Show draft strategy for your position (MAIN COMMAND)
+# 🗄️ PERSISTENT DATABASE COMMANDS (NEW!)
+# Pre-compute all player scores for instant recommendations
+gridiron db precompute --positions 1 6 12
+
+# Get Hero-RB strategic recommendations (DEFAULT)
+gridiron db recommend --draft-position 6 --limit 10
+
+# Show database statistics
+gridiron db stats
+
+# View detailed player information
+gridiron db player "McCaffrey, Christian"
+
+# Mark players as drafted during live drafts
+gridiron db draft "McCaffrey, Christian" "My Team" 1 6
+
+# Reset draft state for testing
+gridiron db reset-draft
+
+# 📰 NFL NEWS INTEGRATION COMMANDS (NEW!)
+# Update news for specific player
+gridiron db news update-player "Jackson, Lamar" --limit 5
+
+# Bulk update news for top fantasy players
+gridiron db news bulk-update --limit 50 --workers 5
+
+# Update injury reports
+gridiron db news injuries
+
+# Show news activity summary
+gridiron db news summary --days 7
+
+# 🏆 ORIGINAL STRATEGY COMMANDS
+# Show draft strategy for your position
 gridiron strategy --position 6
 
 # Launch interactive web dashboard  
@@ -35,17 +69,8 @@ gridiron live --position 6
 # Run draft simulation
 gridiron draft simulate --position 6 --rounds 5
 
-# Test Hero-RB phase transitions
-gridiron draft test-phases --position 6
-
 # Check data status and integrity
 gridiron data status
-
-# 🆕 NFL News Integration Commands
-gridiron news player "Isaiah Likely" --limit 5
-gridiron news injuries --team BAL
-gridiron news team SF --limit 3
-gridiron news test
 
 # Get comprehensive help
 gridiron --help
@@ -57,17 +82,29 @@ gridiron --help
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 from gridiron_guillotine.core.config import get_config
 
-# 🆕 NFL News Integration
+# 🗄️ Persistent Database System (NEW!)
+from gridiron_guillotine.data.database import PlayerDatabase, EnhancedPlayer
+from gridiron_guillotine.data.precompute import PlayerPrecomputer
+from gridiron_guillotine.data.news_integration import NewsIntegrationEngine
+
+# 📰 NFL News Integration
 from gridiron_guillotine.news import NewsAggregator
 
-# Load data and generate recommendations
-config = get_config()
-strategy = ChampionshipDraftStrategy(config)
-recommendations = strategy.get_round_strategy(1, [], 6)
+# Use persistent database for instant recommendations
+db = PlayerDatabase()
+recommendations = db.get_top_players(limit=10, position=Position.RB)
 
-# Get comprehensive NFL news
-news_aggregator = NewsAggregator()
-player_news = news_aggregator.get_player_news("Isaiah Likely", limit=5)
+# Pre-compute all player scores
+precomputer = PlayerPrecomputer()
+results = precomputer.precompute_all_players([1, 6, 12])
+
+# Update player news
+news_engine = NewsIntegrationEngine()
+success = news_engine.update_player_news("Jackson, Lamar")
+
+# Get strategic recommendations with news
+enhanced_player = db.get_player("McCaffrey, Christian")
+print(f"News impact: {enhanced_player.overall_news_impact}")
 ```
 
 ### **LEGACY COMPATIBILITY**
@@ -81,7 +118,7 @@ python deprecated/live_draft_monitor.py
 
 ## 🏗️ **NEW PRODUCTION ARCHITECTURE**
 
-### **Complete Package Structure (v2.0)**
+### **Complete Package Structure (v2.1)**
 
 ```
 gridiron-guillotine/
@@ -93,11 +130,14 @@ gridiron-guillotine/
 │   │   ├── models.py             # Data models (Player, DraftPick, etc.)
 │   │   ├── metrics.py            # Advanced metrics (WOPR, Expected Points)
 │   │   └── config.py             # Configuration management
-│   ├── data/                     # 📊 Data processing
+│   ├── data/                     # 📊 Data processing & 🗄️ PERSISTENT DATABASE
 │   │   ├── __init__.py
 │   │   ├── loaders.py            # Data loading with caching
 │   │   ├── processors.py         # Score calculation, VBD
 │   │   ├── validators.py         # Data validation
+│   │   ├── 🆕 database.py        # SQLite persistent database system
+│   │   ├── 🆕 precompute.py      # Pre-computation engine for player scores
+│   │   ├── 🆕 news_integration.py # NFL news integration with database
 │   │   └── scrapers/             # Web scraping modules
 │   │       ├── __init__.py
 │   │       ├── base.py           # Base scraper class
@@ -123,13 +163,15 @@ gridiron-guillotine/
 │   │   ├── main.py               # Main CLI entry point (click)
 │   │   ├── draft.py              # Draft-specific commands
 │   │   ├── data.py               # Data management commands
-│   │   └── 🆕 news.py            # NFL news CLI commands
+│   │   ├── news.py               # NFL news CLI commands
+│   │   └── 🆕 database.py        # Database management CLI commands
 │   └── web/                      # 🌐 Web interfaces
 │       ├── __init__.py
 │       └── streamlit_app.py      # Streamlit dashboard
 ├── data/                         # 📁 Data files
 │   ├── scored_data.csv           # Main player projections
 │   ├── scored_data_with_2025_rookies.csv
+│   ├── 🆕 enhanced_players.db    # SQLite database with pre-computed scores & news
 │   ├── player_ids.json
 │   ├── offense_YYYY_WW.csv       # Historical data (2020-2024)
 │   ├── defense_YYYY_WW.csv
@@ -154,7 +196,43 @@ gridiron-guillotine/
 
 ## 🎯 **Core Classes and Entry Points**
 
-### **1. ChampionshipDraftStrategy (MAIN CLASS)**
+### **1. PlayerDatabase (🆕 PERSISTENT DATABASE - PRIMARY INTERFACE)**
+```python
+from gridiron_guillotine.data.database import PlayerDatabase, EnhancedPlayer
+
+# Location: gridiron_guillotine/data/database.py
+# Purpose: SQLite database with pre-computed scores, news, and draft tracking
+# Key Methods:
+#   - get_top_players(limit, position) - Get best available players
+#   - get_player(name) - Get detailed player info with news
+#   - mark_player_drafted(name, team, round, pick) - Track draft picks
+#   - get_stats() - Database statistics
+```
+
+### **2. PlayerPrecomputer (🆕 SCORE PRE-COMPUTATION)**
+```python
+from gridiron_guillotine.data.precompute import PlayerPrecomputer
+
+# Location: gridiron_guillotine/data/precompute.py
+# Purpose: Pre-compute all player scores using strategy engine
+# Key Methods:
+#   - precompute_all_players(positions) - Batch score computation
+#   - recompute_player(name, positions) - Single player update
+```
+
+### **3. NewsIntegrationEngine (🆕 NFL NEWS INTEGRATION)**
+```python
+from gridiron_guillotine.data.news_integration import NewsIntegrationEngine
+
+# Location: gridiron_guillotine/data/news_integration.py
+# Purpose: Integrate NFL news with player database
+# Key Methods:
+#   - update_player_news(name) - Update single player news
+#   - bulk_update_news(max_players) - Batch news updates
+#   - update_injury_reports() - League-wide injury updates
+```
+
+### **4. ChampionshipDraftStrategy (CORE STRATEGY ENGINE)**
 ```python
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 
@@ -166,37 +244,15 @@ from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 #   - initialize_draft(draft_state)
 ```
 
-### **2. PlayerDataLoader (DATA ACCESS)**
-```python
-from gridiron_guillotine.data.loaders import PlayerDataLoader
-
-# Location: gridiron_guillotine/data/loaders.py
-# Purpose: Load and cache player data
-# Key Methods:
-#   - load_scored_data(include_rookies=True)
-#   - load_csv(filename)
-#   - load_json(filename)
-```
-
-### **3. LiveDraftMonitor (LIVE DRAFTS)**
-```python
-from gridiron_guillotine.live.monitor import LiveDraftMonitor
-
-# Location: gridiron_guillotine/live/monitor.py
-# Purpose: Monitor live Yahoo drafts with real-time strategy updates
-# Key Methods:
-#   - start_monitoring(draft_position, league_settings)
-#   - add_callback(event, callback_function)
-```
-
-### **4. CLI Interface (PRIMARY USER INTERFACE)**
+### **5. CLI Interface (🆕 ENHANCED USER INTERFACE)**
 ```bash
 # Entry point defined in pyproject.toml:
 # [project.scripts]
 # gridiron = "gridiron_guillotine.cli.main:main"
 
 # Location: gridiron_guillotine/cli/main.py
-# Commands: strategy, dashboard, live, draft, data, version
+# Commands: strategy, dashboard, live, draft, data, db, version
+# 🆕 Database commands: gridiron db [precompute|recommend|stats|player|news]
 ```
 
 ## 🆕 **NFL NEWS INTEGRATION SYSTEM (NEW FEATURE)**
@@ -311,28 +367,57 @@ AFC: BAL, BUF, CIN, CLE, DEN, HOU, IND, JAX, KC, LV, MIA, NE, NYJ, PIT, TEN
 NFC: ARI, ATL, CAR, CHI, DAL, DET, GB, LAR, MIN, NO, NYG, PHI, SEA, SF, TB, WAS
 ```
 
-## 📊 **Data Flow Architecture (Enhanced with News)**
+## 🗄️ **PERSISTENT DATABASE WORKFLOW (NEW v2.1)**
 
-### **Complete Data Pipeline**
-```
-Raw NFL Data (scrapers/) ←→ Real-Time NFL News (ESPN/NFL.com/RotoWire)
-    ↓                              ↓
-data/offense_YYYY_WW.csv          PlayerNewsCollection
-    ↓ (processors.py)              ↓ (aggregator.py)
-data/scored_data.csv          Classified News Items
-    ↓ (loaders.py)                 ↓
-PlayerDataLoader.load_scored_data() + NewsAggregator.get_player_news()
-    ↓ (strategy.py)                ↓
-ChampionshipDraftStrategy.get_round_strategy() + Player News Context
-    ↓ (CLI or web interface)       ↓
-User gets real-time draft recommendations + current NFL news
+### **🚀 Pre-Draft Setup (One-Time)**
+```bash
+# 1. Install and initialize database
+pip install -e .
+
+# 2. Pre-compute all player scores (716 players in 0.5 seconds!)
+gridiron db precompute --positions 1 2 3 4 5 6 7 8 9 10 11 12
+
+# 3. Update player news (optional)
+gridiron db news bulk-update --limit 50
+
+# 4. Verify setup
+gridiron db stats
+# Result: 716 players ready with pre-computed Hero-RB scores
 ```
 
-### **Key Data Transformations**
-1. **Raw Stats → Fantasy Points**: `ScoreCalculator.calculate_fantasy_points()`
-2. **Fantasy Points → VBD**: `VBDCalculator.calculate_vbd()`
-3. **VBD → Draft Strategy**: `ChampionshipDraftStrategy.adjust_player_value()`
-4. **Strategy → Live Decisions**: CLI commands or web dashboard
+### **⚡ Live Draft Usage (Draft Day)**
+```bash
+# Get instant Hero-RB recommendations (no computation delay!)
+gridiron db recommend --draft-position 6 --limit 10
+
+# Mark players as drafted in real-time
+gridiron db draft "McCaffrey, Christian" "Team Alpha" 1 1
+
+# Get updated recommendations (automatically excludes drafted players)
+gridiron db recommend --draft-position 6 --limit 10
+
+# Check detailed player info with news
+gridiron db player "Kelce, Travis"
+```
+
+### **📊 Complete Data Pipeline (v2.1)**
+```
+Raw NFL Data (scrapers/) → PlayerDataLoader → ChampionshipDraftStrategy
+    ↓                                              ↓
+Historical CSV Files   →  PlayerPrecomputer  →  SQLite Database
+    ↓                         ↓                       ↓
+NFL News Sources   →  NewsIntegrationEngine  →  Enhanced Players
+    ↓                         ↓                       ↓
+ESPN/NFL/RotoWire →  Impact Classification →  📈📉➖ Icons
+    ↓                         ↓                       ↓
+User CLI Commands  ←  Strategic Recommendations  ←  Query Engine
+```
+
+### **🏆 Key Performance Improvements**
+- **🚀 0.5 seconds** to score all 716 players (vs minutes of real-time calculation)
+- **⚡ Sub-second** draft recommendations during live drafts
+- **📰 Real-time** NFL news integration with impact analysis
+- **💾 Persistent** draft state tracking across sessions
 
 ## 🔧 **Dependencies and Installation**
 

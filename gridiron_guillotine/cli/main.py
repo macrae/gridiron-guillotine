@@ -10,6 +10,7 @@ from ..core.config import get_config
 from .draft import draft_cli
 from .data import data_cli
 from .news import news_cli
+from .database import database_cli
 
 
 def setup_logging(verbose: bool = False):
@@ -178,6 +179,7 @@ def live(ctx, position: int, polling_interval: int):
 main.add_command(draft_cli, name='draft')
 main.add_command(data_cli, name='data')
 main.add_command(news_cli, name='news')
+main.add_command(database_cli, name='db')
 
 
 @main.command()

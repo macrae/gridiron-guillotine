@@ -21,7 +21,7 @@ class OffenseScraper(BaseScraper):
     
     def __init__(self, config: Optional[Config] = None):
         super().__init__(config)
-        self.base_url = "https://www.footballdb.com/statistics/nfl"
+        self.base_url = "https://www.footballdb.com/fantasy-football/index.html"
         
     def scrape_season_data(self, year: int, week: int = None) -> Optional[pd.DataFrame]:
         """
@@ -29,108 +29,89 @@ class OffenseScraper(BaseScraper):
         
         Args:
             year: NFL season year
-            week: Specific week (1-17), if None scrapes season totals
+            week: Specific week (1-18), if None scrapes season totals
             
         Returns:
             DataFrame with offensive player statistics
         """
         try:
-            # Determine URL pattern based on week
+            logger.info(f"Scraping offensive data for {year}" + (f" week {week}" if week else ""))
+            
+            # Build URL using footballdb fantasy format
             if week:
-                url_suffix = f"{year}/week-{week}"
+                url = f"{self.base_url}?pos=OFF&yr={year}&wk={week}"
             else:
-                url_suffix = f"{year}/season"
+                url = f"{self.base_url}?pos=OFF&yr={year}"
             
-            all_data = []
+            # Get page content
+            soup = self.get_page_content(url)
+            if not soup:
+                return None
             
-            # Scrape each position
-            positions = ['qb', 'rb', 'wr', 'te']
+            # Find the main data table
+            table = soup.find('table')
+            if not table:
+                logger.warning(f"No table found for offense {year}" + (f" week {week}" if week else ""))
+                return None
             
-            for position in positions:
-                logger.info(f"Scraping {position.upper()} data for {year}" + (f" week {week}" if week else ""))
-                
-                pos_data = self._scrape_position_data(year, position, week)
-                if pos_data:
-                    all_data.extend(pos_data)
-                
-                # Rate limiting
-                time.sleep(random.uniform(1.0, 3.0))
+            # Use legacy format parsing
+            data = self._parse_legacy_table(table, year, week)
             
-            if all_data:
-                df = pd.DataFrame(all_data)
+            if data:
+                df = pd.DataFrame(data)
                 logger.info(f"Scraped {len(df)} offensive player records")
                 return df
             else:
-                logger.warning("No offensive data scraped")
+                logger.warning("No offensive data parsed")
                 return None
                 
         except Exception as e:
             logger.error(f"Error scraping offensive data: {e}")
             return None
     
-    def _scrape_position_data(self, year: int, position: str, week: Optional[int] = None) -> List[Dict[str, Any]]:
-        """Scrape data for specific position"""
+    def _parse_legacy_table(self, table, year: int, week: Optional[int] = None) -> List[Dict[str, Any]]:
+        """Parse table using legacy format from existing files"""
         try:
-            # Build URL
-            if week:
-                url = f"{self.base_url}/{position}/{year}/week-{week}"
-            else:
-                url = f"{self.base_url}/{position}/{year}/season"
+            # Define headers manually to match existing data format
+            headers = ['Player', 'Game', 'Pts*', 'Passing_Att', 'Passing_Cmp',
+                      'Passing_Yds', 'Passing_TD', 'Passing_Int', 'Passing_2Pt',
+                      'Rushing_Att', 'Rushing_Yds', 'Rushing_TD', 'Rushing_2Pt',
+                      'Receiving_Rec', 'Receiving_Yds', 'Receiving_TD', 'Receiving_2Pt',
+                      'Fumble_FL', 'Fumble_TD']
             
-            # Get page content
-            soup = self.get_page_content(url)
-            if not soup:
-                return []
-            
-            # Find statistics table
-            table = soup.find('table', {'class': 'statistics'})
-            if not table:
-                logger.warning(f"No statistics table found for {position} {year}")
-                return []
-            
-            # Extract headers
-            headers = []
-            header_row = table.find('thead')
-            if header_row:
-                headers = [th.get_text(strip=True) for th in header_row.find_all('th')]
-            
-            if not headers:
-                logger.warning(f"No headers found for {position} table")
-                return []
-            
-            # Extract data rows
+            # Extract data rows (skip first 2 rows as in legacy scraper)
             data = []
-            tbody = table.find('tbody')
-            if tbody:
-                rows = tbody.find_all('tr')
-                
-                for row in rows:
-                    cells = row.find_all(['td', 'th'])
-                    if len(cells) >= len(headers):
-                        row_data = {}
-                        
-                        for i, cell in enumerate(cells[:len(headers)]):
-                            if i < len(headers):
-                                header = headers[i]
-                                value = cell.get_text(strip=True)
-                                
-                                # Clean and convert values
-                                value = self._clean_stat_value(value)
-                                row_data[header] = value
-                        
-                        # Add metadata
-                        row_data['position'] = position.upper()
-                        row_data['year'] = year
-                        row_data['week'] = week
-                        row_data['scraped_at'] = pd.Timestamp.now()
-                        
+            rows = table.find_all('tr')[2:]  # Skip header rows
+            
+            for row in rows:
+                cells = row.find_all('td')
+                if len(cells) >= len(headers):
+                    row_data = {}
+                    
+                    # Map cell values to headers
+                    for i, header in enumerate(headers):
+                        if i < len(cells):
+                            value = cells[i].get_text(strip=True)
+                            # Clean and convert values
+                            value = self._clean_stat_value(value)
+                            row_data[header] = value
+                        else:
+                            row_data[header] = 0
+                    
+                    # Add metadata
+                    row_data['year'] = year
+                    row_data['week'] = week
+                    row_data['scraped_at'] = pd.Timestamp.now()
+                    
+                    # Only add if we have a player name
+                    if row_data.get('Player'):
                         data.append(row_data)
             
-            logger.debug(f"Scraped {len(data)} {position} records")
+            logger.debug(f"Parsed {len(data)} offensive records")
             return data
             
         except Exception as e:
-            logger.error(f"Error scraping {position} data: {e}")
+            logger.error(f"Error parsing legacy table: {e}")
             return []
     
     def _clean_stat_value(self, value: str) -> Any:
@@ -247,6 +228,41 @@ class OffenseScraper(BaseScraper):
                 validation_result['stats']['duplicates'] = duplicate_count
         
         return validation_result
+    
+    def get_data_prefix(self) -> str:
+        """Return the data file prefix for this scraper"""
+        return "offense"
+    
+    def scrape(self, year: int, week: int) -> List[Dict]:
+        """
+        Scrape data for a specific year and week (required by BaseScraper)
+        
+        Args:
+            year: NFL season year
+            week: Week number (1-18)
+            
+        Returns:
+            List of dictionaries containing player statistics
+        """
+        try:
+            df = self.scrape_season_data(year, week)
+            if df is not None and not df.empty:
+                return df.to_dict('records')
+            else:
+                return []
+        except Exception as e:
+            logger.error(f"Error in scrape method: {e}")
+            return []
+    
+    def get_page_content(self, url: str):
+        """Get page content using BeautifulSoup"""
+        try:
+            response = self.get_with_retry(url)
+            from bs4 import BeautifulSoup
+            return BeautifulSoup(response.content, 'html.parser')
+        except Exception as e:
+            logger.error(f"Error getting page content from {url}: {e}")
+            return None
 
 
 # Legacy compatibility functions

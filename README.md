@@ -1,11 +1,11 @@
-# Gridiron Guillotine v2.0 🏆
+# Gridiron Guillotine v2.1 🏆
 
 ```
     🏈 CHAMPIONSHIP FANTASY FOOTBALL 🏈
         
      ╔═══════════════════════════════════╗
      ║    ⚡ HERO-RB DRAFT STRATEGY ⚡    ║
-     ║                                   ║
+     ║   🗄️ PERSISTENT DATABASE 🗄️       ║
      ║     📊 20.2% ADVANCE RATE 📊      ║
      ║    🎯 NFL NEWS INTEGRATION 🎯     ║
      ║   🚀 REAL-TIME MONITORING 🚀      ║
@@ -14,12 +14,12 @@
       🏟️ ═══════════════════════════ 🏟️
      📈 ESPN • NFL.com • RotoWire 📈
     ⚡ LIVE DRAFT • WEB DASHBOARD ⚡
-   🎯 PPR OPTIMIZATION • ADVANCED METRICS 🎯
+   🎯 0.5s SCORING • 716 PLAYERS READY 🎯
 ```
 
-**Championship Fantasy Football Draft Strategy with Hero-RB, Advanced Metrics & Comprehensive NFL News**
+**Championship Fantasy Football Draft Strategy with Persistent Database, Hero-RB Strategy & Real-Time NFL News**
 
-A research-validated fantasy football draft strategy application that combines Hero-RB methodology (20.2% advance rate vs 16.7% baseline) with advanced metrics, PPR optimization, live draft monitoring, and **comprehensive NFL news integration** from ESPN, NFL.com, and RotoWire.
+A research-validated fantasy football draft strategy application that combines Hero-RB methodology (20.2% advance rate vs 16.7% baseline) with **persistent SQLite database**, pre-computed player scores, real-time NFL news integration from ESPN/NFL.com/RotoWire, and live draft management.
 
 ## 🚀 Quick Start
 
@@ -33,28 +33,42 @@ pip install -e .
 pip install -e ".[dev]"
 ```
 
-### Basic Usage
+### 🗄️ Database Setup (NEW v2.1!)
 
 ```bash
-# Show draft strategy for your position
+# 1. Pre-compute all player scores (one-time setup)
+gridiron db precompute --positions 1 6 12
+
+# 2. Get instant Hero-RB recommendations 
+gridiron db recommend --draft-position 6 --limit 10
+
+# 3. Update player news (optional)
+gridiron db news bulk-update --limit 50
+
+# 4. Check database status
+gridiron db stats
+```
+
+### 🏆 Basic Usage
+
+```bash
+# NEW: Instant database recommendations (recommended!)
+gridiron db recommend --draft-position 6 --limit 10
+
+# NEW: Player details with news
+gridiron db player "McCaffrey, Christian"
+
+# NEW: Mark drafted players in real-time
+gridiron db draft "McCaffrey, Christian" "Team Alpha" 1 1
+
+# Original strategy analysis
 gridiron strategy --position 6
-
-# 🆕 Get NFL news for players
-gridiron news player "Isaiah Likely" --limit 5
-gridiron news injuries --team BAL
-gridiron news team SF --limit 3
-
-# Test Hero-RB phase transitions
-gridiron draft test-phases --position 6
 
 # Launch interactive dashboard
 gridiron dashboard --position 6
 
 # Start live draft monitoring
 gridiron live --position 6
-
-# Show data status
-gridiron data status
 
 # Get help
 gridiron --help
@@ -70,12 +84,15 @@ gridiron_guillotine/
 │   ├── models.py       # Data models (Player, DraftPick, etc.)
 │   ├── metrics.py      # Advanced metrics (WOPR, Expected Points)
 │   └── config.py       # Configuration management
-├── data/               # Data processing
+├── data/               # 🗄️ Data processing & PERSISTENT DATABASE
 │   ├── loaders.py      # Data loading and caching
 │   ├── processors.py   # Score calculation, VBD
 │   ├── validators.py   # Data validation
+│   ├── 🆕 database.py  # SQLite persistent database system
+│   ├── 🆕 precompute.py # Pre-computation engine for player scores
+│   ├── 🆕 news_integration.py # NFL news integration with database
 │   └── scrapers/       # Web scraping modules
-├── 🆕 news/            # 🏈 NFL News Integration
+├── news/               # 🏈 NFL News Integration
 │   ├── __init__.py     # News system exports
 │   ├── models.py       # PlayerNews, NewsType, InjuryStatus
 │   ├── sources.py      # ESPN, NFL.com, RotoWire scrapers
@@ -90,7 +107,8 @@ gridiron_guillotine/
 │   ├── main.py         # Main CLI entry point
 │   ├── draft.py        # Draft commands
 │   ├── data.py         # Data management commands
-│   └── 🆕 news.py      # 📰 NFL news commands
+│   ├── news.py         # 📰 NFL news commands
+│   └── 🆕 database.py  # 🗄️ Database management commands
 └── web/                # Web interfaces
     └── streamlit_app.py # Streamlit dashboard
 ```

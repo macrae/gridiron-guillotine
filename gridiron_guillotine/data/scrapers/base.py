@@ -57,7 +57,12 @@ class BaseScraper(ABC):
             logger.warning(f"No data to save for {filename}")
             return
         
-        output_path = output_dir or self.config.raw_data_dir
+        # Ensure output_path is a Path object
+        if output_dir is None:
+            output_path = Path(self.config.data_dir)
+        else:
+            output_path = Path(output_dir) if not isinstance(output_dir, Path) else output_dir
+            
         output_path.mkdir(parents=True, exist_ok=True)
         
         filepath = output_path / filename

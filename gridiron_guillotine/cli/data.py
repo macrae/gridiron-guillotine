@@ -26,7 +26,7 @@ def data_status(ctx):
     # Check main data files
     main_files = [
         'scored_data.csv',
-        'scored_data_with_2025_rookies.csv',
+        'scored_data_with_2026_rookies.csv',
         'player_ids.json'
     ]
     
@@ -60,7 +60,7 @@ def data_status(ctx):
 
 
 @data_cli.command('load')
-@click.option('--include-rookies/--no-rookies', default=True, help='Include 2025 rookies')
+@click.option('--include-rookies/--no-rookies', default=True, help='Include 2026 rookies')
 @click.option('--show-head', type=int, default=5, help='Show first N rows')
 @click.pass_context
 def load_data(ctx, include_rookies: bool, show_head: int):
@@ -111,8 +111,9 @@ def load_data(ctx, include_rookies: bool, show_head: int):
 @click.option('--weeks', help='Weeks to scrape (e.g., 1-17 or 1,2,3)')
 @click.option('--positions', multiple=True, default=['offense', 'defense', 'kickers'],
               help='Data types to scrape')
+@click.option('--dry-run', is_flag=True, help='Show what would be scraped without doing it')
 @click.pass_context
-def update_data(ctx, year: int, weeks: str, positions: tuple):
+def update_data(ctx, year: int, weeks: str, positions: tuple, dry_run: bool):
     """Update data by scraping latest NFL statistics"""
     click.echo("🔄 DATA UPDATE")
     click.echo("=" * 30)
@@ -129,17 +130,72 @@ def update_data(ctx, year: int, weeks: str, positions: tuple):
         else:
             week_list = [int(w.strip()) for w in weeks.split(',')]
     else:
-        week_list = list(range(1, 18))  # All weeks
+        week_list = list(range(1, 19))  # All weeks (now 18 weeks)
     
     click.echo(f"Year: {year}")
     click.echo(f"Weeks: {week_list}")
     click.echo(f"Positions: {', '.join(positions)}")
     
-    # This would integrate with the actual scrapers
-    click.echo("\\n⚠️  Scraping functionality not yet integrated with new package structure")
-    click.echo("   Use legacy scripts for now:")
-    for pos in positions:
-        click.echo(f"   python web_scrape_{pos}.py")
+    if dry_run:
+        click.echo("\\n🔍 DRY RUN - No actual scraping will occur")
+        total_files = len(positions) * len(week_list)
+        click.echo(f"   Would create {total_files} data files")
+        for pos in positions:
+            click.echo(f"   {pos}: {len(week_list)} files ({pos}_YYYY_WW.csv format)")
+        return
+    
+    # Import scrapers
+    from ..data.scrapers.offense import OffenseScraper
+    from ..data.scrapers.defense import DefenseScraper  
+    from ..data.scrapers.kickers import KickerScraper
+    from ..core.config import get_config
+    
+    config = get_config()
+    scrapers = {}
+    
+    # Initialize requested scrapers
+    if 'offense' in positions:
+        scrapers['offense'] = OffenseScraper(config)
+    if 'defense' in positions:
+        scrapers['defense'] = DefenseScraper(config)
+    if 'kickers' in positions:
+        scrapers['kickers'] = KickerScraper(config)
+    
+    click.echo(f"\\n🚀 Starting scraping with {len(scrapers)} scrapers...")
+    
+    total_success = 0
+    total_failed = 0
+    
+    # Scrape data for each position (batch by position for efficiency)
+    for pos_name, scraper in scrapers.items():
+        click.echo(f"\\n📊 Scraping {pos_name} data for {len(week_list)} weeks...")
+        
+        try:
+            # Use the efficient scrape_season method
+            season_data = scraper.scrape_season(year, week_list)
+            
+            # Count successes and failures
+            for week, week_data in season_data.items():
+                if week_data and len(week_data) > 0:
+                    click.echo(f"   Week {week:2d}: ✅ {len(week_data)} records")
+                    total_success += 1
+                else:
+                    click.echo(f"   Week {week:2d}: ⚠️  No data")
+                    
+        except Exception as e:
+            click.echo(f"   ❌ Error scraping {pos_name}: {str(e)[:50]}...")
+            total_failed += len(week_list)  # Count all weeks as failed for this position
+            if ctx.obj.get('verbose'):
+                import traceback
+                traceback.print_exc()
+    
+    click.echo(f"\\n📈 SCRAPING COMPLETE")
+    click.echo(f"   Successful: {total_success}")
+    click.echo(f"   Failed: {total_failed}")
+    
+    if total_success > 0:
+        click.echo(f"\\n💾 Data saved to: {config.data_dir}")
+        click.echo("   Run 'gridiron data status' to see updated files")
 
 
 @data_cli.command('process')
@@ -210,7 +266,7 @@ def validate_data(ctx, file: str):
     
     else:
         # Validate all main data files
-        main_files = ['scored_data.csv', 'scored_data_with_2025_rookies.csv']
+        main_files = ['scored_data.csv', 'scored_data_with_2026_rookies.csv']
         
         for filename in main_files:
             filepath = config.get_data_file_path(filename)

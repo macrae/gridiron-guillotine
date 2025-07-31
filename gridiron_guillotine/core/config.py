@@ -14,13 +14,13 @@ from .models import Position
 class Config:
     """Main configuration class"""
     
-    # Data paths
-    data_dir: Path = field(default_factory=lambda: Path("data"))
-    raw_data_dir: Path = field(default_factory=lambda: Path("data/raw"))
-    processed_data_dir: Path = field(default_factory=lambda: Path("data/processed"))
+    # Data paths (relative to project root)
+    data_dir: Path = field(default_factory=lambda: Config._get_project_root() / "data")
+    raw_data_dir: Path = field(default_factory=lambda: Config._get_project_root() / "data" / "raw")
+    processed_data_dir: Path = field(default_factory=lambda: Config._get_project_root() / "data" / "processed")
     
     # Main data files
-    scored_data_file: str = "scored_data_with_2025_rookies.csv"
+    scored_data_file: str = "scored_data_with_2026_rookies.csv"
     player_ids_file: str = "player_ids.json"
     
     # League settings
@@ -115,6 +115,23 @@ class Config:
     
     # Live draft settings
     polling_interval: int = 20  # seconds
+    
+    @staticmethod
+    def _get_project_root() -> Path:
+        """Find the project root directory (where pyproject.toml is located)"""
+        current = Path(__file__).parent.parent.parent  # Go up from gridiron_guillotine/core/config.py
+        
+        # Look for pyproject.toml or setup.py to confirm project root
+        if (current / "pyproject.toml").exists() or (current / "setup.py").exists():
+            return current
+        
+        # If not found, keep going up until we find it
+        for parent in current.parents:
+            if (parent / "pyproject.toml").exists() or (parent / "setup.py").exists():
+                return parent
+        
+        # Fallback to current directory
+        return Path.cwd()
     
     def __post_init__(self):
         """Ensure paths are Path objects"""

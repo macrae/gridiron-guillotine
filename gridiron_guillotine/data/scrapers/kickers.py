@@ -301,6 +301,41 @@ class KickerScraper(BaseScraper):
                 validation_result['stats']['duplicates'] = duplicate_count
         
         return validation_result
+    
+    def get_data_prefix(self) -> str:
+        """Return the data file prefix for this scraper"""
+        return "kickers"
+    
+    def scrape(self, year: int, week: int) -> List[Dict]:
+        """
+        Scrape data for a specific year and week (required by BaseScraper)
+        
+        Args:
+            year: NFL season year
+            week: Week number (1-18)
+            
+        Returns:
+            List of dictionaries containing kicker statistics
+        """
+        try:
+            df = self.scrape_season_data(year, week)
+            if df is not None and not df.empty:
+                return df.to_dict('records')
+            else:
+                return []
+        except Exception as e:
+            logger.error(f"Error in scrape method: {e}")
+            return []
+    
+    def get_page_content(self, url: str):
+        """Get page content using BeautifulSoup"""
+        try:
+            response = self.get_with_retry(url)
+            from bs4 import BeautifulSoup
+            return BeautifulSoup(response.content, 'html.parser')
+        except Exception as e:
+            logger.error(f"Error getting page content from {url}: {e}")
+            return None
 
 
 # Legacy compatibility functions

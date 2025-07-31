@@ -62,13 +62,13 @@ class PlayerDataLoader(DataLoader):
         Load main player scoring data
         
         Args:
-            include_rookies: Whether to load data with 2025 rookies
+            include_rookies: Whether to load data with 2026 rookies
             
         Returns:
             DataFrame with player projections and VBD scores
         """
         if include_rookies:
-            filename = "scored_data_with_2025_rookies.csv"
+            filename = "scored_data_with_2026_rookies.csv"
         else:
             filename = "scored_data.csv"
         
@@ -93,6 +93,18 @@ class PlayerDataLoader(DataLoader):
         if 'index' in df.columns and 'name' not in df.columns:
             column_mapping['index'] = 'name'
         
+        # Handle Player column - prefer 'name' if it exists and has more data
+        if 'Player' in df.columns and 'name' in df.columns:
+            # Use the column with more non-null values
+            if df['name'].notna().sum() >= df['Player'].notna().sum():
+                # Keep 'name', drop 'Player'
+                df = df.drop(columns=['Player'], errors='ignore')
+            else:
+                # Use 'Player' as 'name'
+                column_mapping['Player'] = 'name'
+        elif 'Player' in df.columns and 'name' not in df.columns:
+            column_mapping['Player'] = 'name'
+        
         if 'pos' in df.columns and 'position' not in df.columns:
             column_mapping['pos'] = 'position'
         
@@ -115,7 +127,7 @@ class PlayerDataLoader(DataLoader):
         if missing_columns:
             raise ValueError(f"Missing required columns: {missing_columns}")
         
-        # Assign positions to 2025 rookies before filtering
+        # Assign positions to 2026 rookies before filtering
         self._assign_rookie_positions(df)
         
         # Clean up data
@@ -136,8 +148,8 @@ class PlayerDataLoader(DataLoader):
         if 'rookie' not in df.columns:
             df['rookie'] = False
             
-        # Identify 2025 NFL Draft rookies (players with no game history 2020-2024)
-        self._identify_2025_rookies(df)
+        # Identify 2026 NFL Draft rookies (players with no game history 2021-2025)
+        self._identify_2026_rookies(df)
         
         # Scale rookie points to per-game format to match veterans
         self._scale_rookie_points(df)
@@ -155,25 +167,25 @@ class PlayerDataLoader(DataLoader):
         
         return df
     
-    def _identify_2025_rookies(self, df: pd.DataFrame) -> None:
+    def _identify_2026_rookies(self, df: pd.DataFrame) -> None:
         """
-        Identify and mark 2025 NFL Draft rookies based on game history
+        Identify and mark 2026 NFL Draft rookies based on game history
         
-        2025 rookies are players with 0 games in all previous years (2020-2024)
+        2026 rookies are players with 0 games in all previous years (2021-2025)
         These are college players entering their first NFL season
         """
         # Check if we have game count columns (only in data with rookies)
-        game_count_cols = ['game_count_2020', 'game_count_2021', 'game_count_2022', 'game_count_2023', 'game_count_2024']
+        game_count_cols = ['game_count_2021', 'game_count_2022', 'game_count_2023', 'game_count_2024', 'game_count_2025']
         
         if all(col in df.columns for col in game_count_cols):
             # Mark players with 0 games in all previous years as rookies
             # Use <= 0 to handle floating point precision issues
             rookie_mask = (
-                (df['game_count_2020'] <= 0) & 
                 (df['game_count_2021'] <= 0) & 
                 (df['game_count_2022'] <= 0) & 
                 (df['game_count_2023'] <= 0) & 
-                (df['game_count_2024'] <= 0)
+                (df['game_count_2024'] <= 0) & 
+                (df['game_count_2025'] <= 0)
             )
             
             df.loc[rookie_mask, 'rookie'] = True
@@ -181,21 +193,21 @@ class PlayerDataLoader(DataLoader):
             # Log the rookies identified
             rookies = df[df['rookie'] == True]
             if len(rookies) > 0:
-                logger.info(f"Identified {len(rookies)} 2025 NFL Draft rookies")
+                logger.info(f"Identified {len(rookies)} 2026 NFL Draft rookies")
                 for _, rookie in rookies.head(10).iterrows():  # Show first 10
-                    logger.debug(f"  🌟 2025 Rookie: {rookie['name']}")
+                    logger.debug(f"  🌟 2026 Rookie: {rookie['name']}")
             else:
-                logger.debug("No 2025 rookies found in data")
+                logger.debug("No 2026 rookies found in data")
         else:
-            logger.debug("Game count columns not found - cannot identify 2025 rookies")
+            logger.debug("Game count columns not found - cannot identify 2026 rookies")
     
     def _assign_rookie_positions(self, df: pd.DataFrame) -> None:
         """
-        Assign positions to 2025 rookie prospects who are missing position data
+        Assign positions to 2026 rookie prospects who are missing position data
         
         These are college players who haven't been assigned NFL positions yet
         """
-        # Dictionary mapping known 2025 rookie names to their likely positions
+        # Dictionary mapping known 2026 rookie names to their likely positions
         rookie_position_map = {
             'Jeanty, Ashton': 'RB',      # Boise State RB - Heisman candidate
             'Ward, Cam': 'QB',           # Miami QB - top QB prospect  
@@ -235,7 +247,7 @@ class PlayerDataLoader(DataLoader):
                 logger.debug(f"  🎯 Assigned position {position} to rookie {name}")
         
         if assignments_made > 0:
-            logger.info(f"Assigned positions to {assignments_made} 2025 rookie prospects")
+            logger.info(f"Assigned positions to {assignments_made} 2026 rookie prospects")
     
     def _scale_rookie_points(self, df: pd.DataFrame) -> None:
         """
