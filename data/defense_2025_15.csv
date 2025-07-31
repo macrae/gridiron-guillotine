@@ -1,0 +1,33 @@
+Team,Opp,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
+Denver BroncosDenver,vs IND,25,2.0,2,0,3,0,1,13,161,149,310
+Kansas City ChiefsKansas City,@ CLE,24,5.0,4,0,2,0,0,7,127,139,266
+Atlanta FalconsAtlanta,@ LV,23,4.0,2,1,1,2,0,9,184,65,249
+Cincinnati BengalsCincinnati,@ TEN,20,1.0,4,0,2,0,1,27,291,83,374
+Dallas CowboysDallas,@ CAR,18,6.0,2,0,2,0,0,14,175,60,235
+Green Bay PackersGreen Bay,@ SEA,18,7.0,2,0,0,0,0,13,128,80,208
+Houston TexansHouston,vs MIA,18,3.0,3,0,1,0,0,12,172,52,224
+Los Angeles RamsLA Rams,@ SF,15,3.0,1,0,0,0,0,6,128,63,191
+New Orleans SaintsNew Orleans,vs WAS,12,8.0,0,0,0,0,0,20,189,137,326
+Tampa Bay BuccaneersTampa Bay,@ LAC,11,3.0,1,0,1,0,0,17,174,32,206
+Philadelphia EaglesPhiladelphia,vs PIT,11,2.0,0,0,1,0,0,13,107,56,163
+Minnesota VikingsMinnesota,vs CHI,11,2.0,0,0,1,0,0,12,171,113,284
+Miami DolphinsMiami,@ HOU,10,4.0,0,0,1,0,0,20,104,77,181
+Las Vegas RaidersLas Vegas,vs ATL,9,3.0,1,0,0,0,0,15,93,168,261
+Washington CommandersWashington,@ NO,9,3.0,1,0,0,0,0,19,176,69,245
+Tennessee TitansTennessee,vs CIN,9,1.0,2,0,2,0,0,37,269,101,370
+Baltimore RavensBaltimore,@ NYG,9,3.0,1,0,0,0,0,14,181,55,236
+Pittsburgh SteelersPittsburgh,@ PHI,8,3.0,0,0,2,0,0,27,270,131,401
+Arizona CardinalsArizona,vs NE,8,2.0,1,0,0,0,0,17,195,116,311
+New York JetsNY Jets,@ JAX,7,2.0,2,0,0,0,0,25,285,136,421
+Indianapolis ColtsIndianapolis,@ DEN,7,1.0,3,0,0,0,0,31,121,72,193
+San Francisco 49ersSan Francisco,vs LA,7,0.0,0,0,0,0,0,12,160,142,302
+Chicago BearsChicago,@ MIN,6,2.0,1,0,0,1,0,30,215,114,329
+New York GiantsNY Giants,vs BAL,5,3.0,0,0,1,0,0,35,275,170,445
+Los Angeles ChargersLA Chargers,vs TB,5,1.0,1,0,1,0,0,40,283,223,506
+Buffalo BillsBuffalo,@ DET,5,3.0,0,0,1,0,0,42,473,48,521
+Carolina PanthersCarolina,vs DAL,3,1.0,0,0,1,0,0,30,199,211,410
+Seattle SeahawksSeattle,vs GB,2,0.0,0,0,1,0,0,30,229,140,369
+Cleveland BrownsCleveland,vs KC,1,0.0,0,0,0,0,0,21,179,132,311
+Jacksonville JaguarsJacksonville,vs NYJ,1,1.0,0,0,0,0,0,32,275,125,400
+New England PatriotsNew England,@ ARI,0,0.0,0,0,0,0,0,30,232,163,395
+Detroit LionsDetroit,vs BUF,0,0.0,0,0,0,0,0,48,362,197,559

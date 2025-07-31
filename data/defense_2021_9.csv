@@ -1,29 +1,29 @@
 Team,Opp,Pts*,Sack,Int,Saf,FR,Blk,TD,PA,PassYds,RushYds,TotYds
-New England PatriotsNew England,@ CAR,23,1.0,3,0,0,0,1,6,162,78,240
-Cleveland BrownsCleveland,@ CIN,21,5.0,2,0,1,0,1,16,263,85,348
-Miami DolphinsMiami,vs HOU,20,5.0,3,0,1,0,0,9,199,73,272
-Jacksonville JaguarsJacksonville,vs BUF,20,4.0,2,0,1,0,0,6,229,72,301
-Tennessee TitansTennessee,@ LA,19,5.0,2,0,0,0,1,16,253,94,347
-Houston TexansHouston,@ MIA,18,4.0,2,0,3,0,0,17,215,47,262
-New York GiantsNY Giants,vs LV,17,1.0,2,0,1,0,1,16,286,117,403
-Arizona CardinalsArizona,@ SF,15,5.0,1,0,2,0,0,17,298,39,337
-Kansas City ChiefsKansas City,vs GB,14,1.0,1,0,1,1,0,7,179,122,301
-Minnesota VikingsMinnesota,@ BAL,13,3.0,2,0,0,0,1,34,253,247,500
-Chicago BearsChicago,@ PIT,12,4.0,0,0,1,0,1,29,175,105,280
-Buffalo BillsBuffalo,@ JAX,11,2.0,0,0,1,0,0,9,139,79,218
-Denver BroncosDenver,@ DAL,10,2.0,1,0,1,0,0,16,212,78,290
-Green Bay PackersGreen Bay,@ KC,8,1.0,0,0,0,0,0,13,160,77,237
-Pittsburgh SteelersPittsburgh,vs CHI,8,3.0,1,0,1,0,0,27,278,136,414
-Carolina PanthersCarolina,vs NE,7,2.0,1,0,1,0,0,24,122,151,273
-Indianapolis ColtsIndianapolis,vs NYJ,6,2.0,1,0,1,0,0,30,398,88,486
-Las Vegas RaidersLas Vegas,@ NYG,6,3.0,0,0,1,0,0,23,98,149,247
-Los Angeles RamsLA Rams,vs TEN,5,3.0,1,0,0,0,0,28,125,69,194
-Atlanta FalconsAtlanta,@ NO,4,1.0,0,0,1,0,0,25,267,109,376
-Dallas CowboysDallas,vs DEN,4,4.0,0,0,0,0,0,30,217,190,407
-New Orleans SaintsNew Orleans,vs ATL,3,2.0,0,0,0,0,0,27,332,34,366
-Los Angeles ChargersLA Chargers,@ PHI,2,1.0,0,0,0,0,0,24,155,176,331
-San Francisco 49ersSan Francisco,vs ARI,2,2.0,0,0,0,0,0,31,274,163,437
-Cincinnati BengalsCincinnati,vs CLE,2,2.0,0,0,0,0,0,41,208,153,361
-New York JetsNY Jets,@ IND,1,1.0,0,0,0,0,0,45,272,260,532
-Philadelphia EaglesPhiladelphia,vs LAC,1,0.0,0,0,0,0,0,27,356,89,445
-Baltimore RavensBaltimore,vs MIN,0,0.0,0,0,0,0,0,31,187,131,318
+New Orleans SaintsNew Orleans,@ TB,19,3.0,3,0,0,0,0,3,186,8,194
+Tennessee TitansTennessee,vs CHI,17,3.0,0,0,2,0,1,17,319,56,375
+Baltimore RavensBaltimore,@ IND,17,0.0,1,0,1,0,1,10,227,112,339
+New York GiantsNY Giants,@ WAS,16,2.0,3,0,2,0,0,20,365,37,402
+Buffalo BillsBuffalo,vs SEA,13,5.0,2,0,2,0,0,34,362,57,419
+Minnesota VikingsMinnesota,vs DET,12,2.0,3,0,0,0,0,20,292,129,421
+Pittsburgh SteelersPittsburgh,@ DAL,10,2.0,1,0,1,0,0,19,220,144,364
+Green Bay PackersGreen Bay,@ SF,9,1.0,1,0,1,0,0,17,282,55,337
+Miami DolphinsMiami,@ ARI,9,1.0,0,0,1,0,1,31,264,178,442
+Seattle SeahawksSeattle,@ BUF,7,7.0,0,0,0,0,0,44,386,34,420
+Washington Football TeamWashington,vs NYG,6,5.0,0,0,0,0,0,23,184,166,350
+Jacksonville JaguarsJacksonville,vs HOU,5,2.0,0,0,1,0,0,27,267,107,374
+Indianapolis ColtsIndianapolis,vs BAL,5,2.0,0,0,1,0,0,24,156,110,266
+Houston TexansHouston,@ JAX,5,2.0,1,0,0,0,0,25,288,115,403
+Detroit LionsDetroit,@ MIN,5,1.0,0,0,0,2,0,34,212,275,487
+Tampa Bay BuccaneersTampa Bay,vs NO,5,1.0,0,0,2,0,0,38,282,138,420
+Las Vegas RaidersLas Vegas,@ LAC,5,2.0,0,0,1,0,0,26,312,128,440
+New England PatriotsNew England,@ NYJ,4,1.0,1,0,0,0,0,27,257,65,322
+Denver BroncosDenver,@ ATL,4,2.0,1,0,0,0,0,34,271,92,363
+Atlanta FalconsAtlanta,vs DEN,4,1.0,1,0,0,0,0,27,302,103,405
+Chicago BearsChicago,@ TEN,4,3.0,0,0,0,0,0,24,136,92,228
+Carolina PanthersCarolina,@ KC,4,2.0,0,0,1,0,0,33,361,36,397
+Arizona CardinalsArizona,vs MIA,3,3.0,0,0,0,0,0,34,221,91,312
+Los Angeles ChargersLA Chargers,vs LV,3,1.0,0,0,1,0,0,31,160,160,320
+Dallas CowboysDallas,vs PIT,3,0.0,0,0,0,1,0,24,309,46,355
+Kansas City ChiefsKansas City,vs CAR,2,2.0,0,0,0,0,0,31,331,104,435
+San Francisco 49ersSan Francisco,vs GB,1,1.0,0,0,0,0,0,34,294,111,405
+New York JetsNY Jets,vs NE,0,0.0,0,0,0,0,0,30,274,159,433
