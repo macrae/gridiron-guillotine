@@ -59,7 +59,25 @@ class PlayerScraper(BaseScraper):
     
     def __init__(self, config: Optional[Config] = None):
         super().__init__(config)
-        self.base_url = "https://www.footballdb.com/players"
+        self.base_url = "https://www.nfl.com/players"
+    
+    def get_data_prefix(self) -> str:
+        """Return the data file prefix for this scraper"""
+        return "players"
+    
+    def scrape(self, year: int, week: int) -> List[Dict]:
+        """Scrape data for a specific year and week - not applicable for player data"""
+        return []
+    
+    def get_page_content(self, url: str):
+        """Get page content using BeautifulSoup"""
+        try:
+            from bs4 import BeautifulSoup
+            response = self.get_with_retry(url)
+            return BeautifulSoup(response.content, 'html.parser')
+        except Exception as e:
+            logger.error(f"Error fetching {url}: {e}")
+            return None
         
     def scrape_all_players(self) -> pd.DataFrame:
         """

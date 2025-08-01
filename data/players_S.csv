@@ -16,6 +16,7 @@ Player,Pos,Team,College
 "Sanders, Ja'Tavion",TE,Carolina,Texas
 "Sanders, Jason",K,Miami,New Mexico
 "Sanders, Miles",RB,Carolina,Penn State
+"Sanders, Shedeur",QB,Cleveland,Colorado
 "Sanford, Phalen",DB,Las Vegas,Nebraska
 "Santos, Cairo",K,Chicago,Tulane
 "Sapp, Benny",DB,Green Bay,Northern Iowa
@@ -83,6 +84,7 @@ Player,Pos,Team,College
 "Shipley, Will",RB,Philadelphia,Clemson
 "Shirden, Jaden",RB,Carolina,Monmouth
 "Shorter, Justin",WR,Buffalo,Florida
+"Shough, Tyler",QB,New Orleans,Texas Tech
 "Shrader, Spencer",K,Indianapolis,Notre Dame
 "Sieg, Trent",LS,Dallas,Colorado State
 "Sieler, Zach",DT,Miami,Ferris State
@@ -104,6 +106,7 @@ Player,Pos,Team,College
 "Singleton, Alex",LB,Denver,Montana State
 "Sinnott, Ben",TE,Washington,Kansas State
 "Sirmon, Jackson",LB,NY Jets,California
+"Skattebo, Cam",RB,NY Giants,Arizona State
 "Skinner, JL",DB,Denver,Boise State
 "Skipper, Dan",OT,Detroit,Arkansas
 "Skoronski, Peter",OT,Tennessee,Northwestern
@@ -130,7 +133,7 @@ Player,Pos,Team,College
 "Smith, D'Ante",OT,Cincinnati,East Carolina
 "Smith, DeVonta",WR,Philadelphia,Alabama
 "Smith, Elerson",DE,Las Vegas,Northern Iowa
-"Smith, Geno",QB,Seattle,West Virginia
+"Smith, Geno",QB,Las Vegas,West Virginia
 "Smith, Harrison",DB,Minnesota,Notre Dame
 "Smith, Irv",TE,Kansas City,Alabama
 "Smith, Jeff",WR,Arizona,Boston College

@@ -1,4 +1,5 @@
 Player,Pos,Team,College
+"LaPorta, Sam",TE,Detroit,Iowa
 "Laap, J.J.",TE,LA Rams,Cortland State
 "Lacy, Tyler",DE,Jacksonville,Oklahoma State
 "Laing, Brent",C,LA Chargers,Minnesota-Duluth
@@ -13,7 +14,6 @@ Player,Pos,Team,College
 "Landers, Matt",WR,Cleveland,Arkansas
 "Landman, Nate",LB,Atlanta,Colorado
 "Landry, Harold",LB,Tennessee,Boston College
-"LaPorta, Sam",TE,Detroit,Iowa
 "Larson, Blake",OT,LA Rams,Augustana (SD)
 "Lassiter, Kamari",DB,Houston,Georgia
 "Lassiter, Kwamie",WR,Cincinnati,Kansas
@@ -85,6 +85,7 @@ Player,Pos,Team,College
 "Lovato, Rick",LS,Philadelphia,Old Dominion
 "Love, Jordan",QB,Green Bay,Utah State
 "Love, Julian",DB,Seattle,Notre Dame
+"Loveland, Colston",TE,Chicago,Michigan
 "Lovely, Keni-H",DB,Buffalo,Western Michigan
 "Lovett, Fabien",DT,Kansas City,Florida State
 "Lowe, Vederian",OT,New England,Illinois

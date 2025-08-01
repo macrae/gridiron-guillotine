@@ -12,6 +12,7 @@ import numpy as np
 from .models import Player, DraftPick, LeagueSettings, Position, HeroRBPhase, DraftState
 from .config import Config, get_config
 from .metrics import AdvancedMetrics, DraftPositionAnalyzer
+from .tiers import EnhancedTierCalculator, PositionTierState
 
 logger = logging.getLogger(__name__)
 
@@ -42,13 +43,14 @@ class ChampionshipDraftStrategy:
         # Initialize components
         self.advanced_metrics = AdvancedMetrics(self.config)
         self.position_analyzer = DraftPositionAnalyzer(self.config)
+        self.tier_calculator = EnhancedTierCalculator(self.config)
         
         # Initialize draft state
         self.draft_state = DraftState()
         self._initialize_team_rosters()
         
         logger.info(f"Championship strategy initialized for position {draft_position} "
-                   f"(Hero-RB + Advanced Metrics + Position Logic enabled)")
+                   f"(Hero-RB + Advanced Metrics + Enhanced Tiers + Position Logic enabled)")
     
     def _initialize_team_rosters(self):
         """Initialize empty rosters for all teams"""
@@ -115,79 +117,138 @@ class ChampionshipDraftStrategy:
         logger.debug(f"Hero-RB Phase: {hero_phase.value}, Scarcity factors: {scarcity_factors}")
         return scarcity_factors
     
-    def calculate_tier_dropoffs(self, available_players: pd.DataFrame) -> Dict[Position, float]:
-        """Calculate how close we are to tier dropoffs for each position"""
+    def calculate_tier_dropoffs(self, available_players: pd.DataFrame, 
+                               picks_until_next_turn: int = 12) -> Dict[Position, float]:
+        """
+        Calculate enhanced tier urgency using research-validated tier analysis
+        Research: Draft last high-tier player rather than first low-tier player
+        """
+        if 'tier' not in available_players.columns:
+            logger.warning("Tier information not found, using legacy calculation")
+            return {pos: 0.0 for pos in Position}
+        
+        # Get current tier states for all positions
+        tier_states = self.tier_calculator.get_position_tier_states(available_players)
+        
         tier_dropoffs = {}
         
         for position in Position:
-            pos_players = available_players[available_players['position'] == position.value]
-            
-            if len(pos_players) == 0 or 'tier' not in pos_players.columns:
+            if position not in tier_states:
                 tier_dropoffs[position] = 0.0
                 continue
+                
+            state = tier_states[position]
             
-            # Find the next tier boundary
-            current_best_tier = pos_players['tier'].min()
-            next_tier_players = pos_players[pos_players['tier'] == current_best_tier + 1]
+            # Calculate tier urgency boost based on research
+            urgency_boost = 0.0
             
-            if len(next_tier_players) > 0:
-                # Calculate urgency based on how many top-tier players remain
-                top_tier_count = len(pos_players[pos_players['tier'] == current_best_tier])
-                tier_dropoffs[position] = max(0.0, 1.0 - top_tier_count / 3.0)
-            else:
-                tier_dropoffs[position] = 0.0
+            if state.current_tier in state.tiers:
+                current_tier_info = state.tiers[state.current_tier]
+                
+                # Critical tier urgency (last few players)
+                if current_tier_info.players_remaining <= 2:
+                    urgency_boost = 0.8  # 80% urgency boost
+                elif current_tier_info.players_remaining <= 4:
+                    urgency_boost = 0.5  # 50% urgency boost
+                elif current_tier_info.players_remaining <= 7:
+                    urgency_boost = 0.3  # 30% urgency boost
+                
+                # Add dropoff magnitude factor
+                urgency_boost += min(0.4, current_tier_info.dropoff_magnitude)
+                
+                # Adjust for draft flow
+                if picks_until_next_turn <= 5:
+                    urgency_boost *= 1.5  # Increase urgency when our pick is soon
+                elif picks_until_next_turn >= 15:
+                    urgency_boost *= 0.7  # Reduce urgency when we have time
+            
+            tier_dropoffs[position] = min(1.0, urgency_boost)
         
+        logger.debug(f"Enhanced tier urgency calculated: {tier_dropoffs}")
         return tier_dropoffs
     
     def calculate_vbd(self, players_df: pd.DataFrame) -> pd.DataFrame:
         """Calculate Value-Based Drafting scores for all players"""
         df = players_df.copy()
         
+        # Ensure projected_points column exists and handle missing values
+        if 'projected_points' not in df.columns:
+            logger.warning("projected_points column not found, using weighted_mean")
+            df['projected_points'] = df.get('weighted_mean', 0)
+        
+        # Fill NaN values with 0
+        df['projected_points'] = df['projected_points'].fillna(0)
+        
         for position in Position:
-            pos_players = df[df['position'] == position.value]
+            pos_players = df[df['position'] == position.value].copy()
             
             if len(pos_players) == 0:
+                continue
+            
+            logger.debug(f"Processing {position.value}: {len(pos_players)} total players")
+            
+            # Filter out players with zero or negative projected points for replacement calculation
+            valid_pos_players = pos_players[pos_players['projected_points'] > 0]
+            
+            logger.debug(f"{position.value}: {len(valid_pos_players)} valid players with projected_points > 0")
+            
+            if len(valid_pos_players) == 0:
+                # No valid players for this position, set VBD to 0
+                mask = df['position'] == position.value
+                df.loc[mask, 'vbd'] = 0
+                logger.debug(f"{position.value}: No valid players, setting VBD to 0")
                 continue
             
             # Use configured replacement levels
             replacement_level = self.config.replacement_levels[position]
             
-            if len(pos_players) >= replacement_level:
-                # Get the replacement player's points
-                replacement_points = pos_players.nlargest(replacement_level, 'projected_points').iloc[-1]['projected_points']
-            else:
-                # If fewer players than replacement level, use minimum
-                replacement_points = pos_players['projected_points'].min()
+            logger.debug(f"{position.value}: Replacement level = {replacement_level}, Valid players = {len(valid_pos_players)}")
+            
+            try:
+                if len(valid_pos_players) >= replacement_level and replacement_level > 0:
+                    # Get the replacement player's points
+                    sorted_players = valid_pos_players.nlargest(replacement_level, 'projected_points')
+                    if len(sorted_players) >= replacement_level:
+                        replacement_points = sorted_players.iloc[-1]['projected_points']
+                    else:
+                        replacement_points = valid_pos_players['projected_points'].min()
+                else:
+                    # If fewer players than replacement level, use minimum of valid players
+                    replacement_points = valid_pos_players['projected_points'].min()
+                
+                logger.debug(f"{position.value}: Replacement points = {replacement_points}")
+                
+            except (IndexError, KeyError, ValueError) as e:
+                logger.warning(f"Error calculating replacement points for {position.value}: {e}")
+                logger.warning(f"  Valid players shape: {valid_pos_players.shape}")
+                logger.warning(f"  Projected points range: {valid_pos_players['projected_points'].min()} - {valid_pos_players['projected_points'].max()}")
+                replacement_points = 0.0  # Fallback
             
             # Calculate VBD
             mask = df['position'] == position.value
             df.loc[mask, 'vbd'] = df.loc[mask, 'projected_points'] - replacement_points
         
+        # Ensure VBD column exists with default 0 values
+        if 'vbd' not in df.columns:
+            df['vbd'] = 0
+        df['vbd'] = df['vbd'].fillna(0)
+        
         return df
     
-    def initialize_tiers(self, players_df: pd.DataFrame, tier_dropoff_percentage: float = 0.2) -> pd.DataFrame:
-        """Initialize player tiers based on VBD drops within each position"""
-        df = players_df.copy()
-        df['tier'] = 1
+    def initialize_tiers(self, players_df: pd.DataFrame, current_round: int = 1, 
+                        picks_until_next_turn: int = 12) -> pd.DataFrame:
+        """
+        Initialize enhanced dynamic tiers with draft flow awareness
+        Research: Target positions where tier drop-offs are steepest
+        """
+        picks_remaining_in_round = max(1, self.league_settings.teams - (self.draft_position - 1))
         
-        for position in Position:
-            pos_players = df[df['position'] == position.value].sort_values('vbd', ascending=False)
-            
-            if len(pos_players) < 2:
-                continue
-            
-            current_tier = 1
-            for i in range(1, len(pos_players)):
-                current_vbd = pos_players.iloc[i]['vbd']
-                previous_vbd = pos_players.iloc[i-1]['vbd']
-                
-                # Check for significant dropoff
-                if previous_vbd > 0 and (previous_vbd - current_vbd) / previous_vbd > tier_dropoff_percentage:
-                    current_tier += 1
-                
-                df.loc[pos_players.iloc[i].name, 'tier'] = current_tier
-        
-        return df
+        return self.tier_calculator.calculate_dynamic_tiers(
+            players_df, 
+            current_round, 
+            picks_remaining_in_round,
+            picks_until_next_turn
+        )
     
     def adjust_player_value(self, player_row: pd.Series, scarcity_factors: Dict[Position, float],
                           tier_dropoffs: Dict[Position, float], current_round: int) -> float:
@@ -202,9 +263,19 @@ class ChampionshipDraftStrategy:
         # Scarcity boost
         scarcity_boost = scarcity_factors.get(position, 1.0)
         
-        # Tier urgency boost
+        # Enhanced Tier urgency boost (Research: Draft last high-tier vs first low-tier)
         tier_urgency = tier_dropoffs.get(position, 0.0)
-        tier_boost = tier_urgency * 0.3  # Up to 30% boost for tier urgency
+        tier_boost = tier_urgency * 0.5  # Up to 50% boost for critical tier situations
+        
+        # Additional tier-specific boost if we have tier urgency info
+        if hasattr(player_row, 'tier_urgency') and player_row.get('tier_urgency'):
+            urgency_multipliers = {
+                'critical': 0.4,  # 40% additional boost for critical tier
+                'high': 0.25,     # 25% boost for high urgency
+                'moderate': 0.15, # 15% boost for moderate
+                'low': 0.0        # No additional boost
+            }
+            tier_boost += urgency_multipliers.get(player_row.get('tier_urgency', 'low'), 0.0)
         
         # Hero-RB Strategy Boost (Research: 20.2% advance rate)
         position_boost = 1.0
@@ -309,7 +380,7 @@ class ChampionshipDraftStrategy:
         return max(0, final_value)
     
     def get_round_strategy(self, player_df: pd.DataFrame, current_round: int, 
-                          top_n: int = 12) -> pd.DataFrame:
+                          top_n: int = 12, picks_until_next_turn: int = 12) -> pd.DataFrame:
         """
         Generate strategy for a specific round with comprehensive player evaluation
         Integrates Hero-RB + PPR + Advanced Metrics for championship-level analysis
@@ -318,17 +389,17 @@ class ChampionshipDraftStrategy:
         self.draft_state.current_round = current_round
         self.draft_state.hero_rb_phase = self._determine_hero_rb_phase(current_round)
         
-        # Process player data
+        # Process player data with enhanced tiers
         player_df = self.calculate_vbd(player_df)
-        player_df = self.initialize_tiers(player_df)
+        player_df = self.initialize_tiers(player_df, current_round, picks_until_next_turn)
         player_df = self.advanced_metrics.calculate_for_dataframe(player_df)
         
         # Filter to available players
         available_players = player_df[~player_df['name'].isin(self.draft_state.drafted_players)].copy()
         
-        # Calculate strategy factors
+        # Calculate strategy factors with enhanced tier analysis
         scarcity_factors = self.calculate_positional_scarcity(available_players)
-        tier_dropoffs = self.calculate_tier_dropoffs(available_players)
+        tier_dropoffs = self.calculate_tier_dropoffs(available_players, picks_until_next_turn)
         
         # Calculate adjusted values
         available_players['adjusted_value'] = available_players.apply(
@@ -356,9 +427,15 @@ class ChampionshipDraftStrategy:
                 remaining.nlargest(additional_needed, 'adjusted_value')
             ])
         
-        # Return top players with comprehensive data
+        # Return top players with comprehensive data including enhanced tier info
         columns = ['name', 'position', 'team', 'projected_points', 'vbd', 'adjusted_value', 'tier']
         
+        # Add enhanced tier columns if available
+        if 'tier_urgency' in strategy_players.columns:
+            columns.append('tier_urgency')
+        if 'tier_dropoff_magnitude' in strategy_players.columns:
+            columns.append('tier_dropoff_magnitude')
+            
         # Add advanced metrics columns if available
         if 'advanced_score' in strategy_players.columns:
             columns.extend(['advanced_score', 'wopr', 'expected_points', 'context_multiplier'])
@@ -367,6 +444,29 @@ class ChampionshipDraftStrategy:
         
         logger.info(f"Round {current_round} strategy generated with {len(result)} players")
         return result
+    
+    def get_tier_recommendations(self, available_players: pd.DataFrame, 
+                               picks_until_next_turn: int = 12) -> List[str]:
+        """
+        Get tier-based position recommendations for current draft state
+        Research: Target positions where tier drop-offs are steepest
+        """
+        if 'tier' not in available_players.columns:
+            return ["Enhanced tier data not available - use initialize_tiers() first"]
+        
+        recommendations = self.tier_calculator.get_tier_recommendations(
+            self.tier_calculator.get_position_tier_states(available_players),
+            picks_until_next_turn
+        )
+        
+        tier_messages = []
+        for position, reason, urgency_score in recommendations[:3]:  # Top 3 recommendations
+            tier_messages.append(f"🎯 {reason} (Score: {urgency_score:.1f})")
+        
+        if not tier_messages:
+            tier_messages.append("✅ No critical tier situations - draft best available value")
+        
+        return tier_messages
     
     def _get_priority_positions(self, current_round: int) -> List[Position]:
         """Get priority positions for a given round"""

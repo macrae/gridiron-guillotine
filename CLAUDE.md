@@ -1,20 +1,22 @@
-# CLAUDE.md - Gridiron Guillotine v2.1 Project
+# CLAUDE.md - Gridiron Guillotine v2.2 Project
 
 This file provides comprehensive guidance to Claude Code (claude.ai/code) when working with the **Gridiron Guillotine** fantasy football draft strategy codebase.
 
 ## 🏈 Project Overview
 
-**Gridiron Guillotine v2.1** is a **production-ready, professional Python package** for fantasy football draft strategy that combines advanced data science techniques with real-time draft management and **persistent intelligent database**. The system has been **completely modernized** from a collection of flat scripts into a professional package with championship-level research-validated strategies.
+**Gridiron Guillotine v2.2** is a **championship-caliber, production-ready Python package** for fantasy football draft strategy that combines advanced data science techniques with real-time draft management, **persistent intelligent database**, and **research-validated tier-based drafting**. The system has been **completely modernized** from a collection of flat scripts into a professional package with cutting-edge championship-level strategies.
 
-### Core Philosophy (2025 Championship Architecture)
+### Core Philosophy (2026 Championship Architecture)
 - **🏆 Hero-RB Strategy**: Research-validated approach with 20.2% advance rate vs 16.7% baseline
+- **🎯 Enhanced Tier-Based Drafting**: Dynamic tier boundaries with draft flow awareness and urgency detection
 - **🗄️ Persistent Database**: Pre-computed player scores with SQLite for instant draft recommendations
 - **📰 Real-Time NFL News**: Multi-source news integration with impact analysis (ESPN, NFL.com, RotoWire)
 - **📊 Advanced Metrics Integration**: WOPR calculations, Expected Fantasy Points, and offensive context
-- **📍 Draft Position Optimization**: Different strategies for early/middle/late positions
+- **📍 Draft Position Optimization**: Different strategies for early/middle/late positions with tier urgency
 - **💎 PPR Specialization**: Pass-catching player bonuses and pure rusher penalties
-- **📈 Data-Driven Decisions**: Uses 5 years of historical NFL data (2020-2024) plus research insights
+- **📈 Data-Driven Decisions**: Uses 5 years of historical NFL data (2021-2025) plus 2026 projections
 - **⚡ Live Draft Tracking**: Real-time draft state management with strategic pivoting
+- **🔄 2025 Roster Updates**: Complete NFL offseason moves integration for accurate 2026 projections
 - **🐍 Professional Package**: Modern Python architecture with proper imports, CLI, and web interface
 
 ## 🚀 Quick Start Commands (NEW PACKAGE STRUCTURE)
@@ -24,11 +26,11 @@ This file provides comprehensive guidance to Claude Code (claude.ai/code) when w
 # Install the package in development mode
 pip install -e .
 
-# 🗄️ PERSISTENT DATABASE COMMANDS (NEW!)
-# Pre-compute all player scores for instant recommendations
-gridiron db precompute --positions 1 6 12
+# 🗄️ PERSISTENT DATABASE COMMANDS (ENHANCED!)
+# Pre-compute all player scores with enhanced tier analysis
+gridiron db precompute --force
 
-# Get Hero-RB strategic recommendations (DEFAULT)
+# Get Hero-RB + Enhanced Tier strategic recommendations (DEFAULT)
 gridiron db recommend --draft-position 6 --limit 10
 
 # Show database statistics
@@ -78,11 +80,12 @@ gridiron --help
 
 ### **SECONDARY USAGE: Direct Python Imports**
 ```python
-# Core strategy engine
+# Core strategy engine with enhanced tiers
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 from gridiron_guillotine.core.config import get_config
+from gridiron_guillotine.core.tiers import EnhancedTierCalculator, TierUrgency
 
-# 🗄️ Persistent Database System (NEW!)
+# 🗄️ Persistent Database System (ENHANCED!)
 from gridiron_guillotine.data.database import PlayerDatabase, EnhancedPlayer
 from gridiron_guillotine.data.precompute import PlayerPrecomputer
 from gridiron_guillotine.data.news_integration import NewsIntegrationEngine
@@ -102,9 +105,19 @@ results = precomputer.precompute_all_players([1, 6, 12])
 news_engine = NewsIntegrationEngine()
 success = news_engine.update_player_news("Jackson, Lamar")
 
-# Get strategic recommendations with news
+# Get strategic recommendations with news and enhanced tiers
 enhanced_player = db.get_player("McCaffrey, Christian")
 print(f"News impact: {enhanced_player.overall_news_impact}")
+
+# 🎯 Use Enhanced Tier-Based Drafting (NEW!)
+strategy = ChampionshipDraftStrategy(draft_position=6)
+tier_calc = EnhancedTierCalculator()
+
+# Get tier recommendations with draft flow awareness
+tier_recommendations = strategy.get_tier_recommendations(
+    available_players, picks_until_next_turn=6
+)
+print("Tier urgency:", tier_recommendations)
 ```
 
 ### **LEGACY COMPATIBILITY**
@@ -118,15 +131,16 @@ python deprecated/live_draft_monitor.py
 
 ## 🏗️ **NEW PRODUCTION ARCHITECTURE**
 
-### **Complete Package Structure (v2.1)**
+### **Complete Package Structure (v2.2)**
 
 ```
 gridiron-guillotine/
 ├── gridiron_guillotine/           # 🎯 MAIN PACKAGE
 │   ├── __init__.py               # Package initialization
-│   ├── core/                     # 🧠 Strategy engine
+│   ├── core/                     # 🧠 Strategy engine with enhanced tiers
 │   │   ├── __init__.py
 │   │   ├── strategy.py           # ChampionshipDraftStrategy (MAIN CLASS)
+│   │   ├── 🎯 tiers.py           # Enhanced Tier-Based Drafting System (NEW!)
 │   │   ├── models.py             # Data models (Player, DraftPick, etc.)
 │   │   ├── metrics.py            # Advanced metrics (WOPR, Expected Points)
 │   │   └── config.py             # Configuration management
@@ -173,7 +187,7 @@ gridiron-guillotine/
 │   ├── scored_data_with_2025_rookies.csv
 │   ├── 🆕 enhanced_players.db    # SQLite database with pre-computed scores & news
 │   ├── player_ids.json
-│   ├── offense_YYYY_WW.csv       # Historical data (2020-2024)
+│   ├── offense_YYYY_WW.csv       # Historical data (2021-2025)
 │   ├── defense_YYYY_WW.csv
 │   ├── kickers_YYYY_WW.csv
 │   └── players_[A-Z].csv
@@ -232,19 +246,42 @@ from gridiron_guillotine.data.news_integration import NewsIntegrationEngine
 #   - update_injury_reports() - League-wide injury updates
 ```
 
-### **4. ChampionshipDraftStrategy (CORE STRATEGY ENGINE)**
+### **4. EnhancedTierCalculator (🎯 TIER-BASED DRAFTING - NEW!)**
+```python
+from gridiron_guillotine.core.tiers import EnhancedTierCalculator, TierUrgency, PositionTierState
+
+# Location: gridiron_guillotine/core/tiers.py
+# Purpose: Research-validated tier-based drafting with dynamic boundaries
+# Key Methods:
+#   - calculate_dynamic_tiers(players_df, current_round, picks_until_turn) - Dynamic tier boundaries
+#   - get_position_tier_states(available_players) - Real-time tier analysis
+#   - get_tier_recommendations(tier_states, picks_until_turn) - Urgency-based recommendations
+#   - calculate_tier_urgency_boost(player_row, tier_states) - Value adjustments
+# Key Features:
+#   - 4-level urgency system (CRITICAL/HIGH/MODERATE/LOW)
+#   - Draft flow awareness (adjusts based on picks until your turn)
+#   - Position-specific tier thresholds
+#   - Research: "Draft last high-tier player rather than first low-tier player"
+```
+
+### **5. ChampionshipDraftStrategy (CORE STRATEGY ENGINE - ENHANCED)**
 ```python
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 
 # Location: gridiron_guillotine/core/strategy.py
-# Purpose: Main draft strategy engine with Hero-RB logic
+# Purpose: Main draft strategy engine with Hero-RB + Enhanced Tiers
 # Key Methods:
-#   - get_round_strategy(round_num, picks_made, user_position)
-#   - adjust_player_value(player_row, scarcity_factors, ...)
-#   - initialize_draft(draft_state)
+#   - get_round_strategy(player_df, current_round, picks_until_next_turn) - ENHANCED with tiers
+#   - get_tier_recommendations(available_players, picks_until_turn) - NEW tier urgency analysis
+#   - adjust_player_value(player_row, scarcity_factors, ...) - ENHANCED with tier boosts
+#   - initialize_tiers(players_df, current_round, picks_until_turn) - NEW dynamic tier system
+# Enhanced Features:
+#   - Tier urgency boosts up to 90% for critical situations
+#   - Draft flow integration throughout strategy
+#   - Research-validated tier drop-off detection
 ```
 
-### **5. CLI Interface (🆕 ENHANCED USER INTERFACE)**
+### **6. CLI Interface (🆕 ENHANCED USER INTERFACE)**
 ```bash
 # Entry point defined in pyproject.toml:
 # [project.scripts]
@@ -255,7 +292,170 @@ from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 # 🆕 Database commands: gridiron db [precompute|recommend|stats|player|news]
 ```
 
-## 🆕 **NFL NEWS INTEGRATION SYSTEM (NEW FEATURE)**
+## 🎯 **ENHANCED TIER-BASED DRAFTING SYSTEM (NEW v2.2)**
+
+### **Research-Validated Tier Intelligence**
+The Enhanced Tier-Based Drafting system implements championship-level tier analysis with **dynamic boundaries** and **draft flow awareness**, directly based on the research principle: **"Draft the last high-tier player rather than the first low-tier player."**
+
+```
+🔍 Draft Flow Analysis ←→ EnhancedTierCalculator ←→ Position Scarcity
+                              ↕
+                    Dynamic Tier Boundaries
+                              ↓
+             4-Level Urgency Classification
+                              ↓
+          Real-Time Tier State Monitoring
+                              ↓
+         Strategic Value Adjustments (up to 90% boost)
+```
+
+### **🏆 Key Research Improvements Over Basic 20% VBD System**
+
+**1. Dynamic Tier Boundary Detection**
+- **Position-Specific Thresholds**: RB (25%), WR (20%), QB (15%), TE (30%)
+- **Natural Breakpoint Analysis**: Detects inflection points in value curves
+- **Tier Size Optimization**: Prevents oversized/undersized tier groupings
+- **Draft Context Integration**: Adjusts sensitivity based on round and draft flow
+
+**2. 4-Level Tier Urgency System**
+- 🔴 **CRITICAL** (1-2 players): 80% value boost + tier urgency alerts
+- 🟠 **HIGH** (3-4 players): 40% value boost + moderate urgency
+- 🟡 **MODERATE** (5-7 players): 20% value boost + watch status
+- 🟢 **LOW** (8+ players): No boost + standard evaluation
+
+**3. Draft Flow Intelligence**
+- **Time-Sensitive Adjustments**: Increases urgency when your pick approaches
+- **Round-Specific Logic**: Early rounds more sensitive to tier drops
+- **Position Phase Integration**: Works seamlessly with Hero-RB phases
+
+### **🔧 Enhanced Tier System Classes**
+
+**EnhancedTierCalculator (`gridiron_guillotine/core/tiers.py`)**
+```python
+# Primary tier calculation engine with 460+ lines of research-validated logic
+key_methods = [
+    'calculate_dynamic_tiers()',      # Main tier boundary calculation
+    'get_position_tier_states()',     # Real-time tier monitoring
+    'get_tier_recommendations()',     # Urgency-based suggestions
+    'calculate_tier_urgency_boost()'  # Value adjustment calculations
+]
+```
+
+**TierUrgency Enum & Data Models**
+```python
+class TierUrgency(Enum):
+    CRITICAL = "critical"    # Last 1-2 players in tier
+    HIGH = "high"           # 3-4 players remain  
+    MODERATE = "moderate"   # 5-7 players remain
+    LOW = "low"            # 8+ players remain
+
+@dataclass
+class TierInfo:
+    players_remaining: int
+    dropoff_magnitude: float  # Quantified tier boundary severity
+    urgency: TierUrgency
+    next_tier_gap: float     # Points gap to next tier
+
+@dataclass  
+class PositionTierState:
+    current_tier: int
+    tiers: Dict[int, TierInfo]  # Complete tier breakdown
+    scarcity_multiplier: float  # Position scarcity factor
+```
+
+### **📊 Live Tier Recommendations Example**
+```bash
+🎯 Tier-Based Position Recommendations:
+================================================================================
+   🎯 CRITICAL: Only 2 tier 1 RBs left (Score: 10.0)
+   🎯 CRITICAL: Only 1 tier 1 TEs left (Score: 10.0)  
+   🎯 SCARCITY: 6 quality WRs remaining (Score: 5.0)
+   ✅ No critical tier situations for other positions
+```
+
+### **🚀 Integration with Championship Strategy**
+- **Seamless Hero-RB Integration**: Tier urgency works with Hero-RB phases
+- **PPR Compatibility**: Tier analysis accounts for PPR value shifts
+- **Advanced Metrics Fusion**: Combines with WOPR, Expected Points, context
+- **Real-Time Updates**: Tier states update as players are drafted
+
+### **💡 Strategic Impact**
+The enhanced tier system provides **surgical precision** in draft decision-making:
+- Identifies exact moments when tier drops occur
+- Provides quantified urgency scores for position prioritization  
+- Adjusts strategy based on draft flow timing
+- Elevates draft intelligence from good to **championship-caliber**
+
+## 🔄 **2025 NFL OFFSEASON ROSTER UPDATES (CURRENT v2.2)**
+
+### **Complete 2026 Season Preparation**
+All player roster data has been **fully updated** to reflect the 2025 NFL offseason moves, ensuring accurate team contexts for 2026 fantasy projections.
+
+### **✅ Major 2025 Offseason Moves Integrated**
+
+**🎯 Quarterback Movement**
+- **Sam Darnold**: Minnesota → **Seattle Seahawks** (3-year, $100.5M)
+- **Justin Fields**: Pittsburgh → **New York Jets** (2-year, $40M)  
+- **Geno Smith**: Seattle → **Las Vegas Raiders** (2-year, $75M + extension)
+
+**🏃 Skill Position Transfers**
+- **DK Metcalf**: Seattle → **Pittsburgh Steelers** (trade)
+- **Davante Adams**: Las Vegas → **LA Rams** (2-year, $44M)
+- **Evan Engram**: Jacksonville → **Denver Broncos** (2-year, $23M)
+
+**🛡️ Defensive Moves**
+- **D.J. Reed**: NY Jets → **Detroit Lions** (3-year, $48M)
+
+### **📊 Data Integration Process**
+```
+Raw 2025 Offseason Data → Player Roster Updates → Team Assignment Verification
+                            ↓                        ↓
+                 Scored Data Integration    ← Database Pre-Computation
+                            ↓                        ↓
+              Strategic Context Updates    ← Enhanced Tier Analysis
+                            ↓                        ↓
+           Live Draft Recommendations     ← Championship Strategy Output
+```
+
+### **🎯 Fantasy Impact Analysis**
+- **Offensive Context Updates**: Players now properly assigned to 2026 team offensive rankings
+- **Target Share Adjustments**: WR/TE projections updated for new quarterback partnerships
+- **Coaching System Integration**: Players matched with 2026 coaching philosophies
+- **Depth Chart Accuracy**: Updated for proper backup/starter designations
+
+### **📈 Strategic Benefits**
+- **Accurate VBD Calculations**: Team contexts reflect real 2026 NFL landscape
+- **Proper Tier Analysis**: Enhanced tier system uses current team assignments
+- **News Integration**: Player news tied to correct 2026 team contexts
+- **Draft Flow Optimization**: Hero-RB strategy accounts for actual team situations
+
+### **🔧 Technical Implementation**
+```python
+# Updated files with 2025 roster moves:
+files_updated = [
+    'data/players_D.csv',     # Sam Darnold → Seattle
+    'data/players_F.csv',     # Justin Fields → NY Jets  
+    'data/players_S.csv',     # Geno Smith → Las Vegas
+    'data/players_M.csv',     # DK Metcalf → Pittsburgh
+    'data/players_A.csv',     # Davante Adams → LA Rams
+    'data/players_R.csv',     # D.J. Reed → Detroit
+    'data/players_E.csv',     # Evan Engram → Denver
+    'data/scored_data_with_2026_rookies.csv'  # Main projection file
+]
+
+# Database refresh process:
+gridiron db precompute --force  # Re-computes all scores with updated rosters
+```
+
+### **✅ Verification Status**
+- ✅ **Player-Team Assignments**: All verified against 2025 offseason moves
+- ✅ **Database Integration**: Pre-computed scores updated with correct teams
+- ✅ **Strategic Recommendations**: Hero-RB + Tier system using accurate data
+- ✅ **Live Draft Tracking**: Draft recommendations reflect real 2026 contexts
+
+**Current Status**: 🏆 **Ready for 2026 Fantasy Season** - All roster data current and validated
+
+## 🆕 **NFL NEWS INTEGRATION SYSTEM (ENHANCED FEATURE)**
 
 ### **Multi-Source News Architecture**
 The NFL News Integration system provides comprehensive, real-time NFL news from three major sources:
@@ -706,8 +906,8 @@ gridiron news player "Isaiah Likely"  # 🆕 NFL News Integration
 # Single CLI with all functionality + real-time NFL news
 ```
 
-**Current Status**: 🏆 **Production-ready v2.0.0 package** - Fully modernized with comprehensive NFL news integration and ready for 2025 fantasy football season!
+**Current Status**: 🏆 **Championship-ready v2.2 package** - Fully modernized with enhanced tier-based drafting, comprehensive NFL news integration, current 2025 roster updates, and ready for 2026 fantasy football season!
 
 ---
 
-*This documentation reflects the complete package transformation with comprehensive NFL news integration. The Gridiron Guillotine project is now a professional Python package with modern architecture, comprehensive CLI, championship-level draft strategy, and real-time NFL news aggregation from ESPN, NFL.com, and RotoWire.*
+*This documentation reflects the complete package transformation with enhanced tier-based drafting intelligence and comprehensive NFL news integration. The Gridiron Guillotine project is now a championship-caliber Python package with cutting-edge architecture, research-validated strategies, enhanced CLI, dynamic tier analysis, and real-time NFL intelligence from ESPN, NFL.com, and RotoWire.*

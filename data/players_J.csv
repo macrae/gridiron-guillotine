@@ -7,8 +7,8 @@ Player,Pos,Team,College
 "Jackson, Donte",DB,Pittsburgh,Louisiana State
 "Jackson, Drake",DL,San Francisco,Southern California
 "Jackson, Eddie",DB,Baltimore,Alabama
-"Jackson, Jalen",RB,Jacksonville,Villanova
 "Jackson, JaQuae",WR,New England,Rutgers
+"Jackson, Jalen",RB,Jacksonville,Villanova
 "Jackson, Jermaine",WR,New Orleans,Idaho
 "Jackson, Jha'Quan",WR,Tennessee,Tulane
 "Jackson, John",WR,Chicago,Nevada
@@ -34,8 +34,8 @@ Player,Pos,Team,College
 "Jacobson, Michael",TE,New Orleans,Iowa State
 "Jaimes, Brenden",OG,LA Chargers,Nebraska
 "James, Andre",C,Las Vegas,UCLA
-"James, Derwin",DB,LA Chargers,Florida State
 "James, DJ",DB,Seattle,Auburn
+"James, Derwin",DB,LA Chargers,Florida State
 "James, Ty",WR,Minnesota,Mercer
 "Jamison, D'Shawn",DB,Carolina,Texas
 "Janke, Jadon",WR,Houston,South Dakota State
@@ -47,6 +47,7 @@ Player,Pos,Team,College
 "Jean-Baptiste, Javontae",DE,Washington,Notre Dame
 "Jean-Baptiste, Jeremiah",LB,LA Chargers,Mississippi
 "Jean-Charles, Shemar",DB,New Orleans,Appalachian State
+"Jeanty, Ashton",RB,Las Vegas,Boise State
 "Jeffcoat, Trajan",DE,New Orleans,Arkansas
 "Jefferson, Jermar",RB,Detroit,Oregon State
 "Jefferson, Jordan",DT,Jacksonville,Louisiana State
@@ -77,8 +78,8 @@ Player,Pos,Team,College
 "Jobe, Josh",DB,Philadelphia,Alabama
 "Johanning, Jacob",OG,Las Vegas,Furman
 "Johnson, Alex",DB,NY Giants,UCLA
-"Johnson, Anthony",DB,Green Bay,Iowa State
 "Johnson, Anthony",DB,Atlanta,Virginia
+"Johnson, Anthony",DB,Green Bay,Iowa State
 "Johnson, Antonio",DB,Jacksonville,Texas A&M
 "Johnson, Austin",DT,Buffalo,Penn State
 "Johnson, Brandon",WR,Denver,Central Florida
@@ -149,8 +150,8 @@ Player,Pos,Team,College
 "Jones, Chris",DT,Kansas City,Mississippi State
 "Jones, Christian",OT,Arizona,Texas
 "Jones, D.J.",DT,Denver,Mississippi
-"Jones, Daniel",QB,NY Giants,Duke
 "Jones, DaQuan",DT,Buffalo,Penn State
+"Jones, Daniel",QB,NY Giants,Duke
 "Jones, Dawand",OT,Cleveland,Ohio State
 "Jones, Deion",LB,Buffalo,Louisiana State
 "Jones, Dre'Mont",DE,Seattle,Ohio State
@@ -194,6 +195,7 @@ Player,Pos,Team,College
 "Joseph, Kelvin",DB,Kansas City,Kentucky
 "Joseph, Kerby",DB,Detroit,Illinois
 "Joseph, Sebastian",DT,Tennessee,Rutgers
+"Judkins, Quinshon",RB,Cleveland,Ohio State
 "Judon, Matt",LB,New England,Grand Valley State
 "Jules, P.J.",DB,Cincinnati,Southern Illinois
 "Junior, Gregory",DB,Jacksonville,Ouachita Baptist

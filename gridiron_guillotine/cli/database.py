@@ -645,5 +645,66 @@ def cleanup(days: int):
         click.echo(f"❌ Error cleaning up news: {e}")
 
 
+@database_cli.command()
+@click.option('--force', '-f', is_flag=True, help='Force regeneration of weighted projections')
+def update_weighted(force: bool):
+    """Update database with weighted multi-year projections"""
+    from ..core.config import get_config
+    
+    try:
+        click.echo("🔄 Updating database with weighted multi-year projections...")
+        
+        from ..data.weighted_calculator import run_weighted_calculation
+        from ..data.database import PlayerDatabase
+        import pandas as pd
+        from pathlib import Path
+        
+        # Run weighted calculation
+        if force:
+            click.echo("   Recalculating weighted projections...")
+            success = run_weighted_calculation()
+            if not success:
+                click.echo("❌ Failed to generate weighted projections")
+                return
+        
+        # Load weighted projections
+        config = get_config()
+        weighted_file = config.data_dir / "weighted_projections_2026.csv"
+        
+        if not weighted_file.exists():
+            click.echo("   No weighted projections found, generating...")
+            success = run_weighted_calculation()
+            if not success:
+                click.echo("❌ Failed to generate weighted projections")
+                return
+        
+        # Load projections
+        projections = pd.read_csv(weighted_file)
+        click.echo(f"   Loaded {len(projections)} weighted projections")
+        
+        # Update database by regenerating with precomputed scores
+        click.echo("   Updating database with new scores...")
+        
+        # Use precompute to recalculate with updated data
+        precomputer = PlayerPrecomputer()
+        results = precomputer.precompute_all_players([1, 6, 12], force_recompute=True)
+        
+        click.echo(f"✅ Updated database with weighted projections")
+        click.echo(f"   Players updated: {results['players_updated']}")
+        click.echo(f"   Players skipped: {results['players_skipped']}")
+        
+        # Show sample results
+        db = PlayerDatabase()
+        top_players = db.get_top_players(limit=5)
+        if top_players:
+            click.echo("\n🏆 Top 5 Players (Updated Projections):")
+            click.echo("-" * 50)
+            for i, player in enumerate(top_players, 1):
+                click.echo(f"{i}. {player.name} ({player.position.value}) - {player.adjusted_value:.1f} score")
+        
+    except Exception as e:
+        click.echo(f"❌ Error updating weighted projections: {e}")
+
+
 if __name__ == '__main__':
     database_cli()

@@ -57,12 +57,13 @@ class DataLoader:
 class PlayerDataLoader(DataLoader):
     """Specialized loader for player data"""
     
-    def load_scored_data(self, include_rookies: bool = True) -> pd.DataFrame:
+    def load_scored_data(self, include_rookies: bool = True, use_weighted: bool = True) -> pd.DataFrame:
         """
-        Load main player scoring data
+        Load main player scoring data with optional weighted projections
         
         Args:
             include_rookies: Whether to load data with 2026 rookies
+            use_weighted: Whether to incorporate weighted multi-year projections
             
         Returns:
             DataFrame with player projections and VBD scores
@@ -76,6 +77,10 @@ class PlayerDataLoader(DataLoader):
             df = self.load_csv(filename)
             df = self._standardize_player_data(df)
             
+            # Try to enhance with weighted projections
+            if use_weighted:
+                df = self._enhance_with_weighted_projections(df)
+            
             logger.info(f"Loaded {len(df)} players from {filename}")
             return df
             
@@ -83,10 +88,55 @@ class PlayerDataLoader(DataLoader):
             logger.warning(f"{filename} not found, falling back to scored_data.csv")
             df = self.load_csv("scored_data.csv")
             df = self._standardize_player_data(df)
+            
+            # Try to enhance with weighted projections
+            if use_weighted:
+                df = self._enhance_with_weighted_projections(df)
+            
+            return df
+    
+    def _enhance_with_weighted_projections(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Enhance player data with weighted multi-year projections if available"""
+        try:
+            weighted_file = self.config.data_dir / "weighted_projections_2026.csv"
+            if not weighted_file.exists():
+                logger.debug("No weighted projections file found, using original data")
+                return df
+            
+            weighted_df = pd.read_csv(weighted_file)
+            logger.info(f"Found {len(weighted_df)} weighted projections")
+            
+            # Clean player names for matching
+            weighted_df['clean_name'] = weighted_df['Player'].str.extract(r'([^A-Z\.]*(?:[A-Z]\.[A-Z\.]*)*)')[0].str.strip()
+            df['clean_name'] = df['name'].str.strip()
+            
+            # Merge weighted projections
+            enhanced_df = df.merge(
+                weighted_df[['clean_name', 'ProjectedPoints', 'SeasonsPlayed', 'TotalWeight']],
+                on='clean_name',
+                how='left',
+                suffixes=('', '_weighted')
+            )
+            
+            # Update projected points where weighted data is available and has sufficient data
+            mask = (enhanced_df['ProjectedPoints'].notna()) & (enhanced_df['TotalWeight'] >= 0.5)
+            matches = mask.sum()
+            
+            if matches > 0:
+                enhanced_df.loc[mask, 'projected_points'] = enhanced_df.loc[mask, 'ProjectedPoints']
+                logger.info(f"Enhanced {matches} players with weighted projections")
+            
+            # Clean up temporary columns
+            enhanced_df = enhanced_df.drop(columns=['clean_name', 'ProjectedPoints', 'SeasonsPlayed', 'TotalWeight'], errors='ignore')
+            
+            return enhanced_df
+            
+        except Exception as e:
+            logger.warning(f"Could not enhance with weighted projections: {e}")
             return df
     
     def _standardize_player_data(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Standardize player data format"""
+        """Standardize player data format and fix rookie season-total projections"""
         # Handle different column name formats
         column_mapping = {}
         
@@ -175,17 +225,16 @@ class PlayerDataLoader(DataLoader):
         These are college players entering their first NFL season
         """
         # Check if we have game count columns (only in data with rookies)
-        game_count_cols = ['game_count_2021', 'game_count_2022', 'game_count_2023', 'game_count_2024', 'game_count_2025']
+        game_count_cols = ['game_count_2021', 'game_count_2022', 'game_count_2023', 'game_count_2024']
         
         if all(col in df.columns for col in game_count_cols):
             # Mark players with 0 games in all previous years as rookies
-            # Use <= 0 to handle floating point precision issues
+            # Use <= 0 to handle floating point precision issues and NaN values
             rookie_mask = (
-                (df['game_count_2021'] <= 0) & 
-                (df['game_count_2022'] <= 0) & 
-                (df['game_count_2023'] <= 0) & 
-                (df['game_count_2024'] <= 0) & 
-                (df['game_count_2025'] <= 0)
+                (df['game_count_2021'].fillna(0) <= 0) & 
+                (df['game_count_2022'].fillna(0) <= 0) & 
+                (df['game_count_2023'].fillna(0) <= 0) & 
+                (df['game_count_2024'].fillna(0) <= 0)
             )
             
             df.loc[rookie_mask, 'rookie'] = True
