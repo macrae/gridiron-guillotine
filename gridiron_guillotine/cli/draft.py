@@ -201,3 +201,50 @@ def test_hero_phases(ctx, position: int):
         if ctx.obj.get('verbose'):
             import traceback
             traceback.print_exc()
+
+
+@draft_cli.command('mock')
+@click.option('--position', '-p', type=int, required=True, help='Your draft position (1-12)')
+@click.option('--teams', type=int, default=12, help='Number of teams in league')
+@click.option('--rounds', type=int, default=15, help='Number of rounds to draft')
+@click.pass_context
+def mock_draft(ctx, position: int, teams: int, rounds: int):
+    """Start an interactive mock draft to test strategy"""
+    from ..live.mock_draft import MockDraftSimulator
+    from ..core.config import get_config
+    
+    # Validate inputs
+    if not (1 <= position <= teams):
+        click.echo(f"❌ Invalid position. Must be between 1 and {teams}")
+        return
+    
+    if not (8 <= teams <= 16):
+        click.echo(f"❌ Invalid team count. Must be between 8 and 16")
+        return
+    
+    if not (10 <= rounds <= 20):
+        click.echo(f"❌ Invalid round count. Must be between 10 and 20")
+        return
+    
+    try:
+        config = get_config()
+        simulator = MockDraftSimulator(config)
+        
+        click.echo(f"🚀 Starting interactive mock draft...")
+        click.echo(f"📊 Make sure you have run 'gridiron db precompute' first!")
+        
+        # Start the mock draft
+        simulator.start_mock_draft(
+            user_position=position,
+            num_teams=teams, 
+            num_rounds=rounds
+        )
+        
+    except KeyboardInterrupt:
+        click.echo(f"\\n\\n⏹️  Mock draft interrupted by user")
+        
+    except Exception as e:
+        click.echo(f"❌ Error: {e}")
+        if ctx.obj and ctx.obj.get('verbose'):
+            import traceback
+            traceback.print_exc()

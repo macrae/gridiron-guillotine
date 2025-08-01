@@ -71,6 +71,10 @@ gridiron live --position 6
 # Run draft simulation
 gridiron draft simulate --position 6 --rounds 5
 
+# 🎮 MOCK DRAFT TESTING (NEW!)
+# Interactive mock draft with AI opponents and contingency controls
+gridiron draft mock --position 6
+
 # Check data status and integrity
 gridiron data status
 
@@ -875,6 +879,119 @@ mypy gridiron_guillotine/
 # 3. CLI commands → gridiron_guillotine/cli/
 # 4. Tests → tests/
 ```
+
+---
+
+## 🧪 **Mock Draft System & Strategy Testing (NEW v2.2)**
+
+### **🎮 Interactive Mock Draft Simulator**
+The comprehensive mock draft system allows you to test the Hero-RB strategy against AI opponents in realistic draft scenarios.
+
+```bash
+# Run interactive mock draft with contingency controls
+gridiron draft mock --position 6
+```
+
+**Features:**
+- **12 AI opponents** with diverse strategies (rb_heavy, wr_heavy, zero_rb, late_qb, etc.)
+- **Real-time strategy recommendations** with enhanced display
+- **Manual override capabilities** for unexpected situations
+- **NFL team information** and news impact arrows (📈📉➖)
+- **Comprehensive final roster analysis** with VBD scoring
+
+### **🎯 Contingency Controls for Live Draft Scenarios**
+
+The mock draft system includes **professional-grade contingency controls** for manual override when needed:
+
+#### **Position Filtering Commands**
+Type position codes during your pick to filter recommendations:
+- `qb` - Show only quarterbacks
+- `rb` - Show only running backs  
+- `wr` - Show only wide receivers
+- `te` - Show only tight ends
+- `k` - Show only kickers
+- `def` - Show only team defenses
+
+#### **Team Filtering Commands**  
+Type 3-letter NFL team codes for team stacking strategies:
+- `buf` - Buffalo Bills players
+- `kc` - Kansas City Chiefs players
+- `sf` - San Francisco 49ers players
+- *(All 32 NFL teams supported)*
+
+#### **Emergency Override Scenarios**
+- **Algorithm shows wrong position**: Filter by position (`rb`, `wr`) then select
+- **Team stacking strategy**: Filter by team (`kc`, `buf`) for targeted selections
+- **Handcuff hunting**: Use position filter + search combination
+- **Late round pivots**: Quick access to K/DEF when needed
+
+### **🔧 Strategy Fixes & Improvements (v2.2)**
+
+Based on extensive testing, the Hero-RB strategy has been **completely overhauled** to eliminate critical flaws:
+
+#### **Problems Fixed**
+- ❌ **Early QB trap** - No more Round 4 QB disasters
+- ❌ **Missing RB depth** - Strategy now accumulates RB depth properly  
+- ❌ **Roster imbalances** - No more 6 RBs or missing positions
+- ❌ **Negative VBD picks** - Value threshold protection implemented
+
+#### **Major Strategy Corrections**
+```python
+# QB Penalty System (avoid early QB trap)
+if current_round <= 8 and qb_count == 0:
+    position_boost = 0.7  # PENALTY for early QB drafting
+
+# Enhanced RB Depth Phase (counter RB hoarders)  
+elif hero_phase == HeroRBPhase.DEPTH_PHASE:
+    position_boost = 1.6  # ENHANCED boost for RB depth
+
+# 2nd QB Block (prioritize RB depth)
+elif qb_count >= 1 and current_round <= 13:
+    return False  # Block 2nd QB until round 14+
+```
+
+#### **Round-by-Round Strategy Logic (FIXED)**
+- **Rounds 1-2**: Hero RB acquisition (elite RBs only)
+- **Rounds 3-6**: WR/TE pivot phase (AVOID QB trap)  
+- **Rounds 7-10**: **RB DEPTH accumulation** (counter hoarders)
+- **Rounds 8+**: QB consideration (only 1 needed)
+- **Rounds 14+**: K/DEF + backup positions
+
+#### **Position Limits (REALISTIC)**
+```python
+position_limits = {
+    Position.QB: 2,   # Starter + backup
+    Position.RB: 4,   # Hero + depth (critical for strategy)
+    Position.WR: 5,   # 2-3 starters + flex/bench  
+    Position.TE: 2,   # Starter + backup
+    Position.K: 1,    # Starter only
+    Position.DEF: 1   # Starter only
+}
+```
+
+### **📊 Expected Draft Results (After Fixes)**
+
+**Championship-Caliber Roster:**
+```
+QB: 1-2 players (elite QB + backup)
+RB: 3-4 players (Hero RB + quality depth)  
+WR: 4-5 players (2-3 starters + flex options)
+TE: 1-2 players (starter + backup)
+K: 1 player (round 14-15)
+DEF: 1 player (round 14-15)
+
+Target Total VBD: 20-30+ (strong positive value)
+Hero RB Strategy: ✅ Successfully executed
+```
+
+### **🎯 Testing Integration Directory**
+
+All mock draft testing files have been organized in `tests/integration/`:
+- `test_corrected_hero_rb.py` - Strategy validation tests
+- `test_contingency_controls.py` - Manual override testing  
+- `demo_mock_draft.py` - Full draft simulation examples
+- `strategy_fixes.py` - Strategy correction implementations
+- `fix_defense_data.py` - Database DEF player fixes
 
 ---
 

@@ -26,22 +26,34 @@ def test_position_strategies():
         print("-" * 50)
         
         # Initialize strategy for this position  
-        strategy = ChampionshipDraftStrategy(config)
+        strategy = ChampionshipDraftStrategy(draft_position=position, config=config)
         
-        # Show position category and guidance
-        category = strategy.get_draft_position_category()
-        guidance = strategy.get_position_specific_guidance(current_round=1)
+        # Show position category and basic info
+        if position <= 3:
+            category = "EARLY"
+            strategy_desc = "Elite talent focus, avoid reaches"
+        elif position <= 8:
+            category = "MIDDLE"
+            strategy_desc = "Best player available flexibility"
+        else:
+            category = "LATE"
+            strategy_desc = "Back-to-back picks advantage"
         
-        print(f"Position Category: {category.upper()}")
-        print(f"Priority: {guidance['priority']}")
-        print(f"Strategy: {guidance['strategy']}")
+        print(f"Position Category: {category}")
+        print(f"Strategy: {strategy_desc}")
         
-        if 'targets' in guidance:
-            print(f"Research Targets: {guidance['targets']}")
-        if 'avoid' in guidance:
-            print(f"Avoid: {guidance['avoid']}")
-        if 'advantage' in guidance:
-            print(f"Advantage: {guidance['advantage']}")
+        # Test draft position analyzer
+        from gridiron_guillotine.core.models import Player, Position
+        mock_player = Player(
+            name="Test Player",
+            position=Position.RB,
+            team="BUF",
+            projected_points=15.0
+        )
+        draft_adj = strategy.position_analyzer.calculate_position_adjustment(
+            mock_player, position, 1
+        )
+        print(f"Position Adjustment: {draft_adj:.2f}")
         
         # Get Round 1 recommendations
         print(f"\nRound 1 Top 8 Recommendations:")
@@ -67,18 +79,30 @@ def test_position_strategies():
     }
     
     for position in [2, 6, 11]:
-        strategy = ChampionshipDraftStrategy(draft_position=position, total_teams=12)
-        print(f"\nDraft Position {position} ({strategy.get_draft_position_category().upper()}):")
+        strategy = ChampionshipDraftStrategy(draft_position=position, config=config)
+        
+        if position <= 3:
+            category = "EARLY"
+        elif position <= 8:
+            category = "MIDDLE"
+        else:
+            category = "LATE"
+            
+        print(f"\nDraft Position {position} ({category}):")
         
         for player_name, player_pos in test_players.items():
             # Create mock player for testing
-            mock_player = pd.Series({
-                'name': player_name,
-                'position': player_pos,
-                'projected_points': 20.0
-            })
+            from gridiron_guillotine.core.models import Player, Position
+            mock_player = Player(
+                name=player_name,
+                position=Position(player_pos),
+                team="BUF",
+                projected_points=20.0
+            )
             
-            adjustment = strategy.apply_position_specific_adjustments(mock_player, current_round=1)
+            adjustment = strategy.position_analyzer.calculate_position_adjustment(
+                mock_player, position, 1
+            )
             
             if adjustment > 0:
                 print(f"  {player_name:25s} (+{adjustment:.1f}) ⬆️ BOOSTED")
@@ -87,28 +111,25 @@ def test_position_strategies():
             else:
                 print(f"  {player_name:25s} (±0.0)  ➡️ NEUTRAL")
     
-    # Test round-by-round guidance changes
-    print(f"\n⏰ ROUND-BY-ROUND GUIDANCE TEST (Position 11)")
+    # Test round-by-round priority changes
+    print(f"\n⏰ ROUND-BY-ROUND PRIORITY TEST (Position 11)")
     print("-" * 50)
     
-    late_strategy = ChampionshipDraftStrategy(draft_position=11, total_teams=12)
+    late_strategy = ChampionshipDraftStrategy(draft_position=11, config=config)
     
     for round_num in [1, 2, 3, 6, 10]:
-        guidance = late_strategy.get_position_specific_guidance(round_num)
-        print(f"\nRound {round_num}:")
-        print(f"  Priority: {guidance.get('priority', 'N/A')}")
-        print(f"  Strategy: {guidance.get('strategy', 'N/A')}")
+        priorities = late_strategy._get_priority_positions(round_num)
+        hero_phase = late_strategy._determine_hero_rb_phase(round_num)
         
-        if 'specific_targets' in guidance:
-            print(f"  Targets: {guidance['specific_targets']}")
-        if 'example' in guidance:
-            print(f"  Example: {guidance['example']}")
+        print(f"\nRound {round_num}:")
+        print(f"  Hero Phase: {hero_phase.value}")
+        print(f"  Priority Positions: {[pos.value for pos in priorities[:3]]}")
     
     print(f"\n✅ POSITION STRATEGY TESTING COMPLETE!")
-    print("🎯 Research-validated strategies by draft position:")
-    print("  📍 Early (1-3): Elite WR focus, avoid reaches")
-    print("  📍 Middle (4-8): BPA flexibility, optimal value")  
-    print("  📍 Late (9-12): PPR pairs, back-to-back advantage")
+    print("🎯 Hero-RB strategy adapts by draft position:")
+    print("  📍 Early (1-3): Aggressive hero RB pursuit")
+    print("  📍 Middle (4-8): Balanced hero RB + WR flexibility")  
+    print("  📍 Late (9-12): Back-to-back advantage for depth")
 
 if __name__ == "__main__":
     test_position_strategies()

@@ -291,8 +291,8 @@ class ChampionshipDraftStrategy:
             elif hero_phase == HeroRBPhase.PIVOT_PHASE:
                 # Research key: AVOID RBs in rounds 3-6
                 position_boost = 0.4  # Heavy penalty during pivot
-            else:  # DEPTH_PHASE
-                position_boost = 1.4  # Boost for RB depth accumulation
+            else:  # DEPTH_PHASE - CRITICAL for competitive leagues
+                position_boost = 1.6  # ENHANCED boost for RB depth (counter RB hoarders)
                 
         elif position == Position.WR:
             if hero_phase == HeroRBPhase.HERO_ACQUISITION:
@@ -301,6 +301,24 @@ class ChampionshipDraftStrategy:
                 position_boost = 1.3  # Major boost during pivot phase
             else:  # DEPTH_PHASE
                 position_boost = 1.1  # Moderate boost for WR depth
+                
+        elif position == Position.QB:
+            # QB urgency logic - but not too early (avoid QB trap)
+            my_roster = self.get_my_roster()  # Get current roster
+            my_qb_count = len(my_roster.get(Position.QB, []))
+            if my_qb_count == 0:
+                if current_round >= 12:
+                    position_boost = 3.0  # MASSIVE urgency boost very late
+                elif current_round >= 10:
+                    position_boost = 2.0  # High urgency boost
+                elif current_round >= 8:
+                    position_boost = 1.3  # Moderate urgency boost
+                else:
+                    position_boost = 0.7  # PENALTY for drafting QB too early
+            elif my_qb_count == 1 and current_round >= 14:
+                position_boost = 1.1  # Slight boost for backup QB very late
+            else:
+                position_boost = 0.5  # Heavy penalty for 2nd QB early
                 
         elif position in [Position.K, Position.DEF]:
             # Always penalize K/DEF early (research-validated)
@@ -411,11 +429,11 @@ class ChampionshipDraftStrategy:
         priority_positions = self._get_priority_positions(current_round)
         my_roster = self.get_my_roster()
         
-        # Filter by priority and roster limits
+        # Filter by priority and intelligent roster limits
         strategy_players = available_players[
             (available_players['position'].isin([pos.value for pos in priority_positions])) &
-            (available_players.apply(lambda x: len(my_roster.get(Position(x['position']), [])) < 
-                                   self.league_settings.position_limits.get(Position(x['position']), 1), axis=1))
+            (available_players.apply(lambda x: self._should_draft_position(Position(x['position']), current_round), axis=1)) &
+            (available_players['vbd'] > -1.0)  # Avoid terrible negative VBD players
         ]
         
         # If not enough players, expand criteria
@@ -469,27 +487,90 @@ class ChampionshipDraftStrategy:
         return tier_messages
     
     def _get_priority_positions(self, current_round: int) -> List[Position]:
-        """Get priority positions for a given round"""
+        """Get priority positions with intelligent roster need logic"""
         my_roster = self.get_my_roster()
+        priority = []
         
-        if current_round <= 5:
-            # Early rounds: Focus on RB/WR, elite TE if available  
-            priority = [Position.RB, Position.WR]
-            # Add TE if elite options available (would need tier analysis)
-            priority.append(Position.TE)
-        elif current_round <= 9:
-            # Middle rounds: Add QB if needed, otherwise RB/WR depth
-            priority = [Position.RB, Position.WR]
-            if len(my_roster.get(Position.QB, [])) == 0:
-                priority.insert(0, Position.QB)  # Prioritize QB if none drafted
-        elif current_round <= 12:
-            # Late-middle: All positions except K/DEF
-            priority = [Position.QB, Position.RB, Position.WR, Position.TE]
+        # Calculate current position counts
+        qb_count = len(my_roster.get(Position.QB, []))
+        rb_count = len(my_roster.get(Position.RB, []))
+        wr_count = len(my_roster.get(Position.WR, []))
+        te_count = len(my_roster.get(Position.TE, []))
+        k_count = len(my_roster.get(Position.K, []))
+        def_count = len(my_roster.get(Position.DEF, []))
+        
+        if current_round <= 3:
+            # Early rounds: Hero-RB + elite skill positions
+            if not self.draft_state.hero_rb_acquired and rb_count == 0:
+                priority = [Position.RB, Position.WR, Position.TE]
+            else:
+                priority = [Position.WR, Position.RB, Position.TE]
+                
+        elif current_round <= 6:
+            # Pivot phase: WR/TE focus, AVOID QB early, light RB consideration
+            priority = [Position.WR, Position.TE, Position.RB]
+            # NO QB until round 8+ to avoid early QB trap
+                
+        elif current_round <= 10:
+            # RB DEPTH PHASE + QB need - TRUE Hero-RB strategy!
+            if qb_count == 0 and current_round >= 8:
+                priority = [Position.QB, Position.RB, Position.WR, Position.TE]  # QB priority but RB still important
+            elif te_count == 0:
+                priority = [Position.RB, Position.TE, Position.WR]  # RB depth + TE need
+            else:
+                priority = [Position.RB, Position.WR, Position.TE]  # FOCUS ON RB DEPTH
+                
+        elif current_round <= 13:
+            # Late rounds: RB depth priority, minimal QB consideration
+            remaining_needs = []
+            if qb_count == 0: remaining_needs.append(Position.QB)  # Must have 1 QB
+            if te_count < 2: remaining_needs.append(Position.TE) 
+            if rb_count < 4: remaining_needs.append(Position.RB)  # RB depth critical
+            if wr_count < 4: remaining_needs.append(Position.WR)
+            
+            # NO 2nd QB until very late - prioritize RB depth
+            priority = remaining_needs + [Position.RB, Position.WR, Position.TE]
+            
         else:
-            # Final rounds: K/DEF only
-            priority = [Position.K, Position.DEF]
-        
+            # Final rounds: K/DEF MUST be prioritized
+            if k_count == 0 and def_count == 0:
+                priority = [Position.K, Position.DEF]  # Both needed
+            elif k_count == 0:
+                priority = [Position.K]  # Only K needed
+            elif def_count == 0:
+                priority = [Position.DEF]  # Only DEF needed  
+            else:
+                # Both filled - draft backup positions or best available
+                priority = [Position.QB, Position.TE, Position.RB, Position.WR]
+            
         return priority
+    
+    def _should_draft_position(self, position: Position, current_round: int) -> bool:
+        """Check if we should draft this position based on roster needs and limits"""
+        my_roster = self.get_my_roster()
+        current_count = len(my_roster.get(position, []))
+        position_limit = self.league_settings.position_limits.get(position, 1)
+        
+        # Hard caps to prevent roster disasters
+        if position == Position.RB and current_count >= 4:
+            return False  # Max 4 RBs for Hero-RB strategy
+        elif position == Position.WR and current_count >= 5:
+            return False  # Max 5 WRs
+        elif position == Position.QB and current_count >= 1 and current_round <= 13:
+            return False  # Only 1 QB until round 14+ - RB depth more important
+        elif position == Position.QB and current_count >= 2:
+            return False  # Absolute max 2 QBs
+        elif position == Position.TE and current_count >= 2:
+            return False  # Max 2 TEs
+        elif position in [Position.K, Position.DEF] and current_count >= 1:
+            return False  # Max 1 K/DEF
+        
+        # Critical needs override - must draft QB by round 10
+        if position == Position.QB and current_count == 0 and current_round >= 8:
+            return True  # MUST draft QB
+        
+        # Otherwise use standard limit
+        return current_count < position_limit
     
     def simulate_pick(self, player_name: str, team_number: Optional[int] = None):
         """Simulate a draft pick and update Hero-RB state"""

@@ -97,13 +97,14 @@ class LeagueSettings:
     
     def __post_init__(self):
         if self.position_limits is None:
+            # Realistic fantasy football roster limits
             self.position_limits = {
-                Position.QB: 1,
-                Position.RB: 2,
-                Position.WR: 2, 
-                Position.TE: 1,
-                Position.K: 1,
-                Position.DEF: 1
+                Position.QB: 2,   # Starter + backup
+                Position.RB: 4,   # 2 starters + flex/bench (Hero-RB strategy)
+                Position.WR: 5,   # 2-3 starters + flex/bench
+                Position.TE: 2,   # Starter + backup  
+                Position.K: 1,    # Starter only
+                Position.DEF: 1   # Starter only
             }
         
         if self.scoring is None:

@@ -11,7 +11,10 @@
       "Bash(grep:*)",
       "WebFetch(domain:www.pro-football-reference.com)",
       "Bash(gridiron data:*)",
-      "Bash(gridiron db:*)"
+      "Bash(gridiron db:*)",
+      "Bash(timeout 10s gridiron draft mock:*)",
+      "Bash(gridiron draft mock:*)",
+      "Bash(pytest:*)"
     ],
     "deny": []
   }

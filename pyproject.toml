@@ -135,6 +135,7 @@ ignore_missing_imports = true
 minversion = "7.0"
 addopts = "-ra -q --strict-markers"
 testpaths = ["tests"]
+pythonpath = ["."]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
@@ -142,6 +143,9 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests",
     "unit: marks tests as unit tests",
+    "strategy: marks tests related to draft strategy",
+    "database: marks tests related to database operations",
+    "mock_draft: marks tests related to mock draft functionality",
 ]
 
 # Coverage configuration

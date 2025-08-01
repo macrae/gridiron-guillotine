@@ -3,11 +3,14 @@ Test Hero-RB Phase Transitions
 Shows how strategy changes as rounds progress
 """
 
+import pytest
 import pandas as pd
 from gridiron_guillotine.core.strategy import ChampionshipDraftStrategy
 from gridiron_guillotine.data.loaders import PlayerDataLoader
 from gridiron_guillotine.core.config import get_config
 
+@pytest.mark.strategy
+@pytest.mark.unit
 def test_hero_rb_phases():
     """Test Hero-RB strategy phase transitions"""
     print("🏆 TESTING HERO-RB PHASE TRANSITIONS WITH ADVANCED METRICS")
@@ -18,8 +21,8 @@ def test_hero_rb_phases():
     loader = PlayerDataLoader(config)
     player_data = loader.load_scored_data()
     
-    # Initialize championship strategy
-    strategy = ChampionshipDraftStrategy(config)
+    # Initialize championship strategy with draft position
+    strategy = ChampionshipDraftStrategy(draft_position=6, config=config)
     
     # Test Round 1 (Hero Acquisition Phase)
     print("\n🎯 ROUND 1 - HERO ACQUISITION PHASE")
@@ -30,8 +33,8 @@ def test_hero_rb_phases():
     
     # Simulate McCaffrey being drafted
     strategy.simulate_pick("McCaffrey, Christian")
-    print(f"\n✅ Hero RB Status: {strategy.hero_rb_acquired}")
-    print(f"✅ Current Phase: {strategy.hero_rb_phase}")
+    print(f"\n✅ Hero RB Status: {strategy.draft_state.hero_rb_acquired}")
+    print(f"✅ Current Phase: {strategy.draft_state.hero_rb_phase}")
     
     # Test Round 3 (Pivot Phase)
     print(f"\n🔄 ROUND 3 - PIVOT PHASE (Avoid RBs!)")

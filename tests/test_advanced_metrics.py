@@ -18,8 +18,8 @@ def test_advanced_metrics():
     loader = PlayerDataLoader(config)
     player_data = loader.load_scored_data()
     
-    # Initialize championship strategy
-    strategy = ChampionshipDraftStrategy(config)
+    # Initialize championship strategy with draft position
+    strategy = ChampionshipDraftStrategy(draft_position=6, config=config)
     
     # Test 1: WOPR Calculation for WRs
     print("\n📊 WOPR TESTING (Wide Receivers)")
@@ -33,10 +33,12 @@ def test_advanced_metrics():
         wr_sample.loc[:, 'target_share'] = [25, 20, 18, 15, 12]  # Percentage
         wr_sample.loc[:, 'air_yards_share'] = [22, 18, 16, 14, 10]  # Percentage
         
-        wopr_scores = strategy.calculate_wopr(wr_sample)
+        # Use advanced metrics component
+        wr_with_metrics = strategy.advanced_metrics.calculate_for_dataframe(wr_sample)
         
-        for i, (idx, player) in enumerate(wr_sample.iterrows()):
-            print(f"{i+1}. {player['name']:25s} WOPR: {wopr_scores.iloc[i]:.3f}")
+        for i, (idx, player) in enumerate(wr_with_metrics.iterrows()):
+            wopr = player.get('wopr', 0.0)
+            print(f"{i+1}. {player['name']:25s} WOPR: {wopr:.3f}")
     
     # Test 2: Expected Fantasy Points
     print("\n🎯 EXPECTED FANTASY POINTS TESTING")
@@ -49,11 +51,11 @@ def test_advanced_metrics():
     sample_players.loc[:, 'air_yards_per_target'] = [15, 12, 8, 6, 4]
     sample_players.loc[:, 'goal_line_carries'] = [6, 4, 2, 0, 0]
     
-    expected_points = strategy.calculate_expected_fantasy_points(sample_players)
+    sample_with_metrics = strategy.advanced_metrics.calculate_for_dataframe(sample_players)
     
-    for i, (idx, player) in enumerate(sample_players.iterrows()):
-        base = player['projected_points']
-        expected = expected_points.iloc[i]
+    for i, (idx, player) in enumerate(sample_with_metrics.iterrows()):
+        base = player.get('projected_points', 0)
+        expected = player.get('expected_points', base)
         boost = expected - base
         print(f"{i+1}. {player['name']:25s} Base: {base:.1f} → Expected: {expected:.1f} (+{boost:.1f})")
     
@@ -69,11 +71,11 @@ def test_advanced_metrics():
                   'Carolina', 'New England', 'Denver', 'Tampa Bay', 'Seattle']
     context_test.loc[:, 'team'] = test_teams[:len(context_test)]
     
-    context_multipliers = strategy.calculate_offensive_context_multiplier(context_test)
+    context_with_metrics = strategy.advanced_metrics.calculate_for_dataframe(context_test)
     
-    for i, (idx, player) in enumerate(context_test.iterrows()):
-        team = player['team']
-        multiplier = context_multipliers.iloc[i]
+    for i, (idx, player) in enumerate(context_with_metrics.iterrows()):
+        team = player.get('team', 'Unknown')
+        multiplier = player.get('context_multiplier', 1.0)
         tier = "Elite" if multiplier > 1.0 else "Bottom" if multiplier < 1.0 else "Middle"
         print(f"{i+1}. {player['name']:25s} ({team:12s}) {multiplier:.2f}x [{tier}]")
     
@@ -114,7 +116,7 @@ def test_advanced_metrics():
     print("\nRound 3 (Pivot Phase):")
     phase3 = strategy._determine_hero_rb_phase(3)
     print(f"  Phase: {phase3}")
-    print(f"  Hero RB Acquired: {strategy.hero_rb_acquired}")
+    print(f"  Hero RB Acquired: {strategy.draft_state.hero_rb_acquired}")
     print(f"  All RBs penalized, WRs boosted")
     
     print("\nRound 8 (Depth Phase):")
