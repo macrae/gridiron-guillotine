@@ -6,3 +6,30 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# --- secrets (added 2026-08-17) ---
+nbs/oauth2.json
+oauth2.json
+*.oauth2.json
+.env
+.env.*
+secrets/
+
+# --- build artifacts / large binaries ---
+*.egg-info/
+data/gg.duckdb
+data/draft.sqlite
+data/enhanced_players.db
+data/raw/
+recordings/
+*.png
+*.duckdb
+*.sqlite
+
+# --- tooling ---
+.venv/
+node_modules/
+.pi/sessions/
+
+# --- archaeology, pending deletion (see PLAN.md "What gets deleted") ---
+attic/
