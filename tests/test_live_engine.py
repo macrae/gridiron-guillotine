@@ -327,3 +327,139 @@ def test_match_exact_and_fuzzy():
     assert names.match("JaMarr Chase", rows)["player_id"] == 1
     assert names.match("Christian McCaffery", rows)["player_id"] == 2   # misspelled
     assert names.match("Nobody Here", rows) is None
+
+
+# --------------------------------------------------------------------------
+# 7. Pick store -- undo, correct, and the anti-double-count constraints
+# --------------------------------------------------------------------------
+
+@pytest.fixture
+def store(tmp_path):
+    from gridiron.live.store import PickStore
+    return PickStore(tmp_path / "d.sqlite", num_teams=12)
+
+
+def test_append_assigns_snake_slots(store):
+    a = store.append(101)
+    b = store.append(102)
+    assert (a.overall, a.slot) == (1, 1)
+    assert (b.overall, b.slot) == (2, 2)
+    for _ in range(10):
+        store.append(None, observed_name="x")
+    turn = store.append(999)          # overall 13 -> round 2 starts at slot 12
+    assert (turn.overall, turn.round, turn.slot) == (13, 2, 12)
+
+
+def test_one_player_cannot_occupy_two_picks(store):
+    from gridiron.live.store import PickConflict
+    store.append(101)
+    with pytest.raises(PickConflict):
+        store.append(101)
+
+
+def test_undo_is_repeatable_to_empty(store):
+    for pid in (101, 102, 103):
+        store.append(pid)
+    assert store.count() == 3
+    while store.undo_last():
+        pass
+    assert store.count() == 0
+    assert store.undo_last() is None
+
+
+def test_undo_then_reenter_reuses_the_slot(store):
+    store.append(101)
+    store.append(102)
+    store.undo_last()
+    p = store.append(103)
+    assert p.overall == 2
+    assert store.drafted_ids() == {101, 103}
+
+
+def test_correct_does_not_shift_later_picks(store):
+    """Fixing pick 3 while sitting at pick 10 must not disturb 4-10."""
+    for pid in range(101, 111):
+        store.append(pid)
+    before = {p.overall: p.player_id for p in store.snapshot() if p.overall != 3}
+    store.correct(3, 999)
+    after = {p.overall: p.player_id for p in store.snapshot() if p.overall != 3}
+    assert before == after
+    assert store.conn.execute(
+        "SELECT player_id FROM picks WHERE overall=3").fetchone()["player_id"] == 999
+
+
+def test_correct_rejects_a_player_already_taken(store):
+    from gridiron.live.store import PickConflict
+    store.append(101)
+    store.append(102)
+    with pytest.raises(PickConflict):
+        store.correct(1, 102)
+
+
+def test_delete_shift_pulls_everything_back(store):
+    for pid in (101, 102, 103, 104):
+        store.append(pid)
+    store.delete_shift(2)
+    assert [(p.overall, p.player_id) for p in store.snapshot()] == [
+        (1, 101), (2, 103), (3, 104)]
+
+
+def test_yahoo_outranks_manual_at_the_same_slot(store):
+    store.append(101, overall=5, source="manual")
+    store.append(202, overall=5, source="yahoo")
+    row = store.conn.execute("SELECT * FROM picks WHERE overall=5").fetchone()
+    assert row["player_id"] == 202 and row["source"] == "yahoo"
+
+
+def test_manual_cannot_overwrite_yahoo(store):
+    from gridiron.live.store import PickConflict
+    store.append(202, overall=5, source="yahoo")
+    with pytest.raises(PickConflict):
+        store.append(101, overall=5, source="manual")
+
+
+def test_state_survives_reopen(tmp_path):
+    from gridiron.live.store import PickStore
+    path = tmp_path / "d.sqlite"
+    s1 = PickStore(path, num_teams=12)
+    s1.append(101); s1.append(102)
+    s1.close()
+    s2 = PickStore(path, num_teams=12)
+    assert s2.drafted_ids() == {101, 102}
+    assert s2.next_overall() == 3
+
+
+def test_next_overall_uses_max_not_count(store):
+    """A gap left by an out-of-order Yahoo pick must not rewind the clock."""
+    store.append(101, overall=1)
+    store.append(102, overall=7)
+    assert store.next_overall() == 8
+
+
+# --------------------------------------------------------------------------
+# 8. Type-ahead
+# --------------------------------------------------------------------------
+
+def _rows(*pairs):
+    return [{"name": n, "rank": r} for n, r in pairs]
+
+
+def test_search_shorthand_hits():
+    rows = _rows(("Christian McCaffrey", 4), ("Chase McLaughlin", 300),
+                 ("Amon-Ra St. Brown", 8), ("Jaxon Smith-Njigba", 7))
+    assert names.search("cmc", rows)[0]["name"] == "Christian McCaffrey"
+    assert names.search("arsb", rows)[0]["name"] == "Amon-Ra St. Brown"
+    assert names.search("jsn", rows)[0]["name"] == "Jaxon Smith-Njigba"
+
+
+def test_search_ranks_studs_above_nobodies():
+    """A weak-tier match on a stud beats a strong-tier match on a scrub."""
+    rows = _rows(("Ja'Marr Chase", 5), ("Chase Brown", 40), ("Chase McLaughlin", 300))
+    assert names.search("chase", rows)[0]["name"] == "Ja'Marr Chase"
+
+
+def test_is_decisive_accepts_clear_winners_and_asks_otherwise():
+    clear = names.search("cmc", _rows(("Christian McCaffrey", 4), ("Chase McLaughlin", 300)))
+    assert names.is_decisive(clear)
+    close = names.search("brown", _rows(("Chase Brown", 40), ("A.J. Brown", 45)))
+    assert not names.is_decisive(close)

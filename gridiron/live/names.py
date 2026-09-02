@@ -82,6 +82,79 @@ def load_aliases(path: Path) -> dict[str, str]:
     return out
 
 
+def build_keys(name: str) -> dict[str, str]:
+    """The five lookup keys for one player. Mirrored verbatim in the browser."""
+    n = normalize(name)
+    return {
+        "full": n.replace(" ", ""),
+        "last": last_name(name),
+        "first": n.split()[0] if n else "",
+        "fl": first_initial_last(name),
+        "init": initials(name),
+    }
+
+
+# Lower tier wins. Ranked against board position so 3 keystrokes suffice.
+_TIERS = (("exact", 0), ("last", 100), ("fl", 200), ("init", 200),
+          ("first", 300), ("contains", 400))
+
+
+def search(query: str, rows: list[dict], limit: int = 6) -> list[dict]:
+    """Type-ahead over the pool. `rows` need 'name' and a board 'rank'.
+
+    Scored `tier * 1000 + rank`, so a weak-tier match on a stud still beats an
+    exact match on a nobody. 'cmc' -> McCaffrey (prefix of 'cmccaffrey'),
+    'arsb' -> Amon-Ra St. Brown (exact initials), 'chase' -> Ja'Marr Chase
+    (last-name prefix, best rank among Chases).
+    """
+    q = normalize(query).replace(" ", "")
+    if not q:
+        return []
+    scored: list[tuple[int, dict]] = []
+    for i, r in enumerate(rows):
+        k = r.get("_keys") or build_keys(r["name"])
+        rank = r.get("rank", i)
+        tier = None
+        if q in (k["full"], k["init"], k["fl"], k["last"]):
+            tier = 0
+        elif k["last"].startswith(q):
+            tier = 100
+        elif k["fl"].startswith(q) or k["init"].startswith(q):
+            tier = 200
+        elif k["first"].startswith(q):
+            tier = 300
+        elif q in k["full"]:
+            tier = 400
+        if tier is not None:
+            scored.append((tier * 1000 + rank, r))
+    scored.sort(key=lambda t: t[0])
+    # Attach the score so callers can judge how decisive the top hit is without
+    # recomputing it. Copy rather than mutate the caller's rows.
+    return [{**r, "_score": s} for s, r in scored[:limit]]
+
+
+# A top hit wins outright if it is in a strictly better tier, or is this many
+# board positions clear of the runner-up within the same tier.
+DECISIVE_RANK_GAP = 50
+
+
+def is_decisive(hits: list[dict]) -> bool:
+    """True when the top hit is clear enough to accept without prompting.
+
+    Under a draft clock, prompting on 'cmc' when Christian McCaffrey (board rank
+    4) beats Chase McLaughlin (rank ~300) costs seconds for nothing. Prompting on
+    'jj' -- Jefferson vs Jacobs, ten ranks apart -- is worth it.
+    """
+    if not hits:
+        return False
+    if len(hits) == 1:
+        return True
+    top, second = hits[0]["_score"], hits[1]["_score"]
+    if top // 1000 < second // 1000:      # strictly better tier
+        return True
+    return (second - top) >= DECISIVE_RANK_GAP
+
+
 class MatchError(Exception):
     """Raised when a name cannot be resolved. Never swallow this."""
 
