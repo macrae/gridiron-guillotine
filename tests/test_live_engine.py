@@ -280,10 +280,10 @@ def test_kickers_appear_at_the_very_end(pool):
 
 def test_hard_cap_blocks_a_full_position(pool):
     league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
-    league.max_at_pos["QB"] = 1
-    roster = [pool.at_position("QB", set())[0]]
+    league.max_at_pos["TE"] = 1
+    roster = [pool.at_position("TE", set())[0]]
     recs = recommend(pool, set(), roster, league, current_pick=27, top_n=12)
-    assert all(r.player.pos != "QB" for r in recs)
+    assert all(r.player.pos != "TE" for r in recs)
 
 
 def test_drafted_players_never_recommended(pool):
@@ -469,17 +469,30 @@ def test_is_decisive_accepts_clear_winners_and_asks_otherwise():
 # 9. Bench-only positions -- the round-9 backup-QB trap
 # --------------------------------------------------------------------------
 
-def test_surplus_qb_is_bench_only(pool):
-    """A second QB in a one-QB league cannot enter the lineup, so he must be
-    weighted far below a player who can.
+def test_default_config_makes_a_second_qb_impossible(pool):
+    """One-QB league: the hard cap, not a soft weight, is what guarantees it."""
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    assert league.max_at_pos["QB"] == 1
+    roster = [pool.at_position("QB", set())[0]]
+    drafted = {roster[0].player_id}
+    for pick in (27, 51, 99, 147):
+        recs = recommend(pool, drafted, roster, league, current_pick=pick, top_n=12)
+        assert all(r.player.pos != "QB" for r in recs), f"QB2 offered at pick {pick}"
 
-    This is not hypothetical: replacement level is static, so by the late rounds
-    every remaining player scores below it and VORP goes uniformly negative. A
-    backup QB is then the only positive number on the board and wins the pick.
-    A 180-pick replay spent round 9 on a second quarterback before this rule.
+
+def test_surplus_qb_is_bench_only_when_a_cap_permits_one(pool):
+    """The bench-only weighting still governs leagues that DO allow a backup
+    (superflex, 2-QB). With the default cap of 1 the hard cap fires first, so
+    this path is only reachable when the cap is raised.
+
+    It is not hypothetical logic: replacement level is static, so by the late
+    rounds every remaining player scores below it and VORP goes uniformly
+    negative. A backup QB is then the only positive number on the board and wins
+    the pick. A 180-pick replay spent round 9 on a second quarterback.
     """
     from gridiron.live.recommend import BENCH_ONLY, _need_multiplier
     league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    league.max_at_pos["QB"] = 2                      # superflex-style
     qb = pool.at_position("QB", set())[0]
     assert _need_multiplier("QB", [qb], league) == BENCH_ONLY
 

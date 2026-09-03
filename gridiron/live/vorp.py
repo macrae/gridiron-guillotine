@@ -30,8 +30,16 @@ class LeagueConfig:
     )
     flex_count: int = 1
     # Hard roster caps -- a position at cap is dropped from candidates entirely.
+    #
+    # QB is capped at 1 deliberately: in a one-QB league a backup can never enter
+    # the lineup, and a hard cap makes drafting one structurally impossible
+    # rather than merely unlikely. TE stays at 2 because a second TE is genuinely
+    # startable -- it fills the FLEX slot.
+    #
+    # Raise QB for a superflex or 2-QB league; the bench-only weighting in
+    # recommend._need_multiplier then takes over from the hard cap.
     max_at_pos: dict[str, int] = field(
-        default_factory=lambda: {"QB": 2, "RB": 6, "WR": 7, "TE": 2, "K": 1, "DST": 1}
+        default_factory=lambda: {"QB": 1, "RB": 6, "WR": 7, "TE": 2, "K": 1, "DST": 1}
     )
 
     @property
