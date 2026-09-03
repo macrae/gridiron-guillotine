@@ -43,8 +43,13 @@ class DraftSession:
     """Everything one league needs. Guarded by a single lock."""
 
     def __init__(self, league: str, pool: PlayerPool, config: LeagueConfig,
-                 store: PickStore, accent: str = "#c0392b"):
+                 store: PickStore, accent: str = "#c0392b",
+                 peers: list[dict] | None = None):
         self.league = league
+        #: Other leagues running right now, as [{"name", "url"}]. Purely a
+        #: navigation convenience -- the processes stay fully independent, which
+        #: is what keeps one crashing from touching the other.
+        self.peers = peers or []
         self.pool = pool
         self.config = config
         self.store = store
@@ -192,6 +197,7 @@ class DraftSession:
             "version": self.version,
             "league": self.league,
             "accent": self.accent,
+            "peers": self.peers,
             "done": done,
             "teams": cfg.num_teams,
             "rounds": cfg.rounds,
@@ -402,7 +408,8 @@ def serve(session: DraftSession, port: int = 8100, host: str = "127.0.0.1") -> N
 
 
 def build_session(league: str, pool_csv: Path, db_path: Path,
-                  config: LeagueConfig, accent: str = "#c0392b") -> DraftSession:
+                  config: LeagueConfig, accent: str = "#c0392b",
+                  peers: list[dict] | None = None) -> DraftSession:
     pool = load_pool(pool_csv)
     store = PickStore(db_path, config.num_teams)
-    return DraftSession(league, pool, config, store, accent)
+    return DraftSession(league, pool, config, store, accent, peers)

@@ -148,6 +148,10 @@ function render() {
   $("clock").textContent = d.on_clock ? d.on_clock.label : "complete";
   $("turn-flag").textContent = mine ? "YOU'RE UP" : (d.on_clock ? `slot ${d.on_clock.slot}` : "");
   document.title = `${d.league.toUpperCase()} · ${d.on_clock ? d.on_clock.label : "done"}`;
+  // Same-tab navigation: state is server-side, so leaving loses nothing.
+  $("peers").innerHTML = (d.peers || []).map(p =>
+    `<a class="peer" href="${esc(p.url)}" title="switch to ${esc(p.name)}">${esc(p.name)} &rarr;</a>`
+  ).join("");
 
   // turn strip
   if (d.my_next) {

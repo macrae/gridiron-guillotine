@@ -26,15 +26,24 @@ Read the two lines it prints. They are the whole pre-flight:
 If the lineup line does not match your league, stop and fix it before the first
 pick — a wrong roster shape silently miscalibrates every ranking.
 
-**Both leagues at once** (two processes, never one):
+**Both leagues** (two processes, never one):
 
 ```bash
-.venv/bin/python rundraft.py --league main   --slot 3 --port 8100 --accent "#c0392b"
-.venv/bin/python rundraft.py --league second --slot 7 --port 8101 --accent "#1f6feb"
+.venv/bin/python rundraft.py --league 2MinuteDrill --slot N --port 8100 \
+    --accent "#c0392b" --peer FirstDown:8101
+
+.venv/bin/python rundraft.py --league FirstDown --slot N --port 8101 \
+    --accent "#1f6feb" --peer 2MinuteDrill:8100
 ```
 
-Red band = main, blue band = second. The tab title shows the league and the
-pick. The failure mode this guards against is human: typing into the wrong tab.
+Red band = 2MinuteDrill (Sun 9:30pm), blue = FirstDown (Mon 11:00pm). The tab
+title carries the league and the pick, and a header link switches between them
+in one click. The failure mode this guards against is human: typing into the
+wrong tab.
+
+The link is navigation only -- the two processes share nothing, so one dying
+cannot touch the other, and switching loses nothing because all state is on the
+server.
 
 ---
 

@@ -46,6 +46,10 @@ def main(argv: list[str] | None = None) -> int:
                     help="league settings JSON (roster slots, flex, caps). "
                          "Defaults to data/2026/league_<name>.json if present.")
     ap.add_argument("--flex", type=int, help="FLEX slots (default 1)")
+    ap.add_argument("--peer", action="append", default=[], metavar="NAME:PORT",
+                    help="another league to offer a header link to, e.g. "
+                         "FirstDown:8101. Repeatable. Navigation only -- the "
+                         "processes stay independent.")
     ap.add_argument("--write-config", action="store_true",
                     help="write the resolved settings to the league JSON and exit")
     args = ap.parse_args(argv)
@@ -99,6 +103,16 @@ def main(argv: list[str] | None = None) -> int:
         if note:
             print(f"  {note}")
 
+    peers = []
+    for spec in args.peer:
+        name, _, port = spec.partition(":")
+        if not name or not port.isdigit():
+            print(f"--peer must look like NAME:PORT, got {spec!r}", file=sys.stderr)
+            return 1
+        peers.append({"name": name, "url": f"http://127.0.0.1:{port}/"})
+    if peers:
+        print("  peers: " + ", ".join(f"{p['name']} -> {p['url']}" for p in peers))
+
     print(f"  {describe(cfg)}")
     session = build_session(
         league=args.league,
@@ -106,6 +120,7 @@ def main(argv: list[str] | None = None) -> int:
         db_path=Path(f"data/2026/draft_{args.league}.sqlite"),
         config=cfg,
         accent=args.accent,
+        peers=peers,
     )
     if args.reset:
         session.store.reset()

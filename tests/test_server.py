@@ -553,3 +553,21 @@ def test_slot_role_names_the_seat(session):
     assert slot_role(p, {p.pos: 2}, starters, 1) == "starts FLEX"
     # flex consumed by a surplus at another position
     assert slot_role(p, {p.pos: 2, "WR": 3}, starters, 1) == "bench"
+
+
+def test_peers_are_navigation_only(tmp_path):
+    """A peer link must not couple the two leagues: separate stores, separate
+    versions, no shared state. It is a hyperlink, nothing more."""
+    from gridiron.live.server import DraftSession
+    from gridiron.live.store import PickStore
+    pool = PlayerPool([_mk(1, "Only Guy")])
+    peers = [{"name": "Other", "url": "http://127.0.0.1:8101/"}]
+    a = DraftSession("A", pool, LeagueConfig(), PickStore(tmp_path / "a.db", 12),
+                     peers=peers)
+    b = DraftSession("B", pool, LeagueConfig(), PickStore(tmp_path / "b.db", 12))
+    assert a.state()["peers"] == peers
+    assert b.state()["peers"] == []
+    a.store.append(1, mine=True)
+    assert a.state()["picks_made"] == 1
+    assert b.state()["picks_made"] == 0, "peer link must not share draft state"
+    assert a.version.split(":")[0] != b.version.split(":")[0]

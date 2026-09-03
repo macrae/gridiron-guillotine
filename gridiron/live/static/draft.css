@@ -391,3 +391,16 @@ body.claiming #band { box-shadow: inset 0 -3px 0 var(--good); }
 .mrow { grid-template-columns: 18px 1fr auto auto auto; }
 .brow { grid-template-columns: 30px 1fr 38px 68px auto; }
 .prow { grid-template-columns: 22px 1fr auto auto auto auto; }
+
+/* ---------- league switch ----------
+   Navigation, not an action. Deliberately quiet and set apart from the pick
+   controls so it is never mistaken for one. */
+.peer {
+  display: inline-block; margin-left: 8px; padding: 2px 8px;
+  border-radius: 3px; text-decoration: none;
+  background: rgba(0,0,0,.24); color: rgba(255,255,255,.85);
+  font: 600 10px var(--mono); letter-spacing: .06em; white-space: nowrap;
+}
+.peer:hover { background: rgba(0,0,0,.42); color: #fff; }
+body.myturn .peer { background: rgba(0,0,0,.16); color: rgba(0,0,0,.7); }
+body.myturn .peer:hover { background: rgba(0,0,0,.28); color: #000; }
