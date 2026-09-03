@@ -15,6 +15,7 @@ against is human: typing a pick into the wrong browser tab.
 from __future__ import annotations
 
 import argparse
+import functools
 import sys
 from pathlib import Path
 
@@ -22,6 +23,12 @@ from gridiron.live.league import (ConfigError, default_config, describe,
                                   load_config, save_config, scoring_for)
 from gridiron.live.scoring import bonus_note, rescore_pool
 from gridiron.live.server import build_session, serve
+
+
+# The launch banner is the pre-flight check -- unbuffered so it survives nohup,
+# tee, and redirection to a log file.
+print = functools.partial(__builtins__.print if not isinstance(__builtins__, dict)
+                          else __builtins__["print"], flush=True)
 
 
 def main(argv: list[str] | None = None) -> int:

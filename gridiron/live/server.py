@@ -392,7 +392,7 @@ def serve(session: DraftSession, port: int = 8100, host: str = "127.0.0.1") -> N
     server = DraftServer((host, port), handler)
     print(f"  {session.league}: http://{host}:{port}"
           f"   slot {session.config.my_slot}/{session.config.num_teams}"
-          f"   {len(session.pool.players)} players")
+          f"   {len(session.pool.players)} players", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
