@@ -109,10 +109,13 @@ def _need_multiplier(pos: str, roster: list[Player], league: LeagueConfig) -> fl
 
 
 def _apply_need(base: float, mult: float) -> float:
-    """Scale a score toward zero by `mult`, correct for negative scores too.
+    """Make a score LESS attractive by `mult`, in both directions.
 
-    Plain multiplication would make a negative score *larger* (less bad), which
-    would promote positions you have already filled.
+    Not "scale toward zero": for a positive score this is `base * mult`, but for
+    a NEGATIVE score it moves further from zero, not closer. That asymmetry is
+    the point. Plain multiplication would make a negative score larger (less
+    bad) and so promote positions you have already filled -- exactly backwards.
+    Late in a draft every score is negative, which is when it matters most.
     """
     return base - (1.0 - mult) * abs(base)
 
@@ -180,7 +183,11 @@ def recommend(
         cliffs[pos] = vona_mod.position_cliff(cand, shifted)
 
     scored: list[Recommendation] = []
-    for pos in allowed:
+    # sorted(), not the set itself: `score` is rounded to one decimal, so near
+    # ties are common, and a stable sort would then break them by whatever order
+    # the set happened to iterate. Python randomises string hashing per process,
+    # so that would make the board differ between runs on identical input.
+    for pos in sorted(allowed):
         cand = by_pos.get(pos, [])
         mult = _need_multiplier(pos, my_roster, league)
         # Only the top few at each position can ever win; scoring the whole tail
@@ -209,7 +216,10 @@ def recommend(
                 )
             )
 
-    scored.sort(key=lambda r: -r.score)
+    # Total order: score, then raw VORP, then player id. Every component is
+    # needed -- score alone ties after rounding, and score+VORP can still tie
+    # for genuinely equivalent players.
+    scored.sort(key=lambda r: (-r.score, -r.vorp, r.player.player_id))
     top = scored[:top_n]
     for r in top:
         r.reason = pick_reason(
