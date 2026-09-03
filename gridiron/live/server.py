@@ -381,10 +381,8 @@ def serve(session: DraftSession, port: int = 8100, host: str = "127.0.0.1") -> N
         server.server_close()
 
 
-def build_session(league: str, pool_csv: Path, db_path: Path, my_slot: int,
-                  teams: int = 12, rounds: int = 15,
-                  accent: str = "#c0392b") -> DraftSession:
+def build_session(league: str, pool_csv: Path, db_path: Path,
+                  config: LeagueConfig, accent: str = "#c0392b") -> DraftSession:
     pool = load_pool(pool_csv)
-    config = LeagueConfig(num_teams=teams, rounds=rounds, my_slot=my_slot)
-    store = PickStore(db_path, teams)
+    store = PickStore(db_path, config.num_teams)
     return DraftSession(league, pool, config, store, accent)

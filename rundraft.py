@@ -18,6 +18,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from gridiron.live.league import ConfigError, default_config, describe, load_config, save_config
 from gridiron.live.server import build_session, serve
 
 
@@ -32,6 +33,12 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--pool", type=Path,
                     default=Path("data/2026/player_pool_latest.csv"))
     ap.add_argument("--reset", action="store_true", help="clear recorded picks first")
+    ap.add_argument("--config", type=Path,
+                    help="league settings JSON (roster slots, flex, caps). "
+                         "Defaults to data/2026/league_<name>.json if present.")
+    ap.add_argument("--flex", type=int, help="FLEX slots (default 1)")
+    ap.add_argument("--write-config", action="store_true",
+                    help="write the resolved settings to the league JSON and exit")
     args = ap.parse_args(argv)
 
     if not args.pool.exists():
@@ -42,13 +49,39 @@ def main(argv: list[str] | None = None) -> int:
         print(f"--slot must be 1..{args.teams}", file=sys.stderr)
         return 1
 
+    # League settings: explicit --config, else a per-league file if one exists,
+    # else the Yahoo standard lineup adjusted by flags.
+    cfg_path = args.config or Path(f"data/2026/league_{args.league}.json")
+    try:
+        if cfg_path.exists():
+            cfg = load_config(cfg_path)
+            cfg.my_slot = args.slot
+            if args.teams != 12:
+                cfg.num_teams = args.teams
+            if args.rounds != 15:
+                cfg.rounds = args.rounds
+            print(f"  settings from {cfg_path}")
+        else:
+            cfg = default_config(args.teams, args.rounds, args.slot)
+        if args.flex is not None:
+            cfg.flex_count = args.flex
+        from gridiron.live.league import validate
+        validate(cfg)
+    except ConfigError as e:
+        print(f"league settings invalid: {e}", file=sys.stderr)
+        return 1
+
+    if args.write_config:
+        out = save_config(cfg, cfg_path)
+        print(f"wrote {out}\n  {describe(cfg)}")
+        return 0
+
+    print(f"  {describe(cfg)}")
     session = build_session(
         league=args.league,
         pool_csv=args.pool,
         db_path=Path(f"data/2026/draft_{args.league}.sqlite"),
-        my_slot=args.slot,
-        teams=args.teams,
-        rounds=args.rounds,
+        config=cfg,
         accent=args.accent,
     )
     if args.reset:

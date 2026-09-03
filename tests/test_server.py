@@ -251,3 +251,67 @@ def test_parity_fixture_actually_exercises_the_hard_cases():
     # a string that appears nowhere.
     assert names.search("x", rows)[0]["name"] == "Jaxon Smith-Njigba"
     assert names.search("zzq", rows) == []
+
+
+# --------------------------------------------------------------------------
+# 9. League configuration -- the path that works when Yahoo does not
+# --------------------------------------------------------------------------
+
+def test_default_is_the_yahoo_standard_lineup():
+    from gridiron.live.league import default_config
+    c = default_config(12, 15, 3)
+    assert c.starters == {"QB": 1, "RB": 2, "WR": 2, "TE": 1, "K": 1, "DST": 1}
+    assert c.flex_count == 1
+    assert c.max_at_pos["QB"] == 1          # one-QB league, hard capped
+
+
+def test_config_roundtrips_through_json(tmp_path):
+    from gridiron.live.league import default_config, load_config, save_config
+    c = default_config(14, 16, 7)
+    c.flex_count = 2
+    p = save_config(c, tmp_path / "lg.json")
+    back = load_config(p)
+    assert (back.num_teams, back.rounds, back.my_slot) == (14, 16, 7)
+    assert back.flex_count == 2
+    assert back.starters == c.starters
+
+
+def test_partial_config_falls_back_to_the_standard(tmp_path):
+    import json
+    from gridiron.live.league import load_config
+    p = tmp_path / "lg.json"
+    p.write_text(json.dumps({"num_teams": 10, "my_slot": 4}), encoding="utf-8")
+    c = load_config(p)
+    assert c.num_teams == 10 and c.my_slot == 4
+    assert c.starters["RB"] == 2 and c.flex_count == 1   # inherited
+
+
+@pytest.mark.parametrize("mutate,msg", [
+    (lambda c: setattr(c, "my_slot", 99), "my_slot"),
+    (lambda c: setattr(c, "num_teams", 1), "num_teams"),
+    (lambda c: setattr(c, "rounds", 5), "starting slots"),
+    (lambda c: c.max_at_pos.__setitem__("RB", 1), "below the 2 starter"),
+])
+def test_validate_rejects_impossible_settings(mutate, msg):
+    from gridiron.live.league import ConfigError, default_config, validate
+    c = default_config(12, 15, 3)
+    mutate(c)
+    with pytest.raises(ConfigError, match=msg):
+        validate(c)
+
+
+def test_roster_shape_actually_moves_replacement_level():
+    """A wrong league config is a silent miscalibration of every ranking, not a
+    visible error -- so assert the settings genuinely propagate."""
+    from gridiron.live.league import default_config
+    from gridiron.live.pool import PlayerPool
+    from gridiron.live.vorp import replacement_ranks
+    players = ([_mk(i, f"Rb{i} Back", "RB") for i in range(1, 60)]
+               + [_mk(100 + i, f"Wr{i} Wide", "WR") for i in range(1, 60)])
+    pool = PlayerPool(players)
+    one_flex = replacement_ranks(pool, default_config(12, 15, 1))
+    two_flex = default_config(12, 15, 1); two_flex.flex_count = 2
+    assert replacement_ranks(pool, two_flex)["RB"] > one_flex["RB"], (
+        "extra flex slots must push replacement deeper")
+    assert replacement_ranks(pool, default_config(14, 15, 1))["RB"] > one_flex["RB"], (
+        "more teams must push replacement deeper")
