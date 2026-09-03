@@ -1,0 +1,107 @@
+# Draft day runbook
+
+One page. Keep it open in a second tab.
+
+---
+
+## T-60 minutes
+
+```bash
+cd ~/gridiron-guillotine
+
+# 1. Refresh the board (injuries and ADP move all week)
+.venv/bin/python -m gridiron.live.espn
+
+# 2. Launch. Slot can be wrong here -- you can fix it from the page.
+.venv/bin/python rundraft.py --league main --slot 3 --port 8100 --accent "#c0392b"
+```
+
+Read the two lines it prints. They are the whole pre-flight:
+
+```
+  12-team, 15 rounds, slot 3 | QB1 RB2 WR2 TE1 K1 DST1 FLEX1 | 6 bench
+  main: http://127.0.0.1:8100   slot 3/12   542 players
+```
+
+If the lineup line does not match your league, stop and fix it before the first
+pick — a wrong roster shape silently miscalibrates every ranking.
+
+**Both leagues at once** (two processes, never one):
+
+```bash
+.venv/bin/python rundraft.py --league main   --slot 3 --port 8100 --accent "#c0392b"
+.venv/bin/python rundraft.py --league second --slot 7 --port 8101 --accent "#1f6feb"
+```
+
+Red band = main, blue band = second. The tab title shows the league and the
+pick. The failure mode this guards against is human: typing into the wrong tab.
+
+---
+
+## When your slot is assigned
+
+Type into the box: `/slot 7` — recalculates instantly, no restart.
+
+---
+
+## During the draft
+
+Bare text is always a player name. A leading `/` is always a command.
+
+| | |
+|---|---|
+| type 2-3 letters, `Enter` | record the pick on the clock |
+| `↓` `↑` | move through matches |
+| `Esc` | clear the box |
+| `Space` on an empty box | a pick happened, you missed who — records unknown, clock still advances |
+| `⌘Z` | undo the last pick |
+| click any row in the pick log | retype it; later picks are untouched |
+| click a red **missing** row | fills that hole |
+
+`cmc` → McCaffrey · `arsb` → Amon-Ra St. Brown · `jsn` → Smith-Njigba.
+Mean is 2.2 keystrokes; 95% of picks resolve in 3 or fewer.
+
+Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
+`/d 33` delete pick 33 and shift back · `/l 0.8` urgency · `/h` help.
+
+---
+
+## Reading the board
+
+- **score** is the sort key: `VORP − 0.6 × what you lose by waiting`.
+- **VONA** is the decision: value that evaporates before your next turn.
+- **best available at each** explains the top pick. When TE shows `cliff 21.3`
+  and RB shows `cliff 2.2`, a lesser tight end outranking better backs is the
+  engine working, not a glitch.
+- A **dashed rule** in the list is a tier break — everything below it is a step
+  down.
+- `BYE 13` amber chip = clashes with someone already on your roster.
+- Late rounds compress toward zero. That is true, not broken: those players
+  really are near replacement.
+
+---
+
+## When something breaks
+
+| Symptom | Do this |
+|---|---|
+| Page frozen, dot is red | The server died. Restart the same command — picks are in SQLite, recovery is under 2s and the page repaints itself. |
+| Browser dies entirely | `.venv/bin/python -m gridiron.live.term --league main --slot 3` — same database, same recommendations, continue at the exact pick. |
+| Laptop slept | Nothing. The page fetches on wake and repaints. |
+| Out of sync with the room | `/j <pick number>` to re-anchor. |
+| Red **missing** rows | You recorded a pick out of order. Click each one and fill it — until you do, those players are still counted as available. |
+| Everything is wrong | `--reset` on relaunch wipes the league and starts over. |
+
+**Verified**: server killed mid-draft and restarted with picks, clock and roster
+intact; terminal and web driving the same database concurrently; two leagues on
+two ports with no cross-contamination.
+
+---
+
+## Do not
+
+- Rebuild the pool mid-draft. `player_pool_latest.csv` is read once at launch.
+- Run two servers on the same `--league`. They share a SQLite file and will
+  fight over the clock.
+- Trust a blind `Enter` on an ambiguous name — the box tells you what it will
+  commit. `brown` and `smith` deliberately refuse until you pick with `↓`.
