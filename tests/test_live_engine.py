@@ -463,3 +463,45 @@ def test_is_decisive_accepts_clear_winners_and_asks_otherwise():
     assert names.is_decisive(clear)
     close = names.search("brown", _rows(("Chase Brown", 40), ("A.J. Brown", 45)))
     assert not names.is_decisive(close)
+
+
+# --------------------------------------------------------------------------
+# 9. Bench-only positions -- the round-9 backup-QB trap
+# --------------------------------------------------------------------------
+
+def test_surplus_qb_is_bench_only(pool):
+    """A second QB in a one-QB league cannot enter the lineup, so he must be
+    weighted far below a player who can.
+
+    This is not hypothetical: replacement level is static, so by the late rounds
+    every remaining player scores below it and VORP goes uniformly negative. A
+    backup QB is then the only positive number on the board and wins the pick.
+    A 180-pick replay spent round 9 on a second quarterback before this rule.
+    """
+    from gridiron.live.recommend import BENCH_ONLY, _need_multiplier
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    qb = pool.at_position("QB", set())[0]
+    assert _need_multiplier("QB", [qb], league) == BENCH_ONLY
+
+
+def test_flex_eligible_surplus_still_counts_as_a_starter(pool):
+    """A third RB/WR or second TE fills the FLEX slot, so it is NOT bench-only."""
+    from gridiron.live.recommend import _need_multiplier
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)   # RB2 WR2 TE1 + 1 flex
+    rbs = pool.at_position("RB", set())[:3]
+    tes = pool.at_position("TE", set())[:1]
+    assert _need_multiplier("RB", rbs[:2], league) == 1.0   # 3rd RB fills flex
+    assert _need_multiplier("TE", tes, league) == 1.0       # 2nd TE fills flex
+    assert _need_multiplier("RB", rbs[:3], league) < 1.0    # 4th RB is depth
+
+
+def test_startable_player_beats_a_backup_qb_when_both_are_replacement_level(pool):
+    """The concrete regression: with a QB already rostered, a flex-eligible
+    player must outrank a surplus QB of comparable raw value."""
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    roster = [pool.at_position("QB", set())[0], *pool.at_position("RB", set())[:2],
+              *pool.at_position("WR", set())[:2]]
+    drafted = {p.player_id for p in roster}
+    recs = recommend(pool, drafted, roster, league, current_pick=99, top_n=1)
+    assert recs[0].player.pos != "QB", (
+        f"took a backup QB over startable depth: {recs[0].player.name}")

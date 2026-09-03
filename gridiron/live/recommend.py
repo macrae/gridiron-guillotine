@@ -41,18 +41,44 @@ class Recommendation:
     reason: str
 
 
+#: Positions that can also fill the FLEX slot. A surplus RB/WR/TE can still
+#: enter the starting lineup; a surplus QB/K/DST cannot.
+FLEX_ELIGIBLE = ("RB", "WR", "TE")
+
+#: Weight for a player who cannot reach the starting lineup at all. Not zero --
+#: a backup covers a bye week and an injury -- but nowhere near a starter.
+BENCH_ONLY = 0.25
+
+
 def _need_multiplier(pos: str, roster: list[Player], league: LeagueConfig) -> float:
-    """1.0 unfilled starter · 0.85 flex/bench only · 0.60 at soft cap."""
+    """How much a player at this position is worth given what I already have.
+
+    1.0 fills an empty starter slot · 0.85 useful depth · BENCH_ONLY otherwise.
+
+    The BENCH_ONLY tier matters more than it looks. Replacement level is static,
+    computed once against the full pool, so by the late rounds every remaining
+    player scores below it and VORP goes uniformly negative. At that point a
+    backup QB is the only positive number on the board and wins the pick -- even
+    though in a one-QB league he can never enter the lineup and is worth roughly
+    nothing. Without this tier the engine spends round 9 on a second quarterback.
+    """
     counts = roster_counts(roster)
     have = counts.get(pos, 0)
     cap = league.max_at_pos.get(pos, 99)
+    starters = league.starters.get(pos, 0)
+
     if have >= cap:
         return 0.0  # hard cap -- filtered before this is used
-    if have >= max(1, cap - 1):
-        return 0.60
-    if have < league.starters.get(pos, 0):
+    if have < starters:
         return 1.0
-    return 0.85
+
+    # Starters are covered. Can another one still reach the lineup?
+    if pos in FLEX_ELIGIBLE:
+        flex_room = starters + league.flex_count
+        if have < flex_room:
+            return 1.0      # still fills the flex slot
+        return 0.85 if have < max(1, cap - 1) else 0.60
+    return BENCH_ONLY       # QB/K/DST surplus is bench-only
 
 
 def _apply_need(base: float, mult: float) -> float:
