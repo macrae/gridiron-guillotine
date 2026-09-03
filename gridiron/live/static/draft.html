@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>draft</title>
+<link rel="stylesheet" href="/static/draft.css">
+</head>
+<body>
+
+<header id="band">
+  <span id="league">—</span>
+  <span id="clock">—</span>
+  <span id="turn-flag"></span>
+  <span id="conn" class="pill" title="connection">•</span>
+</header>
+
+<div id="turnstrip">
+  <span id="nextpick">—</span>
+  <span id="afterpick"></span>
+  <span id="gapwarn" hidden></span>
+  <span id="remaining"></span>
+</div>
+
+<div id="entry">
+  <input id="q" type="text" autocomplete="off" autocapitalize="off"
+         spellcheck="false" placeholder="type a player…  /h for help">
+  <div id="drop" hidden></div>
+  <div id="hint"></div>
+</div>
+
+<section id="recs" aria-label="recommendations"></section>
+
+<div id="panel">
+<section id="bestat">
+  <div class="shead">best available at each</div>
+  <div id="bestrows"></div>
+</section>
+
+<section id="rosterbar">
+  <div class="shead">my roster</div>
+  <div id="slots"></div>
+</section>
+
+<section id="more">
+  <div class="shead">next up</div>
+  <div id="morerows"></div>
+</section>
+
+<section id="logsec">
+  <div class="shead">picks <span id="pickcount"></span>
+    <span class="hintlet">click a row to fix it</span></div>
+  <div id="log"></div>
+</section>
+</div>
+
+<footer id="foot">
+  <label id="urgwrap" title="0 = best available (VORP)   1 = pure urgency (VONA)">
+    urgency
+    <input id="urg" type="range" min="0" max="1" step="0.05" value="0.6">
+    <span id="urgval">0.60</span>
+  </label>
+  <button id="helpbtn" type="button">?</button>
+</footer>
+
+<div id="drawer" hidden>
+  <div id="drawerhead">
+    <span id="drawertitle">team</span>
+    <button id="drawerclose" type="button">esc</button>
+  </div>
+  <div id="drawerbody"></div>
+</div>
+
+<div id="helpcard" hidden>
+  <div class="shead">keys</div>
+  <dl>
+    <dt>type</dt><dd>search a player, <b>Enter</b> commits the highlighted row</dd>
+    <dt>↓ ↑</dt><dd>move through matches</dd>
+    <dt>Esc</dt><dd>clear input / close panels</dd>
+    <dt>Space</dt><dd>on empty input: record an unknown pick, advance the clock</dd>
+    <dt>⌘Z</dt><dd>undo the last pick</dd>
+    <dt>/u</dt><dd>undo</dd>
+    <dt>/j 47</dt><dd>jump: next entry is overall pick 47</dd>
+    <dt>/t 9</dt><dd>show team 9's roster</dd>
+    <dt>/d 33</dt><dd>delete pick 33 (shifts everything after it back)</dd>
+    <dt>/l 0.8</dt><dd>set urgency</dd>
+    <dt>/s</dt><dd>skip — unknown pick</dd>
+    <dt>click a pick</dt><dd>retype it; later picks are untouched</dd>
+  </dl>
+</div>
+
+<div id="toasts"></div>
+
+<script src="/static/draft.js"></script>
+</body>
+</html>
