@@ -126,7 +126,12 @@ body.myturn .card.top { border-left-color: var(--good); }
 .card .nums { text-align: right; font-family: var(--mono); font-size: 11px;
               color: var(--dim); white-space: nowrap; }
 .card .score { display: block; font-size: 15px; font-weight: 700; color: var(--text); }
-.card .vona  { color: var(--warn); font-weight: 600; }
+/* VORP is the primary signal -- simulation put it far ahead of the urgency
+   term, so it gets the weight on the card. VONA is a tiebreaker and reads like
+   one. */
+.card .vorpline { display: block; font-size: 12px; color: var(--text); }
+.card .vorpline b { font-weight: 700; }
+.card .vonaline { display: block; font-size: 10px; color: var(--dimmer); }
 .card .why {
   grid-column: 2 / span 2; font-size: 11px; color: var(--dim); line-height: 1.35;
 }

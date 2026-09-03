@@ -210,7 +210,9 @@ function renderRecs(d) {
         </div>
         <div class="nums">
           <span class="score">${r.score.toFixed(1)}</span>
-          VORP ${r.vorp.toFixed(0)} · <span class="vona">VONA ${r.vona.toFixed(1)}</span>
+          <span class="vorpline">VORP <b>${r.vorp.toFixed(0)}</b></span>
+          <span class="vonaline">urg ${r.vona >= 0 ? "+" : ""}${r.vona.toFixed(0)} ·
+            ${(r.survival * 100).toFixed(0)}% to last</span>
           <button class="mineb" type="button" title="claim for your roster">+ MINE</button>
         </div>
         <div class="why">${esc(r.reason)}</div>

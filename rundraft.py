@@ -46,6 +46,9 @@ def main(argv: list[str] | None = None) -> int:
                     help="league settings JSON (roster slots, flex, caps). "
                          "Defaults to data/2026/league_<name>.json if present.")
     ap.add_argument("--flex", type=int, help="FLEX slots (default 1)")
+    ap.add_argument("--urgency", type=float, default=None, metavar="0..1",
+                    help="weight on VONA. Default 0.2, the simulated optimum. "
+                         "Pass 0 for pure VORP / best-player-available.")
     ap.add_argument("--peer", action="append", default=[], metavar="NAME:PORT",
                     help="another league to offer a header link to, e.g. "
                          "FirstDown:8101. Repeatable. Navigation only -- the "
@@ -122,6 +125,10 @@ def main(argv: list[str] | None = None) -> int:
         accent=args.accent,
         peers=peers,
     )
+    if args.urgency is not None:
+        session.urgency = max(0.0, min(1.0, args.urgency))
+        print(f"  urgency: {session.urgency}"
+              + ("  (pure VORP -- best player available)" if session.urgency == 0 else ""))
     if args.reset:
         session.store.reset()
     serve(session, port=args.port)
