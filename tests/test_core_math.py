@@ -682,3 +682,81 @@ def test_survives_a_pool_with_a_single_player():
     compute_vorp(pool, cfg)
     recs = recommend(pool, set(), [], cfg, 3, top_n=3)
     assert len(recs) == 1 and recs[0].player.name == "Lone Guy"
+
+
+# ==========================================================================
+# 9. ADP DRIFT -- correcting national ADP for THIS room
+# ==========================================================================
+
+def _drafted(pairs):
+    out = []
+    for i, (adp, actual) in enumerate(pairs, start=1):
+        p = mk(i, f"P{i} X", "RB", 0.0, adp)
+        out.append((p, actual))
+    return out
+
+
+def test_drift_is_zero_without_enough_signal():
+    """A handful of picks is noise, not a trend. It must not move the model."""
+    assert vona.adp_drift([]) == 0.0
+    assert vona.adp_drift(_drafted([(10.0, 1)] * 7)) == 0.0
+
+
+def test_drift_is_negative_when_the_room_reaches():
+    """Reaching = taken EARLIER than ADP = actual - adp is negative."""
+    d = vona.adp_drift(_drafted([(a, a - 12) for a in range(10, 60, 2)]))
+    assert d == pytest.approx(-12.0, abs=0.01)
+
+
+def test_drift_is_positive_when_players_slide():
+    d = vona.adp_drift(_drafted([(a, a + 9) for a in range(10, 60, 2)]))
+    assert d == pytest.approx(9.0, abs=0.01)
+
+
+def test_drift_is_about_zero_for_a_chalk_room():
+    d = vona.adp_drift(_drafted([(a, a) for a in range(5, 80, 3)]))
+    assert abs(d) < 1.0
+
+
+def test_drift_uses_the_median_so_one_wild_reach_cannot_swing_it():
+    normal = [(a, a) for a in range(10, 60, 2)]
+    with_outlier = normal + [(300.0, 5)]        # somebody grabs a kicker in round 1
+    assert abs(vona.adp_drift(_drafted(with_outlier))) < 2.0
+
+
+def test_drift_ignores_players_without_adp():
+    pairs = _drafted([(a, a - 10) for a in range(10, 60, 2)])
+    no_adp = [(mk(999, "No Adp X", "RB", 0.0, 0.0), 5)]
+    assert vona.adp_drift(pairs + no_adp) == pytest.approx(
+        vona.adp_drift(pairs), abs=0.01)
+
+
+def test_a_reaching_room_lowers_survival(board):
+    """The point of the correction: if the room drafts ahead of ADP, players are
+    LESS likely to last than national ADP implies."""
+    pool, cfg = board
+    by_adp = sorted((p for p in pool.players if p.draftable and p.adp > 0),
+                    key=lambda p: p.adp)
+    reaching = [(p, max(1, int(p.adp) - 12)) for p in by_adp[:20]]
+    drafted = {p.player_id for p, _ in reaching}
+    plain = recommend(pool, drafted, [], cfg, 21, top_n=6)
+    corrected = recommend(pool, drafted, [], cfg, 21, top_n=6, drafted_order=reaching)
+    a = {r.player.player_id: r.survival_at_next for r in plain}
+    b = {r.player.player_id: r.survival_at_next for r in corrected}
+    shared = set(a) & set(b)
+    assert shared, "no overlap to compare"
+    assert any(b[i] < a[i] for i in shared), "reaching room must reduce survival"
+
+
+def test_a_chalk_room_leaves_the_board_alone(board):
+    """No drift, no change -- the correction must be inert when it should be."""
+    pool, cfg = board
+    by_adp = sorted((p for p in pool.players if p.draftable and p.adp > 0),
+                    key=lambda p: p.adp)
+    chalk = [(p, int(p.adp)) for p in by_adp[:20]]
+    drafted = {p.player_id for p, _ in chalk}
+    plain = [(r.player.player_id, r.score)
+             for r in recommend(pool, drafted, [], cfg, 21, top_n=6)]
+    same = [(r.player.player_id, r.score)
+            for r in recommend(pool, drafted, [], cfg, 21, top_n=6, drafted_order=chalk)]
+    assert [p for p, _ in plain] == [p for p, _ in same]

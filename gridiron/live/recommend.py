@@ -129,8 +129,16 @@ def recommend(
     top_n: int = 3,
     urgency: float = DEFAULT_URGENCY,
     adp_offset: float = 0.0,
+    drafted_order: list[tuple[Player, int]] | None = None,
 ) -> list[Recommendation]:
-    """Rank available players for the pick at `current_pick`."""
+    """Rank available players for the pick at `current_pick`.
+
+    `drafted_order` is [(player, overall_pick)] for what has already gone. When
+    supplied, the room's own drift from national ADP is measured and folded into
+    the survival model: a league that reaches on running backs makes every
+    player's ADP optimistic, and uncorrected VONA would then think help is
+    closer than it is.
+    """
     next_pick = snake.next_pick_after(
         current_pick, league.num_teams, league.my_slot, league.rounds
     )
@@ -172,7 +180,11 @@ def recommend(
         allowed = set(by_pos)
 
     # --- Scoring ----------------------------------------------------------
-    shifted = next_pick + adp_offset if next_pick is not None else None
+    # National ADP is a market average, not this room. Measure how far this
+    # draft has run ahead of or behind it, and evaluate survival at the shifted
+    # position. Returns 0.0 until there is enough signal to be worth trusting.
+    drift = vona_mod.adp_drift(drafted_order or [])
+    shifted = next_pick - drift + adp_offset if next_pick is not None else None
     baseline: dict[str, float] = {}
     cliffs: dict[str, float] = {}
     for pos in allowed:

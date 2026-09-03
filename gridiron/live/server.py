@@ -145,8 +145,12 @@ class DraftSession:
             cur, cfg.num_teams, cfg.my_slot, cfg.rounds
         )
 
+        order = [(self.pool.by_id[pk.player_id], pk.overall)
+                 for pk in store.snapshot()
+                 if pk.player_id in self.pool.by_id]
         recs = [] if done else recommend(
-            self.pool, drafted, roster, cfg, cur, top_n=10, urgency=self.urgency
+            self.pool, drafted, roster, cfg, cur, top_n=10, urgency=self.urgency,
+            drafted_order=order,
         )
         rec_rows = []
         prev = None
@@ -224,6 +228,8 @@ class DraftSession:
                 cur, cfg.num_teams, cfg.my_slot, cfg.rounds),
             "picks_made": store.count(),
             "gaps": self.gaps(),
+            # How far this room is running ahead of (or behind) national ADP.
+            "adp_drift": round(vona.adp_drift(order), 1),
             "recs": rec_rows,
             "best_at": best_at,
             "remaining": {
