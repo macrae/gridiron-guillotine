@@ -518,3 +518,48 @@ def test_startable_player_beats_a_backup_qb_when_both_are_replacement_level(pool
     recs = recommend(pool, drafted, roster, league, current_pick=99, top_n=1)
     assert recs[0].player.pos != "QB", (
         f"took a backup QB over startable depth: {recs[0].player.name}")
+
+
+# --------------------------------------------------------------------------
+# 10. FLEX is one shared seat, not one per position
+# --------------------------------------------------------------------------
+
+def test_flex_credit_is_not_granted_three_times(pool):
+    """The bug this pins: `have < starters + flex_count` was evaluated per
+    position, so a 3rd RB, a 3rd WR and a 2nd TE each claimed full starter
+    credit for the same single FLEX seat. The engine then spent a middle round
+    on bench depth while a real starting slot sat empty, and filled that slot
+    from scraps twenty picks later.
+    """
+    from gridiron.live.recommend import BENCH_DEPTH, _need_multiplier
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)   # RB2 WR2 TE1 +1 flex
+    # QB1 RB2 WR2 TE2 -- the single flex seat is occupied by the second TE.
+    roster = [pool.at_position("QB", set())[0],
+              *pool.at_position("RB", set())[:2],
+              *pool.at_position("WR", set())[:2],
+              *pool.at_position("TE", set())[:2]]
+    assert _need_multiplier("RB", roster, league) == BENCH_DEPTH
+    assert _need_multiplier("WR", roster, league) == BENCH_DEPTH
+
+
+def test_open_flex_seat_still_counts_as_a_starter(pool):
+    """Guard the guard -- the fix must not over-correct."""
+    from gridiron.live.recommend import _need_multiplier
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    roster = [*pool.at_position("RB", set())[:2], *pool.at_position("WR", set())[:2]]
+    assert _need_multiplier("RB", roster, league) == 1.0   # flex still open
+    assert _need_multiplier("WR", roster, league) == 1.0
+
+
+def test_empty_starting_slot_outranks_bench_depth(pool):
+    """With WR2 unfilled and the flex already taken, a WR must beat a 3rd RB of
+    comparable raw value."""
+    league = LeagueConfig(num_teams=12, rounds=15, my_slot=3)
+    roster = [pool.at_position("QB", set())[0],
+              *pool.at_position("RB", set())[:2],
+              *pool.at_position("TE", set())[:2],
+              pool.at_position("WR", set())[0]]          # WR1 only -- WR2 empty
+    drafted = {p.player_id for p in roster}
+    recs = recommend(pool, drafted, roster, league, current_pick=75, top_n=1)
+    assert recs[0].player.pos == "WR", (
+        f"left WR2 empty and took {recs[0].player.pos} {recs[0].player.name}")

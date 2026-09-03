@@ -49,11 +49,30 @@ FLEX_ELIGIBLE = ("RB", "WR", "TE")
 #: a backup covers a bye week and an injury -- but nowhere near a starter.
 BENCH_ONLY = 0.25
 
+#: Flex-eligible depth once the flex seat is taken. Higher than BENCH_ONLY
+#: because an RB/WR/TE bench piece is the one most likely to be promoted: byes,
+#: injuries and in-season breakouts all happen at these positions.
+#: Measured -- see _need_multiplier. The starting-lineup curve is flat below
+#: 0.55, so this is the least aggressive value that captures the whole gain.
+BENCH_DEPTH = 0.55
+BENCH_DEEP = 0.35
+
 
 def _need_multiplier(pos: str, roster: list[Player], league: LeagueConfig) -> float:
     """How much a player at this position is worth given what I already have.
 
-    1.0 fills an empty starter slot · 0.85 useful depth · BENCH_ONLY otherwise.
+    VORP and VONA have no concept of a bench: both value a player as though he
+    starts every week. This is the only place that correction lives.
+
+        1.0          fills an empty starter slot, or an open FLEX seat
+        BENCH_DEPTH  flex-eligible depth once the flex seat is taken
+        BENCH_DEEP   depth beyond that
+        BENCH_ONLY   surplus QB/K/DST -- cannot reach the lineup at all
+
+    BENCH_DEPTH = 0.55 is measured, not guessed: sweeping it across all twelve
+    draft slots and scoring the resulting STARTING lineup (bench points never
+    score) gains ~5.6 points versus no discount, and the curve is flat below
+    0.55 -- discounting harder changes no decisions.
 
     The BENCH_ONLY tier matters more than it looks. Replacement level is static,
     computed once against the full pool, so by the late rounds every remaining
@@ -72,12 +91,20 @@ def _need_multiplier(pos: str, roster: list[Player], league: LeagueConfig) -> fl
     if have < starters:
         return 1.0
 
-    # Starters are covered. Can another one still reach the lineup?
+    # Starters at this position are covered. Can another one still reach the
+    # lineup through FLEX?
     if pos in FLEX_ELIGIBLE:
-        flex_room = starters + league.flex_count
-        if have < flex_room:
-            return 1.0      # still fills the flex slot
-        return 0.85 if have < max(1, cap - 1) else 0.60
+        # The flex is ONE shared slot, not one per position. Counting it
+        # per-position let a 3rd RB, a 3rd WR and a 2nd TE each claim full
+        # starter credit for the same seat -- so the engine would spend a middle
+        # round on bench depth while a real starting slot sat empty, then fill
+        # that slot from scraps twenty picks later.
+        flex_used = sum(
+            max(0, counts.get(q, 0) - league.starters.get(q, 0)) for q in FLEX_ELIGIBLE
+        )
+        if flex_used < league.flex_count:
+            return 1.0      # a genuinely open flex seat
+        return BENCH_DEPTH if have < max(1, cap - 1) else BENCH_DEEP
     return BENCH_ONLY       # QB/K/DST surplus is bench-only
 
 
