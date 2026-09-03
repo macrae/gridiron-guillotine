@@ -358,3 +358,36 @@ body.myturn .tab.on { border-bottom-color: var(--good); }
 .prow.taken.claimed { opacity: .75; }
 .prow.taken.claimed .pn { color: var(--good); text-decoration: none; }
 .prow.taken.claimed .pp { color: var(--good); }
+
+/* The claim affordance has to be visible without typing anything -- it is the
+   one action nobody guesses. */
+#legend {
+  padding: 2px 2px 4px; font-size: 10.5px; color: var(--dimmer); line-height: 1.5;
+}
+#legend b { color: var(--dim); font-weight: 600; }
+#legend b.claim { color: var(--good); }
+body.claiming #legend { color: var(--good); }
+body.claiming #band { box-shadow: inset 0 -3px 0 var(--good); }
+
+/* ---------- claim buttons ----------
+   Plain click on any player row marks them gone; this button claims them.
+   Explicit beats a modifier nobody discovers. */
+.mineb {
+  background: none; border: 1px solid #2f6a3a; color: var(--good);
+  border-radius: 3px; cursor: pointer; padding: 1px 6px;
+  font: 600 9.5px var(--mono); letter-spacing: .05em; line-height: 1.5;
+}
+.mineb:hover { background: var(--good); color: #06210c; border-color: var(--good); }
+.card .mineb { margin-left: 8px; vertical-align: 1px; }
+.mrow .mineb, .brow .mineb, .prow .mineb { padding: 0 5px; }
+
+/* clickable affordance on every markable surface */
+.card { cursor: pointer; }
+.card:hover { background: #1b222d; }
+.mrow, .brow { cursor: pointer; }
+.mrow:hover { background: var(--panel); }
+
+/* room for the button in the grid rows */
+.mrow { grid-template-columns: 18px 1fr auto auto auto; }
+.brow { grid-template-columns: 30px 1fr 38px 68px auto; }
+.prow { grid-template-columns: 22px 1fr auto auto auto auto; }

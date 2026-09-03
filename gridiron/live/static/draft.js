@@ -207,6 +207,7 @@ function renderRecs(d) {
         <div class="nums">
           <span class="score">${r.score.toFixed(1)}</span>
           VORP ${r.vorp.toFixed(0)} · <span class="vona">VONA ${r.vona.toFixed(1)}</span>
+          <button class="mineb" type="button" title="claim for your roster">+ MINE</button>
         </div>
         <div class="why">${esc(r.reason)}</div>
       </div>`);
@@ -222,6 +223,7 @@ function renderRecs(d) {
         <span class="mn">${esc(r.name)}${chips(r)}</span>
         <span class="mp">${r.pos} ${r.team}</span>
         <span class="ms">${r.score.toFixed(1)}</span>
+        <button class="mineb" type="button" title="claim for your roster">+</button>
       </div>`);
   });
 }
@@ -268,7 +270,8 @@ function renderPos(d) {
       <span class="pn">${esc(p.name)}</span>
       <span class="pp">${isGone ? (claimed.has(p.id) ? "MINE" : "gone") : p.team}</span>
       <span class="pv">${p.vorp.toFixed(0)}</span>
-      <span class="pa">${p.adp ? p.adp.toFixed(0) : "—"}</span></div>`;
+      <span class="pa">${p.adp ? p.adp.toFixed(0) : "—"}</span>
+      ${isGone ? "" : '<button class="mineb" type="button" title="claim">+</button>'}</div>`;
     return out;
   }).join("") || `<div class="shead">none left</div>`;
 }
@@ -311,6 +314,7 @@ function renderBest(d) {
         <span class="bn">${esc(b.name)}</span>
         <span class="bc">${b.count}</span>
         <span class="bk">cliff ${b.cliff.toFixed(1)}</span>
+        <button class="mineb" type="button" title="claim for your roster">+</button>
       </div>`);
   }
 }
@@ -403,14 +407,16 @@ function refreshDrop() {
   const raw = $("q").value;
   const q = queryText();
   CLAIM = raw.startsWith("+");
+  document.body.classList.toggle("claiming", CLAIM);
   const drop = $("drop"), hint = $("hint");
   $("q").classList.toggle("claiming", CLAIM);
   if (raw.startsWith("/") || !q.trim()) {
     drop.hidden = true; HITS = [];
     hint.textContent = EDITING !== null
       ? `fixing pick ${EDITING} — type the correct player, Esc to cancel`
-      : (ANCHOR !== null ? `next entry → overall #${ANCHOR}` : "");
-    hint.className = EDITING !== null ? "warn" : "";
+      : (ANCHOR !== null ? `next entry → overall #${ANCHOR}`
+                         : (CLAIM ? "claiming for your roster — type a name" : ""));
+    hint.className = EDITING !== null ? "warn" : (CLAIM ? "good" : "");
     return;
   }
   const gone = draftedMap();
@@ -569,6 +575,34 @@ async function openDrawer(slot) {
   $("drawer").hidden = false;
 }
 
+async function markPlayer(id, mine) {
+  if (!BOARD.length) { toast("still loading the board…", "warn"); return; }
+  const player = BY_ID.get(Number(id));
+  if (!player) { toast("unknown player", "bad"); return; }
+  const gone = goneSet();
+  if (gone.has(player.id)) {
+    // Already off the board -- flip ownership instead of erroring.
+    await post("/mine", { player_id: player.id, mine });
+    toast(mine ? `MINE — ${player.name}` : `released — ${player.name}`,
+          mine ? "good" : "warn");
+    return;
+  }
+  const d = await post("/pick", { player_id: player.id, mine });
+  if (d) toast(mine ? `MINE — ${player.name}` : `gone — ${player.name}`,
+               mine ? "good" : "");
+}
+
+// Any row or card carrying data-id: click marks gone, shift-click claims, and
+// an explicit .mineb button claims regardless of modifier.
+function wireMarkable(hostId) {
+  $(hostId).addEventListener("click", e => {
+    const btn = e.target.closest(".mineb");
+    const el = e.target.closest("[data-id]");
+    if (!el) return;
+    markPlayer(el.dataset.id, !!btn || e.shiftKey);
+  });
+}
+
 function toggleHelp(on) { $("helpcard").hidden = !on; }
 
 function closeOverlays() {
@@ -669,24 +703,9 @@ $("log").addEventListener("click", e => {
   refreshDrop();
 });
 
-$("bestrows").addEventListener("click", e => {
-  const el = e.target.closest(".brow");
-  if (el) { $("q").value = ""; $("q").focus(); openPositionHint(el.dataset.pos); }
-});
-
-function openPositionHint(pos) {
-  const b = STATE.best_at[pos];
-  if (b && b.name) { $("q").value = b.name; refreshDrop(); }
-}
-
-$("recs").addEventListener("click", e => {
-  const el = e.target.closest(".card");
-  if (el) { const p = BY_ID.get(parseInt(el.dataset.id, 10)); if (p) commit(p); }
-});
-$("morerows").addEventListener("click", e => {
-  const el = e.target.closest(".mrow");
-  if (el) { const p = BY_ID.get(parseInt(el.dataset.id, 10)); if (p) commit(p); }
-});
+wireMarkable("recs");
+wireMarkable("morerows");
+wireMarkable("bestrows");
 
 document.getElementById("tabs").addEventListener("click", e => {
   const b = e.target.closest(".tab");
@@ -704,16 +723,11 @@ $("poschips").addEventListener("click", e => {
 
 // A row click marks the player gone; shift-click claims them. This is the
 // fast path when you can read a name off the draft board but cannot type it.
-$("posrows").addEventListener("click", async e => {
+$("posrows").addEventListener("click", e => {
   const row = e.target.closest(".prow");
   if (!row || row.classList.contains("taken")) return;
-  if (!BOARD.length) { toast("still loading the board…", "warn"); return; }
-  const player = BY_ID.get(parseInt(row.dataset.id, 10));
-  if (!player) { toast("unknown player row", "bad"); return; }
-  STUCK.add(player.id);        // hold its place so the rows below do not move
-  const d = await post("/pick", { player_id: player.id, mine: e.shiftKey });
-  if (d) toast(e.shiftKey ? `MINE — ${player.name}` : `gone — ${player.name}`,
-               e.shiftKey ? "good" : "");
+  STUCK.add(Number(row.dataset.id));   // hold its place; rows below must not move
+  markPlayer(row.dataset.id, !!e.target.closest(".mineb") || e.shiftKey);
 });
 
 $("myrows").addEventListener("click", async e => {

@@ -396,3 +396,25 @@ def test_roster_shape_actually_moves_replacement_level():
         "extra flex slots must push replacement deeper")
     assert replacement_ranks(pool, default_config(14, 15, 1))["RB"] > one_flex["RB"], (
         "more teams must push replacement deeper")
+
+
+def test_mine_endpoint_resolves_by_player_id(session):
+    """The UI's claim buttons send player_id, not an overall pick number --
+    clicking a card knows who, not which seat."""
+    session.store.append(1)                      # marked gone by somebody
+    hit = next(p for p in session.store.snapshot() if p.player_id == 1)
+    assert hit.mine is False
+    session.store.set_mine(hit.overall, True)    # what POST /mine does
+    assert session.store.my_players() == [1]
+
+
+def test_claiming_an_already_gone_player_does_not_double_record(session):
+    """Clicking gone then MINE on the same player must flip ownership, not add
+    a second pick -- the partial unique index would reject it anyway, but the
+    UI should never get that far."""
+    session.store.append(1)
+    before = session.store.count()
+    hit = next(p for p in session.store.snapshot() if p.player_id == 1)
+    session.store.set_mine(hit.overall, True)
+    assert session.store.count() == before
+    assert session.store.my_players() == [1]
