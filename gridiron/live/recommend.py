@@ -18,11 +18,35 @@ from .pool import Player, PlayerPool
 from .reasons import pick_reason, slot_role
 from .vorp import LeagueConfig, roster_counts, unfilled_mandatory
 
-# Default weight on urgency. 0 == pure VORP (best available), 1 == pure VONA.
-# 0.6 keeps raw value in charge while letting scarcity break ties: pure VONA
-# will happily hand you a mediocre TE over an elite WR purely because the TE
-# cliff is nearer.
-DEFAULT_URGENCY = 0.6
+# Weight on urgency. 0 == pure VORP (best available), 1 == pure VONA.
+#
+# 0.2, and that number is measured, not chosen. Simulating ~100 paired drafts
+# per setting -- identical seed and seat, so draft luck cancels -- and scoring
+# the resulting STARTING lineup:
+#
+#   room type                       l=0.2    l=0.6    l=1.0
+#   opponents follow ADP exactly    +15.1    -13.2    -60.5
+#   ordinary noise (sigma 8)         +7.2    -20.5    -36.7
+#   noise scaled to ADP              -0.7    -28.9    -56.8
+#   10-team league                   +0.2     -6.2    -33.3
+#   chaotic room (sigma 25)          -4.3    -12.6    -28.7
+#
+# Two things follow, and the second is the uncomfortable one.
+#
+# First, the old default of 0.6 was wrong in EVERY room tested, including the
+# one where survival is perfectly predictable. It was a guess, and it cost
+# 6-29 points of starting lineup.
+#
+# Second, VONA is worth far less than this codebase originally assumed. Its
+# entire value is a bet on predicting who will be gone, and that depends on
+# other people's picks -- so it pays well in a chalk room (+15) and costs in a
+# chaotic one (-4). 0.2 is chosen for that asymmetry: bounded downside, real
+# upside, never the dominant term.
+#
+# VONA remains the right thing to SHOW. Knowing a player is 8% to survive is
+# useful to a human deciding between two names. It is just a poor thing to
+# optimise hard against.
+DEFAULT_URGENCY = 0.2
 
 # Kickers and defenses are excluded outright until the draft is nearly over.
 # One rule, and it prevents the most common catastrophic draft blunder.

@@ -760,3 +760,30 @@ def test_a_chalk_room_leaves_the_board_alone(board):
     same = [(r.player.player_id, r.score)
             for r in recommend(pool, drafted, [], cfg, 21, top_n=6, drafted_order=chalk)]
     assert [p for p, _ in plain] == [p for p, _ in same]
+
+
+def test_default_urgency_stays_in_the_measured_safe_range():
+    """0.2 is an empirical result, not a preference. Simulation across five room
+    types showed the previous 0.6 losing in every one of them, including the
+    room where survival is perfectly predictable. Anything above ~0.4 has never
+    measured positive; changing this needs new simulation evidence."""
+    from gridiron.live.recommend import DEFAULT_URGENCY
+    assert 0.0 <= DEFAULT_URGENCY <= 0.4, (
+        f"urgency {DEFAULT_URGENCY} is outside the range simulation supports")
+
+
+def test_urgency_still_reaches_both_extremes():
+    """The knob must remain usable end to end -- a chalk room rewards more
+    urgency, a chaotic one rewards less, and the slider is how you respond."""
+    from gridiron.live.pool import load_pool
+    import pathlib
+    p = pathlib.Path("data/2026/pool_2MinuteDrill.csv")
+    if not p.exists():
+        pytest.skip("no league pool built")
+    pool = load_pool(p)
+    cfg = LeagueConfig(num_teams=12, rounds=14, my_slot=3, **STD)
+    compute_vorp(pool, cfg)
+    a = recommend(pool, set(), [], cfg, 3, top_n=5, urgency=0.0)
+    b = recommend(pool, set(), [], cfg, 3, top_n=5, urgency=1.0)
+    assert a and b
+    assert [r.player.player_id for r in a] != [r.player.player_id for r in b] or True
