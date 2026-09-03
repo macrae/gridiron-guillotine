@@ -418,3 +418,63 @@ def test_claiming_an_already_gone_player_does_not_double_record(session):
     session.store.set_mine(hit.overall, True)
     assert session.store.count() == before
     assert session.store.my_players() == [1]
+
+
+# --------------------------------------------------------------------------
+# 11. League scoring
+# --------------------------------------------------------------------------
+
+def test_rebuilding_at_espn_rules_reproduces_espn():
+    """The check that says the component sidecar can be trusted: scoring it at
+    ESPN's own rules (full PPR, 4-pt passing TDs) must land on ESPN's number."""
+    import csv
+    from pathlib import Path
+    from gridiron.live.scoring import ScoringRules, score_components
+    D = Path("data/2026")
+    if not (D / "raw_stats_latest.csv").exists():
+        pytest.skip("no pool built")
+    raw = {int(r["player_id"]): r for r in csv.DictReader(open(D / "raw_stats_latest.csv"))}
+    pool = list(csv.DictReader(open(D / "player_pool_latest.csv")))
+    rules = ScoringRules()          # ESPN defaults
+    checked = 0
+    for row in pool:
+        if row["pos"] in ("K", "DST"):
+            continue
+        comp = raw.get(int(row["player_id"]))
+        if not comp or float(row["proj_points"]) < 100:
+            continue
+        got, want = score_components(comp, rules), float(row["proj_points"])
+        # residual is sacks / 2-pt / return TDs, which the sidecar omits
+        assert abs(got - want) < 12, f"{row['name']}: rebuilt {got:.1f} vs ESPN {want:.1f}"
+        checked += 1
+    assert checked > 100
+
+
+def test_six_point_passing_tds_lift_every_qb_including_replacement():
+    """Why the 2MinuteDrill scoring barely changes QB draft value: a uniform
+    lift cancels out of VORP. Only the SPREAD matters."""
+    from gridiron.live.scoring import FIRST_DOWN, TWO_MINUTE_DRILL, score_components
+    heavy = {"pass_yds": 4500, "pass_td": 35, "interceptions": 10}
+    light = {"pass_yds": 4500, "pass_td": 20, "interceptions": 10}
+    d_heavy = score_components(heavy, TWO_MINUTE_DRILL) - score_components(heavy, FIRST_DOWN)
+    d_light = score_components(light, TWO_MINUTE_DRILL) - score_components(light, FIRST_DOWN)
+    assert d_heavy == pytest.approx(70.0)     # 35 TD x 2
+    assert d_light == pytest.approx(40.0)     # 20 TD x 2
+    # The differential -- not the level -- is what can move the board.
+    assert d_heavy - d_light == pytest.approx(30.0)
+
+
+def test_rescore_keeps_kickers_and_defenses(tmp_path):
+    from gridiron.live.scoring import TWO_MINUTE_DRILL, rescore_pool
+    from pathlib import Path
+    D = Path("data/2026")
+    if not (D / "raw_stats_latest.csv").exists():
+        pytest.skip("no pool built")
+    out, rescored, kept = rescore_pool(
+        D / "player_pool_latest.csv", D / "raw_stats_latest.csv",
+        TWO_MINUTE_DRILL, tmp_path / "p.csv")
+    assert rescored > 400 and kept > 50
+    import csv
+    rows = list(csv.DictReader(open(out)))
+    assert [float(r["proj_points"]) for r in rows] == sorted(
+        [float(r["proj_points"]) for r in rows], reverse=True), "must stay ranked"
