@@ -478,3 +478,78 @@ def test_rescore_keeps_kickers_and_defenses(tmp_path):
     rows = list(csv.DictReader(open(out)))
     assert [float(r["proj_points"]) for r in rows] == sorted(
         [float(r["proj_points"]) for r in rows], reverse=True), "must stay ranked"
+
+
+# --------------------------------------------------------------------------
+# 12. Per-game yardage bonuses
+# --------------------------------------------------------------------------
+
+def test_bonus_probability_is_monotonic_and_bounded():
+    from gridiron.live.scoring import p_game_at_least
+    ps = [p_game_at_least(m, 100, 0.55) for m in range(20, 200, 10)]
+    assert all(0.0 <= x <= 1.0 for x in ps)
+    assert all(b >= a for a, b in zip(ps, ps[1:])), "more yards must never lower P"
+    assert p_game_at_least(0, 100, 0.55) == 0.0
+    # Not ~1.0 even at an absurd mean: gamma keeps a real left tail, so a
+    # 400-yd/game back still has ~3% of games under 100. That is correct.
+    assert 0.95 < p_game_at_least(400, 100, 0.55) < 1.0
+    assert p_game_at_least(1000, 100, 0.55) > 0.99
+
+
+def test_rushing_and_receiving_share_one_threshold():
+    """A back with 60 rushing + 45 receiving has a real shot at 100 combined.
+    Scoring the two separately would miss it -- and this is exactly why these
+    bonuses tilt toward running backs."""
+    from gridiron.live.scoring import TWO_MINUTE_DRILL, expected_bonus
+    split = {"rush_yds": 60 * 17, "rec_yds": 45 * 17}
+    rush_only = {"rush_yds": 60 * 17, "rec_yds": 0}
+    rec_only = {"rush_yds": 0, "rec_yds": 45 * 17}
+    combined = expected_bonus(split, "RB", TWO_MINUTE_DRILL)
+    separate = (expected_bonus(rush_only, "RB", TWO_MINUTE_DRILL)
+                + expected_bonus(rec_only, "RB", TWO_MINUTE_DRILL))
+    assert combined > separate * 1.5
+
+
+def test_no_bonus_when_the_league_pays_none():
+    from gridiron.live.scoring import FIRST_DOWN, expected_bonus
+    assert expected_bonus({"rush_yds": 2000, "rec_yds": 500}, "RB", FIRST_DOWN) == 0.0
+    assert not FIRST_DOWN.has_bonuses
+
+
+def test_bonus_ordering_is_stable_across_the_variance_assumption():
+    """The LEVEL of the estimate depends on an assumed CV; the ORDERING must
+    not. That is what makes it usable despite being uncertain."""
+    from gridiron.live.scoring import TWO_MINUTE_DRILL, expected_bonus
+    import gridiron.live.scoring as sc
+    big = {"rush_yds": 1400, "rec_yds": 600}      # ~118 yds/game
+    small = {"rush_yds": 700, "rec_yds": 250}     # ~56 yds/game
+    orig = dict(sc.CV_BY_POS)
+    try:
+        for cv in (0.40, 0.55, 0.70, 0.85):
+            sc.CV_BY_POS["RB"] = cv
+            assert (expected_bonus(big, "RB", TWO_MINUTE_DRILL)
+                    > expected_bonus(small, "RB", TWO_MINUTE_DRILL)), f"flipped at cv={cv}"
+    finally:
+        sc.CV_BY_POS.clear(); sc.CV_BY_POS.update(orig)
+
+
+def test_scoring_preset_resolves_from_the_league_json(tmp_path):
+    import json
+    from gridiron.live.league import ConfigError, scoring_for
+    p = tmp_path / "lg.json"
+    p.write_text(json.dumps({"num_teams": 12, "scoring": "2MinuteDrill"}), encoding="utf-8")
+    assert scoring_for(p).pass_td == 6.0
+    p.write_text(json.dumps({"scoring": "nonsense"}), encoding="utf-8")
+    with pytest.raises(ConfigError, match="unknown scoring preset"):
+        scoring_for(p)
+
+
+def test_slot_role_names_the_seat(session):
+    from gridiron.live.reasons import slot_role
+    starters = {"QB": 1, "RB": 2, "WR": 2, "TE": 1}
+    p = session.pool.players[0]                       # an RB in the fixture
+    assert slot_role(p, {}, starters, 1) == f"starts {p.pos}1"
+    assert slot_role(p, {p.pos: 1}, starters, 1) == f"starts {p.pos}2"
+    assert slot_role(p, {p.pos: 2}, starters, 1) == "starts FLEX"
+    # flex consumed by a surplus at another position
+    assert slot_role(p, {p.pos: 2, "WR": 3}, starters, 1) == "bench"

@@ -18,7 +18,9 @@ import argparse
 import sys
 from pathlib import Path
 
-from gridiron.live.league import ConfigError, default_config, describe, load_config, save_config
+from gridiron.live.league import (ConfigError, default_config, describe,
+                                  load_config, save_config, scoring_for)
+from gridiron.live.scoring import bonus_note, rescore_pool
 from gridiron.live.server import build_session, serve
 
 
@@ -76,10 +78,24 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {out}\n  {describe(cfg)}")
         return 0
 
+    # Each league scores differently, so each gets its own board. ESPN's
+    # numbers are ITS scoring; using them unchanged silently misprices any
+    # league that does not match.
+    rules = scoring_for(cfg_path)
+    pool_path = args.pool
+    raw_path = args.pool.parent / "raw_stats_latest.csv"
+    if rules.name != "yahoo_default" and raw_path.exists():
+        pool_path, n, kept = rescore_pool(
+            args.pool, raw_path, rules, args.pool.parent / f"pool_{args.league}.csv")
+        print(f"  scoring: {rules.name}  (rescored {n}, kept ESPN for {kept} K/DST)")
+        note = bonus_note(rules)
+        if note:
+            print(f"  {note}")
+
     print(f"  {describe(cfg)}")
     session = build_session(
         league=args.league,
-        pool_csv=args.pool,
+        pool_csv=pool_path,
         db_path=Path(f"data/2026/draft_{args.league}.sqlite"),
         config=cfg,
         accent=args.accent,

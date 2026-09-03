@@ -17,6 +17,7 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
+from .scoring import PRESETS, ScoringRules
 from .vorp import LeagueConfig
 
 #: Yahoo's default full-PPR lineup: QB, RB, RB, WR, WR, TE, W/R/T, K, DEF + 6 BN.
@@ -34,6 +35,18 @@ def default_config(num_teams: int = 12, rounds: int = 15, my_slot: int = 1) -> L
         flex_count=YAHOO_STANDARD["flex_count"],
         max_at_pos=dict(YAHOO_STANDARD["max_at_pos"]),
     )
+
+
+def scoring_for(path: Path) -> ScoringRules:
+    """The scoring preset named by a league JSON, or the default."""
+    if not Path(path).exists():
+        return PRESETS["yahoo_default"]
+    raw = json.loads(Path(path).read_text(encoding="utf-8"))
+    name = raw.get("scoring", "yahoo_default")
+    if name not in PRESETS:
+        raise ConfigError(
+            f"unknown scoring preset {name!r}; known: {sorted(PRESETS)}")
+    return PRESETS[name]
 
 
 def load_config(path: Path) -> LeagueConfig:
@@ -54,10 +67,13 @@ def load_config(path: Path) -> LeagueConfig:
     return cfg
 
 
-def save_config(cfg: LeagueConfig, path: Path) -> Path:
+def save_config(cfg: LeagueConfig, path: Path, scoring: str | None = None) -> Path:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(asdict(cfg), indent=2, sort_keys=True) + "\n",
+    data = asdict(cfg)
+    if scoring:
+        data["scoring"] = scoring
+    path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n",
                     encoding="utf-8")
     return path
 

@@ -25,6 +25,25 @@ def draft_phase(round_num: int) -> str:
     return "endgame"
 
 
+def slot_role(player: Player, counts: dict[str, int], starters: dict[str, int],
+              flex_count: int) -> str:
+    """Which lineup seat this player would actually occupy.
+
+    The engine already prices this in via _need_multiplier, but silently. Saying
+    it out loud is what lets you sanity-check a recommendation in one glance --
+    "3rd RB" reads very differently depending on whether the flex is open.
+    """
+    have = counts.get(player.pos, 0)
+    if have < starters.get(player.pos, 0):
+        return f"starts {player.pos}{have + 1}"
+    if player.pos in ("RB", "WR", "TE"):
+        used = sum(max(0, counts.get(q, 0) - starters.get(q, 0))
+                   for q in ("RB", "WR", "TE"))
+        if used < flex_count:
+            return "starts FLEX"
+    return "bench"
+
+
 def pick_reason(
     player: Player,
     vorp: float,
@@ -34,9 +53,12 @@ def pick_reason(
     pos_remaining: int,
     cliff: float,
     needs: dict[str, int],
+    role: str | None = None,
 ) -> str:
     """Short pipe-joined rationale. Ordered most-decisive first."""
     tags: list[str] = []
+    if role:
+        tags.append(role)
 
     # Why he is urgent -- the number that actually drives the pick.
     if survival < 0.15:
@@ -58,9 +80,6 @@ def pick_reason(
         tags.append("strong value")
     elif vorp <= 0:
         tags.append("replacement level")
-
-    if needs.get(player.pos):
-        tags.append(f"fills {player.pos}")
 
     if pos_remaining <= 5:
         tags.append(f"only {pos_remaining} {player.pos} left")

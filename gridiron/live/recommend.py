@@ -15,7 +15,7 @@ from dataclasses import dataclass
 
 from . import snake, vona as vona_mod
 from .pool import Player, PlayerPool
-from .reasons import pick_reason
+from .reasons import pick_reason, slot_role
 from .vorp import LeagueConfig, roster_counts, unfilled_mandatory
 
 # Default weight on urgency. 0 == pure VORP (best available), 1 == pure VONA.
@@ -213,6 +213,7 @@ def recommend(
     top = scored[:top_n]
     for r in top:
         r.reason = pick_reason(
+            role=slot_role(r.player, counts, league.starters, league.flex_count),
             player=r.player,
             vorp=r.vorp,
             vona=r.vona,

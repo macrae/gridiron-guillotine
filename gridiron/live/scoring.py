@@ -15,8 +15,22 @@ return TDs, which ESPN includes and the sidecar does not.
 from __future__ import annotations
 
 import csv
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
+
+#: Games in a season. Season projections already price in expected missed time,
+#: so dividing by 17 gives yards per SCHEDULED game. For a player projected to
+#: miss games this understates his per-game rate, which makes the bonus estimate
+#: conservative for injury-prone players -- the safe direction to be wrong.
+GAMES = 17
+
+#: Coefficient of variation of single-game yardage, by position. Passing yardage
+#: is far steadier week to week than rushing or receiving, so one shared CV would
+#: badly misprice the 350/450 passing bonuses against the 100/150 rushing and
+#: receiving ones.
+CV_BY_POS = {"QB": 0.30, "RB": 0.55, "WR": 0.65, "TE": 0.70}
+CV_DEFAULT = 0.60
 
 
 @dataclass
@@ -68,6 +82,78 @@ def _f(row: dict, key: str) -> float:
     return float(row.get(key) or 0.0)
 
 
+def _lower_regularized(s: float, z: float) -> float:
+    """Regularized lower incomplete gamma P(s, z). Stdlib only."""
+    if z <= 0:
+        return 0.0
+    if z < s + 1:                      # series expansion
+        term = 1.0 / s
+        total = term
+        for n in range(1, 400):
+            term *= z / (s + n)
+            total += term
+            if abs(term) < abs(total) * 1e-12:
+                break
+        return total * math.exp(-z + s * math.log(z) - math.lgamma(s))
+    tiny = 1e-300                      # continued fraction for the upper tail
+    b = z + 1 - s
+    c = 1.0 / tiny
+    d = 1.0 / b
+    h = d
+    for i in range(1, 400):
+        an = -i * (i - s)
+        b += 2
+        d = an * d + b
+        d = tiny if abs(d) < tiny else d
+        c = b + an / c
+        c = tiny if abs(c) < tiny else c
+        d = 1.0 / d
+        delta = d * c
+        h *= delta
+        if abs(delta - 1.0) < 1e-12:
+            break
+    return 1.0 - math.exp(-z + s * math.log(z) - math.lgamma(s)) * h
+
+
+def p_game_at_least(mean_per_game: float, threshold: float, cv: float) -> float:
+    """P(a single game clears `threshold` yards).
+
+    Gamma is the right shape for per-game yardage: non-negative and
+    right-skewed. Season totals cannot recover the true game-by-game
+    distribution, so this is an estimate -- but the ORDERING it produces is
+    stable across any plausible CV, even though the level is not.
+    """
+    if mean_per_game <= 0 or threshold <= 0:
+        return 0.0
+    shape = 1.0 / (cv * cv)
+    scale = mean_per_game / shape
+    return 1.0 - _lower_regularized(shape, threshold / scale)
+
+
+def expected_bonus(row: dict, pos: str, rules: ScoringRules) -> float:
+    """Expected season points from per-game yardage bonuses.
+
+    Rushing and receiving yards share a threshold, so they are summed before
+    the probability is taken -- a back with 60 rushing and 45 receiving yards
+    has a real shot at 100 combined, and scoring them separately would miss it
+    entirely. That is also why these bonuses tilt toward running backs.
+    """
+    if not rules.has_bonuses:
+        return 0.0
+    cv = CV_BY_POS.get(pos, CV_DEFAULT)
+    total = 0.0
+    if rules.pass_bonus:
+        ypg = _f(row, "pass_yds") / GAMES
+        for thresh, pts in rules.pass_bonus.items():
+            total += GAMES * pts * p_game_at_least(ypg, thresh, CV_BY_POS["QB"])
+    scrimmage = rules.rush_bonus or rules.rec_bonus
+    if scrimmage:
+        ypg = (_f(row, "rush_yds") + _f(row, "rec_yds")) / GAMES
+        for thresh, pts in scrimmage.items():
+            total += GAMES * pts * p_game_at_least(ypg, thresh, cv)
+    return total
+
+
 def score_components(row: dict, rules: ScoringRules) -> float:
     """Season projected points under `rules`, excluding per-game bonuses."""
     return (
@@ -111,7 +197,9 @@ def rescore_pool(pool_csv: Path, raw_csv: Path, rules: ScoringRules,
         if comp is None or row["pos"] in ("K", "DST"):
             kept += 1
             continue
-        row["proj_points"] = f"{score_components(comp, rules):.2f}"
+        pts = score_components(comp, rules)
+        pts += expected_bonus(comp, row["pos"], rules)
+        row["proj_points"] = f"{pts:.2f}"
         rescored += 1
 
     # Re-rank on the new numbers; the board's ordering is scoring-dependent.
@@ -126,14 +214,14 @@ def rescore_pool(pool_csv: Path, raw_csv: Path, rules: ScoringRules,
 
 
 def bonus_note(rules: ScoringRules) -> str:
-    """Why bonuses are recorded but not scored."""
+    """What the bonus estimate is, and how much to trust it."""
     if not rules.has_bonuses:
         return ""
     return (
         f"{rules.name} pays per-game yardage bonuses "
-        f"(pass {rules.pass_bonus}, rush {rules.rush_bonus}, rec {rules.rec_bonus}). "
-        "These are NOT in the projections: they depend on the game-by-game "
-        "distribution, and season totals cannot recover it. They reward "
-        "high-ceiling players, so treat boom/bust profiles as slightly "
-        "undervalued on this board."
+        f"(pass {rules.pass_bonus}, scrimmage {rules.rush_bonus or rules.rec_bonus}). "
+        "These ARE included, as a gamma estimate over per-game yardage -- season "
+        "totals cannot recover the true distribution, so the level is uncertain "
+        "even though the ordering is stable. They favour high-volume backs, who "
+        "reach the shared rushing+receiving threshold most often."
     )
