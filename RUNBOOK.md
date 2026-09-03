@@ -46,17 +46,25 @@ Type into the box: `/slot 7` — recalculates instantly, no restart.
 
 ## During the draft
 
-Bare text is always a player name. A leading `/` is always a command.
+**Two separate acts.** Marking a player *gone* says nothing about who took him —
+you do not need to track that, and the recommendations do not care. Claiming a
+player for your own roster is a second, explicit act.
 
 | | |
 |---|---|
-| type 2-3 letters, `Enter` | record the pick on the clock |
+| type 2-3 letters, `Enter` | **GONE** — somebody drafted them |
+| `+name` then `Enter`, or `shift-Enter` | **MINE** — you drafted them |
 | `↓` `↑` | move through matches |
 | `Esc` | clear the box |
-| `Space` on an empty box | a pick happened, you missed who — records unknown, clock still advances |
-| `⌘Z` | undo the last pick |
-| click any row in the pick log | retype it; later picks are untouched |
-| click a red **missing** row | fills that hole |
+| `Space` on an empty box | a pick happened, you missed who — clock still advances |
+| `⌘Z` | undo the last one |
+| **by position** tab, click a row | GONE. Shift-click = MINE |
+| **mine** tab, click a row | un-claim |
+| click any row in **gone** | retype it; later picks are untouched |
+
+The **by position** tab is the fast path when the room is moving quicker than you
+can type: pick the position chip, then click straight down the list. Rows you
+mark stay in place struck through, so nothing shifts under your cursor.
 
 `cmc` → McCaffrey · `arsb` → Amon-Ra St. Brown · `jsn` → Smith-Njigba.
 Mean is 2.2 keystrokes; 95% of picks resolve in 3 or fewer.
@@ -70,6 +78,8 @@ Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
 
 - **score** is the sort key: `VORP − 0.6 × what you lose by waiting`.
 - **VONA** is the decision: value that evaporates before your next turn.
+- The strip above the tabs is how many are **left** at each position; amber
+  means fewer remain than picks before your next turn.
 - **best available at each** explains the top pick. When TE shows `cliff 21.3`
   and RB shows `cliff 2.2`, a lesser tight end outranking better backs is the
   engine working, not a glitch.

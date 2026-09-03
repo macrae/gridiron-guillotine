@@ -138,10 +138,91 @@ def test_roster_slots_show_holes(session):
 
 
 def test_bye_clash_flag(session):
-    """Every fixture player has bye 7, so my first pick makes the rest clash."""
+    """Every fixture player has bye 7, so claiming one makes the rest clash."""
     assert not any(r["bye_clash"] for r in session.state()["recs"])
-    session.store.append(1, overall=3)            # overall 3 is my slot
+    session.store.append(1, mine=True)
     assert any(r["bye_clash"] for r in session.state()["recs"])
+
+
+# --------------------------------------------------------------------------
+# 10. Ownership is explicit, never inferred from snake position
+# --------------------------------------------------------------------------
+
+def test_gone_is_not_mine(session):
+    """The common case: a player is drafted by somebody else."""
+    session.store.append(1)
+    st = session.state()
+    assert st["picks_made"] == 1
+    assert st["log"][0]["mine"] is False
+    assert all(not s["filled"] for s in st["roster_slots"])
+    assert 1 in session.store.drafted_ids()      # still removed from the pool
+
+
+def test_claimed_player_lands_on_my_roster(session):
+    session.store.append(1, mine=True)
+    st = session.state()
+    assert st["log"][0]["mine"] is True
+    assert any(s["filled"] for s in st["roster_slots"])
+
+
+def test_roster_survives_missed_picks(session):
+    """The reason ownership is explicit.
+
+    Under slot inference, missing even one pick shifts every later pick by a
+    seat and silently reassigns the roster. Here the claims are recorded facts,
+    so the roster is identical no matter how ragged the surrounding log is.
+    """
+    session.store.append(1, mine=True)     # overall 1
+    session.store.append(2)                # overall 2
+    session.store.append(3)                # overall 3
+    session.store.append(4, mine=True)     # overall 4
+    tidy = sorted(session.store.my_players())
+
+    session.store.reset()
+    # Same two players claimed, but the other picks land at wildly wrong seats.
+    session.store.append(1, mine=True, overall=1)
+    session.store.append(2, overall=17)
+    session.store.append(3, overall=40)
+    session.store.append(4, mine=True, overall=41)
+    assert sorted(session.store.my_players()) == tidy
+
+
+def test_claim_can_be_applied_after_the_fact(session):
+    """You marked them gone in a hurry, then realised they were yours."""
+    session.store.append(1)
+    assert session.store.my_players() == []
+    session.store.set_mine(1, True)
+    assert session.store.my_players() == [1]
+    session.store.set_mine(1, False)
+    assert session.store.my_players() == []
+
+
+def test_remaining_counts_shrink_as_players_go(session):
+    before = session.state()["remaining"]
+    session.store.append(1)
+    after = session.state()["remaining"]
+    assert sum(after.values()) == sum(before.values()) - 1
+
+
+def test_mine_column_is_added_to_an_older_database(tmp_path):
+    """A database created before the `mine` column must still open."""
+    import sqlite3
+    from gridiron.live.store import PickStore
+    path = tmp_path / "old.sqlite"
+    con = sqlite3.connect(path)
+    con.executescript("""
+        CREATE TABLE picks (overall INTEGER PRIMARY KEY, round INTEGER NOT NULL,
+          slot INTEGER NOT NULL, player_id INTEGER, observed_name TEXT,
+          source TEXT NOT NULL DEFAULT 'manual', confidence INTEGER NOT NULL DEFAULT 50,
+          observed_at REAL NOT NULL);
+        INSERT INTO picks VALUES (1, 1, 1, 555, NULL, 'manual', 50, 0.0);
+    """)
+    con.commit(); con.close()
+    store = PickStore(path, num_teams=12)          # migrates on open
+    assert store.drafted_ids() == {555}
+    assert store.my_players() == []
+    store.set_mine(1, True)
+    assert store.my_players() == [555]
 
 
 # --------------------------------------------------------------------------

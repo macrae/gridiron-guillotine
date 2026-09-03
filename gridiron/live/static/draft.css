@@ -300,3 +300,61 @@ body { display: flex; flex-direction: column; }
    squeezed to nothing by the sections above it. */
 
 #conn { text-shadow: 0 0 3px rgba(0,0,0,.5); }
+
+/* ---------- remaining strip ---------- */
+#remstrip {
+  display: flex; gap: 0; padding: 4px 8px;
+  background: var(--panel); border-bottom: 1px solid var(--line);
+  font: 10.5px var(--mono); color: var(--dim);
+}
+#remstrip span { flex: 1; text-align: center; }
+#remstrip b { color: var(--text); font-weight: 600; }
+#remstrip .thin b { color: var(--warn); }
+
+/* ---------- tabs ---------- */
+#tabs { display: flex; background: var(--panel); border-bottom: 1px solid var(--line);
+        flex: 0 0 auto; }
+.tab {
+  flex: 1; padding: 6px 4px; background: none; border: none; cursor: pointer;
+  color: var(--dimmer); font: 10px var(--mono); text-transform: uppercase;
+  letter-spacing: .08em; border-bottom: 2px solid transparent;
+}
+.tab:hover { color: var(--text); }
+.tab.on { color: var(--text); border-bottom-color: var(--accent); }
+body.myturn .tab.on { border-bottom-color: var(--good); }
+.tab span { color: var(--dimmer); }
+
+/* ---------- position chips ---------- */
+#poschips { display: flex; flex-wrap: wrap; gap: 4px; padding: 7px 12px 4px; }
+.pchip {
+  font: 10px var(--mono); padding: 3px 8px; border-radius: 3px; cursor: pointer;
+  border: 1px solid var(--line); color: var(--dim); background: none;
+}
+.pchip:hover { color: var(--text); }
+.pchip.on { background: var(--mine); border-color: var(--mine); color: #fff; }
+
+/* ---------- generic player row (position + mine tabs) ---------- */
+.prow {
+  display: grid; grid-template-columns: 22px 1fr auto auto auto;
+  gap: 8px; align-items: baseline; padding: 4px 12px; font-size: 12px;
+  cursor: pointer; border-left: 3px solid transparent;
+}
+.prow:hover { background: var(--panel2); border-left-color: var(--mine); }
+.prow .pn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.prow .pr { font: 10px var(--mono); color: var(--dimmer); }
+.prow .pp { font: 10px var(--mono); color: var(--dim); }
+.prow .pv { font: 11px var(--mono); color: var(--text); min-width: 40px; text-align: right; }
+.prow .pa { font: 10px var(--mono); color: var(--dimmer); min-width: 38px; text-align: right; }
+.prow.claimed { border-left-color: var(--good); background: #12220f; }
+#q.claiming { border-color: var(--good); background: #0d1a0f; }
+#hint.good { color: var(--good); }
+
+/* A row marked from the position list holds its place, struck through, so the
+   rows beneath it do not shift up under a cursor that is still clicking. */
+.prow.taken { cursor: default; opacity: .5; border-left-color: transparent; }
+.prow.taken .pn { text-decoration: line-through; color: var(--dimmer); }
+.prow.taken .pp { color: var(--dimmer); font-size: 9px; letter-spacing: .06em; }
+.prow.taken:hover { background: none; border-left-color: transparent; }
+.prow.taken.claimed { opacity: .75; }
+.prow.taken.claimed .pn { color: var(--good); text-decoration: none; }
+.prow.taken.claimed .pp { color: var(--good); }

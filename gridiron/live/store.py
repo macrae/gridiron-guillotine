@@ -36,7 +36,12 @@ CREATE TABLE IF NOT EXISTS picks (
     observed_name TEXT,
     source        TEXT NOT NULL DEFAULT 'manual',
     confidence    INTEGER NOT NULL DEFAULT 50,
-    observed_at   REAL NOT NULL
+    observed_at   REAL NOT NULL,
+    -- Explicit, NOT derived from `slot`. In a fast draft you cannot reliably
+    -- track which team took which player, and inferring ownership from snake
+    -- position means one missed pick silently reassigns your whole roster.
+    -- Marking a player gone and marking a player yours are separate acts.
+    mine          INTEGER NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX IF NOT EXISTS picks_player
     ON picks(player_id) WHERE player_id IS NOT NULL;
@@ -53,6 +58,7 @@ class Pick:
     source: str
     confidence: int
     observed_at: float
+    mine: bool = False
 
 
 class PickConflict(Exception):
@@ -68,7 +74,15 @@ class PickStore:
         self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.conn.row_factory = sqlite3.Row
         self.conn.executescript(SCHEMA)
+        self._migrate()
         self.conn.commit()
+
+    def _migrate(self) -> None:
+        """Add columns to a database created by an earlier version."""
+        cols = {r["name"] for r in self.conn.execute("PRAGMA table_info(picks)")}
+        if "mine" not in cols:
+            self.conn.execute(
+                "ALTER TABLE picks ADD COLUMN mine INTEGER NOT NULL DEFAULT 0")
 
     # -- internals ---------------------------------------------------------
 
@@ -82,6 +96,7 @@ class PickStore:
             overall=r["overall"], round=r["round"], slot=r["slot"],
             player_id=r["player_id"], observed_name=r["observed_name"],
             source=r["source"], confidence=r["confidence"], observed_at=r["observed_at"],
+            mine=bool(r["mine"]),
         )
 
     # -- reads -------------------------------------------------------------
@@ -116,14 +131,32 @@ class PickStore:
 
     # -- mutations ---------------------------------------------------------
 
+    def my_players(self) -> list[int]:
+        rows = self.conn.execute(
+            "SELECT player_id FROM picks WHERE mine = 1 AND player_id IS NOT NULL"
+            " ORDER BY overall").fetchall()
+        return [r["player_id"] for r in rows]
+
+    def set_mine(self, overall: int, mine: bool = True) -> None:
+        """Flag or unflag a recorded pick as yours, after the fact."""
+        with self.conn:
+            self.conn.execute("UPDATE picks SET mine = ? WHERE overall = ?",
+                              (1 if mine else 0, overall))
+        self._log("set_mine", overall=overall, mine=mine)
+
     def append(
         self,
         player_id: int | None,
         overall: int | None = None,
         source: str = "manual",
         observed_name: str | None = None,
+        mine: bool = False,
     ) -> Pick:
-        """Record a pick. `overall` defaults to the next open slot."""
+        """Record a player as gone. `mine=True` also claims them for your roster.
+
+        `overall` defaults to the next open slot -- it is a running count, not an
+        assertion about which team picked.
+        """
         from . import snake
 
         overall = overall or self.next_overall()
@@ -153,16 +186,17 @@ class PickStore:
         with self.conn:
             self.conn.execute(
                 "INSERT INTO picks(overall, round, slot, player_id, observed_name,"
-                " source, confidence, observed_at) VALUES(?,?,?,?,?,?,?,?)"
+                " source, confidence, observed_at, mine) VALUES(?,?,?,?,?,?,?,?,?)"
                 " ON CONFLICT(overall) DO UPDATE SET"
                 "  player_id=excluded.player_id, observed_name=excluded.observed_name,"
                 "  source=excluded.source, confidence=excluded.confidence,"
-                "  observed_at=excluded.observed_at",
-                (overall, rnd, slot, player_id, observed_name, source, conf, now),
+                "  observed_at=excluded.observed_at, mine=excluded.mine",
+                (overall, rnd, slot, player_id, observed_name, source, conf, now,
+                 1 if mine else 0),
             )
         self._log("append", overall=overall, player_id=player_id, source=source,
-                  observed_name=observed_name)
-        return Pick(overall, rnd, slot, player_id, observed_name, source, conf, now)
+                  observed_name=observed_name, mine=mine)
+        return Pick(overall, rnd, slot, player_id, observed_name, source, conf, now, mine)
 
     def undo_last(self) -> Pick | None:
         row = self.conn.execute(

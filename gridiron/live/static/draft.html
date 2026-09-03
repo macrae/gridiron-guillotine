@@ -31,27 +31,42 @@
 
 <section id="recs" aria-label="recommendations"></section>
 
+<div id="remstrip"></div>
+
+<nav id="tabs">
+  <button class="tab on" data-tab="board">board</button>
+  <button class="tab" data-tab="pos">by position</button>
+  <button class="tab" data-tab="mine">mine <span id="minecount"></span></button>
+  <button class="tab" data-tab="gone">gone <span id="pickcount"></span></button>
+</nav>
+
 <div id="panel">
-<section id="bestat">
-  <div class="shead">best available at each</div>
-  <div id="bestrows"></div>
-</section>
+  <section id="t-board" class="tabpane">
+    <div class="shead">best available at each</div>
+    <div id="bestrows"></div>
+    <div class="shead">my roster</div>
+    <div id="slots"></div>
+    <div class="shead">next up</div>
+    <div id="morerows"></div>
+  </section>
 
-<section id="rosterbar">
-  <div class="shead">my roster</div>
-  <div id="slots"></div>
-</section>
+  <section id="t-pos" class="tabpane" hidden>
+    <div id="poschips"></div>
+    <div class="shead">click a row to mark gone &nbsp;·&nbsp;
+      <span class="hintlet">shift-click = mine</span></div>
+    <div id="posrows"></div>
+  </section>
 
-<section id="more">
-  <div class="shead">next up</div>
-  <div id="morerows"></div>
-</section>
+  <section id="t-mine" class="tabpane" hidden>
+    <div class="shead">my roster <span class="hintlet">click to un-claim</span></div>
+    <div id="myrows"></div>
+  </section>
 
-<section id="logsec">
-  <div class="shead">picks <span id="pickcount"></span>
-    <span class="hintlet">click a row to fix it</span></div>
-  <div id="log"></div>
-</section>
+  <section id="t-gone" class="tabpane" hidden>
+    <div class="shead">everyone drafted
+      <span class="hintlet">click a row to fix it</span></div>
+    <div id="log"></div>
+  </section>
 </div>
 
 <footer id="foot">

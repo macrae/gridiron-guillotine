@@ -82,11 +82,14 @@ class DraftSession:
     # -- derived views -----------------------------------------------------
 
     def my_roster(self):
-        return [
-            self.pool.by_id[p.player_id]
-            for p in self.store.snapshot()
-            if p.slot == self.config.my_slot and p.player_id in self.pool.by_id
-        ]
+        """Players explicitly claimed, never inferred from snake position.
+
+        Inferring ownership from `slot` means a single missed pick silently
+        reassigns the whole roster -- and in a fast draft, missed picks are the
+        normal case rather than the exception.
+        """
+        return [self.pool.by_id[pid] for pid in self.store.my_players()
+                if pid in self.pool.by_id]
 
     def roster_slots(self, roster) -> list[dict]:
         """Fill the starting lineup greedily so empty slots read as holes."""
@@ -180,7 +183,7 @@ class DraftSession:
                 "name": pl.name if pl else (pk.observed_name or "unknown"),
                 "pos": pl.pos if pl else None,
                 "team": pl.team if pl else None,
-                "mine": pk.slot == cfg.my_slot,
+                "mine": pk.mine,
                 "unknown": pk.player_id is None,
                 "source": pk.source,
             })
@@ -217,6 +220,9 @@ class DraftSession:
             "gaps": self.gaps(),
             "recs": rec_rows,
             "best_at": best_at,
+            "remaining": {
+                pos: len(self.pool.at_position(pos, drafted)) for pos in POSITIONS
+            },
             "roster_slots": self.roster_slots(roster),
             "counts": roster_counts(roster),
             "needs": unfilled_mandatory(roster, cfg),
@@ -328,7 +334,21 @@ class DraftHandler(BaseHTTPRequestHandler):
                     pid = body.get("player_id")
                     if pid is None:
                         return self._json({"error": "player_id required"}, 400)
-                    s.store.append(int(pid), overall=body.get("overall"))
+                    s.store.append(int(pid), overall=body.get("overall"),
+                                   mine=bool(body.get("mine", False)))
+                elif route == "/mine":
+                    # Claim or release a player already recorded as gone.
+                    pid = body.get("player_id")
+                    overall = body.get("overall")
+                    if overall is None and pid is not None:
+                        hit = next((p for p in s.store.snapshot()
+                                    if p.player_id == int(pid)), None)
+                        if hit is None:
+                            return self._json({"error": "player is not drafted"}, 400)
+                        overall = hit.overall
+                    if overall is None:
+                        return self._json({"error": "overall or player_id required"}, 400)
+                    s.store.set_mine(int(overall), bool(body.get("mine", True)))
                 elif route == "/skip":
                     s.store.append(None, overall=body.get("overall"),
                                    source="unknown", observed_name="unknown")

@@ -26,7 +26,8 @@ BOLD, DIM, RED, GREEN, YELLOW, CYAN, RESET = (
 )
 
 HELP = """
-  <name>        record the pick on the clock   (e.g. 'cmc', 'arsb', 'chase')
+  <name>        mark GONE -- someone drafted them  (e.g. 'cmc', 'arsb')
+  +<name>       mark MINE -- I drafted them
   /u            undo the last pick
   /c <n> <name> correct pick n
   /j <n>        jump: next entry is overall pick n
@@ -69,8 +70,7 @@ def show_state(store, pool, league, urgency):
     print(f"{bar}{'='*76}{RESET}")
 
     drafted = store.drafted_ids()
-    roster = [pool.by_id[p.player_id] for p in store.snapshot()
-              if p.slot == league.my_slot and p.player_id in pool.by_id]
+    roster = [pool.by_id[pid] for pid in store.my_players() if pid in pool.by_id]
     recs = recommend(pool, drafted, roster, league, nxt, top_n=5, urgency=urgency)
     if not recs:
         print("  (no candidates)")
@@ -197,8 +197,8 @@ def main(argv: list[str] | None = None) -> int:
                     except (KeyError, PickConflict) as e:
                         print(f"  {RED}{e}{RESET}")
             elif cmd == "r":
-                mine = [pool.by_id[p.player_id] for p in store.snapshot()
-                        if p.slot == args.slot and p.player_id in pool.by_id]
+                mine = [pool.by_id[pid] for pid in store.my_players()
+                        if pid in pool.by_id]
                 for p in mine:
                     print(f"    {p.pos:<4} {p.name:<24} {p.team}  bye {p.bye_week}")
                 if not mine:
@@ -215,13 +215,14 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"  {DIM}unknown command -- /h for help{RESET}")
             continue
 
-        who = resolve(raw, pool, store.drafted_ids())
+        claim = raw.startswith("+")
+        who = resolve(raw[1:] if claim else raw, pool, store.drafted_ids())
         if who is None:
             continue
         try:
-            p = store.append(who.player_id, overall=override)
+            p = store.append(who.player_id, overall=override, mine=claim)
             override = None
-            mine = " <- YOURS" if p.slot == args.slot else ""
+            mine = f" {GREEN}<- YOURS{RESET}" if p.mine else ""
             print(f"  {GREEN}{fmt_pick(p.overall, args.teams)}  {who.name} "
                   f"({who.pos} {who.team}){mine}{RESET}")
         except PickConflict as e:

@@ -79,6 +79,13 @@ let CURSOR = 0;
 let EDITING = null;         // overall number being corrected, or null
 let ANCHOR = null;          // forced overall for the next entry
 let POLL_FAILS = 0;
+let TAB = localStorage.getItem("gg:tab") || "board";
+let POSFILTER = localStorage.getItem("gg:pos") || "RB";
+let CLAIM = false;          // next commit claims the player for my roster
+// Players just marked from the position list. They stay rendered, struck
+// through, so the rows beneath them do NOT shift up under a moving cursor --
+// otherwise clicking quickly down the list marks the wrong players.
+let STUCK = new Set();
 
 // ---------------------------------------------------------------- transport
 
@@ -159,7 +166,11 @@ function render() {
   renderBest(d);
   renderSlots(d);
   renderLog(d);
-  $("pickcount").textContent = `${d.picks_made}/${d.teams * d.rounds}`;
+  renderRemaining(d);
+  renderPos(d);
+  renderMine(d);
+  $("pickcount").textContent = `${d.picks_made}`;
+  $("minecount").textContent = `${(d.log || []).filter(p => p.mine).length}`;
   $("urg").value = d.urgency;
   $("urgval").textContent = Number(d.urgency).toFixed(2);
 }
@@ -213,6 +224,75 @@ function renderRecs(d) {
         <span class="ms">${r.score.toFixed(1)}</span>
       </div>`);
   });
+}
+
+function renderRemaining(d) {
+  const r = d.remaining || {};
+  // Thin = fewer left than picks before your next turn, i.e. the position could
+  // empty out before you get another shot at it.
+  const until = d.my_next ? d.my_next.until : 0;
+  $("remstrip").innerHTML = ["QB", "RB", "WR", "TE", "K", "DST"].map(p => {
+    const n = r[p] || 0;
+    return `<span class="${n <= Math.max(3, until) ? "thin" : ""}">${p} <b>${n}</b></span>`;
+  }).join("");
+}
+
+function goneSet() {
+  return new Set((STATE ? STATE.log : []).filter(p => p.id).map(p => p.id));
+}
+
+function renderPos(d) {
+  const chips = ["QB", "RB", "WR", "TE", "K", "DST"];
+  $("poschips").innerHTML = chips.map(p =>
+    `<button class="pchip ${p === POSFILTER ? "on" : ""}" data-pos="${p}">${p} ${
+      (d.remaining || {})[p] || 0}</button>`).join("");
+  const gone = goneSet();
+  const claimed = new Set((d.log || []).filter(p => p.mine && p.id).map(p => p.id));
+  const rows = BOARD
+    .filter(p => p.pos === POSFILTER && p.draftable
+                 && (!gone.has(p.id) || STUCK.has(p.id)))
+    .sort((a, b) => b.vorp - a.vorp)
+    .slice(0, 60);
+  let prev = null, n = 0;
+  $("posrows").innerHTML = rows.map(p => {
+    const isGone = gone.has(p.id);
+    let out = "";
+    if (!isGone) {
+      if (prev !== null && (prev - p.vorp) >= 10) out += `<div class="tierbreak"></div>`;
+      prev = p.vorp;
+      n += 1;
+    }
+    const cls = isGone ? (claimed.has(p.id) ? "prow taken claimed" : "prow taken") : "prow";
+    out += `<div class="${cls}" data-id="${p.id}">
+      <span class="pr">${isGone ? "" : n}</span>
+      <span class="pn">${esc(p.name)}</span>
+      <span class="pp">${isGone ? (claimed.has(p.id) ? "MINE" : "gone") : p.team}</span>
+      <span class="pv">${p.vorp.toFixed(0)}</span>
+      <span class="pa">${p.adp ? p.adp.toFixed(0) : "—"}</span></div>`;
+    return out;
+  }).join("") || `<div class="shead">none left</div>`;
+}
+
+function renderMine(d) {
+  const mine = (d.log || []).filter(p => p.mine).sort((a, b) => a.overall - b.overall);
+  $("myrows").innerHTML = mine.map(p => {
+    const full = BY_ID.get(p.id) || {};
+    return `<div class="prow claimed" data-overall="${p.overall}">
+      <span class="pr">${p.pos || "?"}</span>
+      <span class="pn">${esc(p.name)}</span>
+      <span class="pp">${p.team || ""}</span>
+      <span class="pv">${full.vorp != null ? full.vorp.toFixed(0) : ""}</span>
+      <span class="pa">bye ${full.bye || "—"}</span></div>`;
+  }).join("") || `<div class="shead">nothing claimed yet — type <b>+name</b> or shift-Enter</div>`;
+}
+
+function showTab(name) {
+  TAB = name;
+  localStorage.setItem("gg:tab", name);
+  for (const el of document.querySelectorAll(".tab"))
+    el.classList.toggle("on", el.dataset.tab === name);
+  for (const el of document.querySelectorAll(".tabpane"))
+    el.hidden = el.id !== `t-${name}`;
 }
 
 function renderBest(d) {
@@ -314,10 +394,18 @@ function firstLive(hits, from = 0) {
   return -1;
 }
 
+function queryText() {
+  const raw = $("q").value;
+  return raw.startsWith("+") ? raw.slice(1) : raw;
+}
+
 function refreshDrop() {
-  const q = $("q").value;
+  const raw = $("q").value;
+  const q = queryText();
+  CLAIM = raw.startsWith("+");
   const drop = $("drop"), hint = $("hint");
-  if (q.startsWith("/") || !q.trim()) {
+  $("q").classList.toggle("claiming", CLAIM);
+  if (raw.startsWith("/") || !q.trim()) {
     drop.hidden = true; HITS = [];
     hint.textContent = EDITING !== null
       ? `fixing pick ${EDITING} — type the correct player, Esc to cancel`
@@ -355,8 +443,10 @@ function refreshDrop() {
   // Decisiveness is judged on the players still available, not on the raw hits.
   const live = HITS.filter(h => !h._taken);
   if (isDecisive(live)) {
-    hint.textContent = `Enter → ${HITS[CURSOR].name}`;
-    hint.className = "";
+    hint.textContent = CLAIM
+      ? `Enter → CLAIM ${HITS[CURSOR].name} for your roster`
+      : `Enter → ${HITS[CURSOR].name} gone   (shift-Enter or +name = mine)`;
+    hint.className = CLAIM ? "good" : "";
   } else {
     hint.textContent = `ambiguous — pick one with ↓ then Enter`;
     hint.className = "warn";
@@ -385,8 +475,8 @@ function paintCursor() {
   [...document.querySelectorAll(".hit")].forEach((el, i) =>
     el.classList.toggle("on", i === CURSOR));
   if (CURSOR >= 0) {
-    $("hint").textContent = `Enter → ${HITS[CURSOR].name}`;
-    $("hint").className = "";
+    $("hint").textContent = (CLAIM ? "Enter → CLAIM " : "Enter → ") + HITS[CURSOR].name;
+    $("hint").className = CLAIM ? "good" : "";
   }
 }
 
@@ -412,13 +502,16 @@ async function commit(player) {
     if (d) { toast(`pick ${target} → ${player.name}`, "good"); flashRow(target); }
   } else {
     const at = ANCHOR; ANCHOR = null;
-    const d = await post("/pick", { player_id: player.id, overall: at });
+    const mine = CLAIM;
+    const d = await post("/pick", { player_id: player.id, overall: at, mine });
     if (d) {
       const p = d.log[0];
-      if (p && p.mine) toast(`${p.label} ${player.name} — yours`, "good");
+      toast(mine ? `MINE — ${player.name}` : `gone — ${player.name}`,
+            mine ? "good" : "");
       flashRow(p ? p.overall : null);
     }
   }
+  CLAIM = false;
   clearInput();
 }
 
@@ -488,7 +581,7 @@ function closeOverlays() {
 $("q").addEventListener("input", refreshDrop);
 
 $("q").addEventListener("keydown", async e => {
-  const q = $("q").value;
+  const q = $("q").value;          // raw: '/' and '+' prefixes intact
   if (e.key === "Escape") {
     e.preventDefault();
     if (EDITING !== null) { EDITING = null; toast("edit cancelled"); render(); }
@@ -513,6 +606,7 @@ $("q").addEventListener("keydown", async e => {
     e.preventDefault();
     if (!q.trim()) return;
     if (q.startsWith("/")) return runCommand(q);
+    if (e.shiftKey) CLAIM = true;
     if (!HITS.length) { toast(`no match for "${q}"`, "bad"); return; }
     if (CURSOR < 0) {
       toast(HITS[0]._taken
@@ -594,6 +688,41 @@ $("morerows").addEventListener("click", e => {
   if (el) { const p = BY_ID.get(parseInt(el.dataset.id, 10)); if (p) commit(p); }
 });
 
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest(".tab");
+  if (b) { STUCK.clear(); showTab(b.dataset.tab); render(); $("q").focus(); }
+});
+
+$("poschips").addEventListener("click", e => {
+  const b = e.target.closest(".pchip");
+  if (!b) return;
+  POSFILTER = b.dataset.pos;
+  localStorage.setItem("gg:pos", POSFILTER);
+  STUCK.clear();               // fresh list, no held places
+  renderPos(STATE);
+});
+
+// A row click marks the player gone; shift-click claims them. This is the
+// fast path when you can read a name off the draft board but cannot type it.
+$("posrows").addEventListener("click", async e => {
+  const row = e.target.closest(".prow");
+  if (!row || row.classList.contains("taken")) return;
+  if (!BOARD.length) { toast("still loading the board…", "warn"); return; }
+  const player = BY_ID.get(parseInt(row.dataset.id, 10));
+  if (!player) { toast("unknown player row", "bad"); return; }
+  STUCK.add(player.id);        // hold its place so the rows below do not move
+  const d = await post("/pick", { player_id: player.id, mine: e.shiftKey });
+  if (d) toast(e.shiftKey ? `MINE — ${player.name}` : `gone — ${player.name}`,
+               e.shiftKey ? "good" : "");
+});
+
+$("myrows").addEventListener("click", async e => {
+  const row = e.target.closest(".prow");
+  if (!row) return;
+  await post("/mine", { overall: parseInt(row.dataset.overall, 10), mine: false });
+  toast("un-claimed", "warn");
+});
+
 $("urg").addEventListener("change", e => post("/config", { urgency: parseFloat(e.target.value) }));
 $("urg").addEventListener("input", e => { $("urgval").textContent = Number(e.target.value).toFixed(2); });
 $("helpbtn").addEventListener("click", () => toggleHelp($("helpcard").hidden));
@@ -610,6 +739,7 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) poll
   BOARD = b.players.map(p => Object.assign({ _keys: buildKeys(p.name) }, p));
   BY_ID = new Map(BOARD.map(p => [p.id, p]));
   await poll();
+  showTab(TAB);
   setInterval(poll, 750);
   $("q").focus();
 })();
