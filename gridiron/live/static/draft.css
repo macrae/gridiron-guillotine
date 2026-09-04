@@ -530,3 +530,7 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 .chip.inj.sev2 { background: #3a2d0a; color: var(--warn); }
 .chip.inj.sev3 { background: #3d2410; color: #e08a4a; }
 .chip.inj.sev4 { background: #3d1418; color: var(--bad); }
+
+#errbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: var(--bad); color: #2b0f0f; font: 600 12px var(--mono);
+  padding: 6px 12px; text-align: center; }

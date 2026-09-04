@@ -213,7 +213,10 @@ class DraftSession:
                 "survival": r.survival_at_next, "cliff": r.cliff,
                 "reason": r.reason,
                 "news": (self.news.get(p.player_id) or [])[:3],
-                "inj": self.injuries.get(p.player_id),
+                # `inj` is the status string and has been since the first
+                # build; the richer report gets its own key rather than
+                # overloading one that existing render code already types.
+                "injury": self.injuries.get(p.player_id),
                 # A rule above this row when the drop from the previous one is
                 # large: "these are equivalent, then it falls off".
                 "tier_break": prev is not None and (prev - r.score) >= TIER_GAP,

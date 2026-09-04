@@ -112,15 +112,38 @@ async function post(path, body) {
 }
 
 async function poll() {
+  let d;
   try {
-    const d = await getJSON(`/state?v=${VERSION}`);
+    d = await getJSON(`/state?v=${VERSION}`);
     POLL_FAILS = 0;
     setConn("live");
-    if (!d.unchanged) applyState(d);
   } catch (e) {
+    // ONLY network failures belong here. Wrapping the render in this catch too
+    // made a rendering bug look like a connection problem: the page silently
+    // stopped drawing and the only symptom was a dot changing colour.
     POLL_FAILS++;
     setConn(POLL_FAILS > 3 ? "down" : "stale");
+    return;
   }
+  if (d.unchanged) return;
+  try {
+    applyState(d);
+  } catch (err) {
+    console.error("render failed", err);
+    banner(`display error: ${err.message} — the picks are safe on the server, `
+           + `reload the page`);
+    throw err;                       // keep it in the console, unswallowed
+  }
+}
+
+function banner(msg) {
+  let el = document.getElementById("errbar");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "errbar";
+    document.body.prepend(el);
+  }
+  el.textContent = msg;
 }
 
 function setConn(cls) {
@@ -195,19 +218,23 @@ function chips(r) {
   let s = "";
   if (r.bye_clash) s += `<span class="chip bye">BYE ${r.bye}</span>`;
   if ((r.news || []).some(n => n.risky)) s += `<span class="chip news">NEWS</span>`;
-  if (r.inj && r.inj.severity > 0) {
-    const body = [r.inj.type, r.inj.detail].filter(v => v && v !== "Not Specified").join(" ");
-    s += `<span class="chip inj sev${r.inj.severity}" title="${esc(r.inj.note || "")}">`
-       + `${esc((r.inj.type || r.inj.status || "").toUpperCase())}`
-       + `${r.inj.weeks_out ? " ~" + r.inj.weeks_out + "wk" : ""}</span>`;
+  const rep = r.injury;
+  if (rep && rep.severity > 0) {
+    s += `<span class="chip inj sev${rep.severity}" title="${esc(rep.note || "")}">`
+       + `${esc((rep.type || rep.status || "").toUpperCase())}`
+       + `${rep.weeks_out ? " ~" + rep.weeks_out + "wk" : ""}</span>`;
   }
   // Nacua, McCaffrey, Chase, Jeanty, Love and Hall are all QUESTIONABLE in the
   // live pool -- chipping that is noise that teaches you to ignore chips. It
   // gets a dim dot instead; only genuinely-out players get a red chip.
-  if (r.inj && SERIOUS_INJ.has(r.inj)) {
-    s += `<span class="chip inj">${r.inj.replace(/_/g, " ")}</span>`;
-  } else if (r.inj) {
-    s += `<span class="dot q" title="${r.inj.replace(/_/g, " ").toLowerCase()}"></span>`;
+  if (!r.injury || !r.injury.severity) {
+    // Only fall back to the bare status when the injury report has nothing
+    // richer to say; otherwise the chip below carries it.
+    if (r.inj && SERIOUS_INJ.has(r.inj)) {
+      s += `<span class="chip inj">${String(r.inj).replace(/_/g, " ")}</span>`;
+    } else if (r.inj) {
+      s += `<span class="dot q" title="${String(r.inj).replace(/_/g, " ").toLowerCase()}"></span>`;
+    }
   }
   return s;
 }

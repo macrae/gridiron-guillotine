@@ -9,7 +9,7 @@ One page. Keep it open in a second tab.
 ```bash
 cd ~/gridiron-guillotine
 
-# 1. Refresh the board (injuries and ADP move all week)
+# 1. Refresh the board — pool, news AND the injury report
 .venv/bin/python -m gridiron.live.espn
 
 # 2. Launch. Slot can be wrong here -- you can fix it from the page.
@@ -106,6 +106,10 @@ Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
 - A **dashed rule** in the list is a tier break — everything below it is a step
   down.
 - `BYE 13` amber chip = clashes with someone already on your roster.
+- An injury chip (`GROIN ~1wk`, `KNEE ~5wk`) means the ESPN injury report has
+  something. Hover it for the beat-writer note — that is where role risk lives
+  ("likely to split carries", "off to the side at practice"). The **risk** tab
+  lists every hurt player still available, worst first.
 - Late rounds compress toward zero. That is true, not broken: those players
   really are near replacement.
 
