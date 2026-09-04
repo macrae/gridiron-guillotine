@@ -491,11 +491,14 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 #cellbar button.good { border-color: #2f6a3a; color: var(--good); }
 #cellbar button.good:hover { background: var(--good); color: #06210c; border-color: var(--good); }
 
+/* Destructive, so understated -- but it was understated into invisibility.
+   Legible enough to find, tinted enough to read as dangerous. */
 #resetbtn {
-  background: none; border: 1px solid var(--line); color: var(--dimmer);
-  border-radius: 4px; padding: 2px 8px; cursor: pointer; font: 10px var(--mono);
+  background: #2a1417; border: 1px solid #6b2a2e; color: #e0777c;
+  border-radius: 4px; padding: 3px 10px; cursor: pointer;
+  font: 600 10px var(--mono); letter-spacing: .06em; text-transform: uppercase;
 }
-#resetbtn:hover { color: var(--bad); border-color: #6b2a2e; }
+#resetbtn:hover { background: var(--bad); color: #2b0f0f; border-color: var(--bad); }
 #resetbtn.armed {
   background: var(--bad); color: #2b0f0f; border-color: var(--bad); font-weight: 700;
 }
