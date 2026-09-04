@@ -490,3 +490,12 @@ body.myturn .peer:hover { background: rgba(0,0,0,.28); color: #000; }
 body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06210c; }
 #cellbar button.good { border-color: #2f6a3a; color: var(--good); }
 #cellbar button.good:hover { background: var(--good); color: #06210c; border-color: var(--good); }
+
+#resetbtn {
+  background: none; border: 1px solid var(--line); color: var(--dimmer);
+  border-radius: 4px; padding: 2px 8px; cursor: pointer; font: 10px var(--mono);
+}
+#resetbtn:hover { color: var(--bad); border-color: #6b2a2e; }
+#resetbtn.armed {
+  background: var(--bad); color: #2b0f0f; border-color: var(--bad); font-weight: 700;
+}

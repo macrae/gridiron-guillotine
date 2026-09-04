@@ -901,6 +901,31 @@ $("cellbar").addEventListener("click", async e => {
 
 $("urg").addEventListener("change", e => post("/config", { urgency: parseFloat(e.target.value) }));
 $("urg").addEventListener("input", e => { $("urgval").textContent = Number(e.target.value).toFixed(2); });
+// Two-step, not a modal: a modal is slow under a clock, and a bare click on a
+// destructive control is too easy. The button becomes its own confirmation and
+// reverts after 4s if you walk away from it.
+let RESET_ARMED = null;
+$("resetbtn").addEventListener("click", async () => {
+  const b = $("resetbtn");
+  if (!RESET_ARMED) {
+    RESET_ARMED = setTimeout(() => {
+      RESET_ARMED = null; b.textContent = "reset"; b.classList.remove("armed");
+    }, 4000);
+    b.textContent = "erase all picks?";
+    b.classList.add("armed");
+    return;
+  }
+  clearTimeout(RESET_ARMED); RESET_ARMED = null;
+  b.textContent = "reset"; b.classList.remove("armed");
+  const n = STATE ? STATE.picks_made : 0;
+  const d = await post("/reset", {});
+  if (d) {
+    STUCK.clear(); SELCELL = null; EDITING = null; ANCHOR = null;
+    clearInput();
+    toast(`draft cleared — ${n} picks erased. \u21b6 undo restores them`, "warn");
+  }
+});
+
 $("helpbtn").addEventListener("click", () => toggleHelp($("helpcard").hidden));
 $("drawerclose").addEventListener("click", closeOverlays);
 

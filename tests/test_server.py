@@ -741,3 +741,36 @@ def test_state_exposes_undo_and_redo_labels(session):
     assert session.state()["undo"] == "gone: X"
     session.store.undo()
     assert session.state()["redo"] == "gone: X"
+
+
+def test_reset_clears_everything_and_is_undoable(session):
+    """Reset checkpoints first, so a mis-click during testing is recoverable
+    rather than terminal."""
+    for pid in (1, 2, 3):
+        session.store.append(pid)
+    session.store.set_mine(2, True)
+    before = session.store.snapshot()
+    session.store.checkpoint("reset")
+    session.store.reset()
+    assert session.store.snapshot() == []
+    assert session.store.drafted_ids() == set()
+    assert session.store.my_players() == []
+    assert session.state()["picks_made"] == 0
+    assert session.state()["on_clock"]["overall"] == 1, "clock back to the top"
+    assert session.store.undo() == "reset"
+    assert session.store.snapshot() == before, "undo must restore the whole draft"
+
+
+def test_reset_leaves_league_settings_alone(session):
+    """It clears picks, not configuration -- teams, rounds, slot and urgency
+    must survive, or a reset mid-test silently changes the board."""
+    session.urgency = 0.35
+    session.config.my_slot = 7
+    for pid in (1, 2):
+        session.store.append(pid)
+    session.store.checkpoint("reset"); session.store.reset()
+    st = session.state()
+    assert st["urgency"] == 0.35
+    assert st["my_slot"] == 7
+    assert st["teams"] == session.config.num_teams
+    assert st["rounds"] == session.config.rounds

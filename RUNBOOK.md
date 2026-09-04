@@ -66,7 +66,8 @@ player for your own roster is a second, explicit act.
 | `↓` `↑` | move through matches |
 | `Esc` | clear the box |
 | `Space` on an empty box | a pick happened, you missed who — clock still advances |
-| `⌘Z` | undo the last one |
+| `⌘Z` / `⌘⇧Z` | undo / redo — or the ↶ ↷ buttons in the header |
+| **reset** (footer) | clear every pick and start over; click twice to confirm |
 | **by position** tab, click a row | GONE. Shift-click = MINE |
 | **mine** tab, click a row | un-claim |
 | click any row in **gone** | retype it; later picks are untouched |
@@ -119,7 +120,7 @@ Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
 | Laptop slept | Nothing. The page fetches on wake and repaints. |
 | Out of sync with the room | `/j <pick number>` to re-anchor. |
 | Red **missing** rows | You recorded a pick out of order. Click each one and fill it — until you do, those players are still counted as available. |
-| Everything is wrong | `--reset` on relaunch wipes the league and starts over. |
+| Everything is wrong | The **reset** button in the footer, or `--reset` on relaunch. Reset is itself undoable. |
 
 **Verified**: server killed mid-draft and restarted with picks, clock and roster
 intact; terminal and web driving the same database concurrently; two leagues on
