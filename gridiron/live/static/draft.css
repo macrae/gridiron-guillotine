@@ -512,3 +512,21 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 .nrow .nvorp { font: 11px var(--mono); color: var(--dim); }
 .nrow .nhead { grid-column: 2 / span 2; font-size: 11px; color: var(--warn);
                line-height: 1.35; }
+
+/* ---------- injury report ---------- */
+.irow { padding: 5px 12px; border-bottom: 1px solid var(--line);
+        display: grid; grid-template-columns: 30px 1fr auto 38px; gap: 6px;
+        border-left: 3px solid transparent; }
+.irow.sev4 { border-left-color: var(--bad); }
+.irow.sev3 { border-left-color: #d2622a; }
+.irow.sev2 { border-left-color: var(--warn); }
+.irow .ipos { font: 700 10px var(--mono); color: var(--dim); }
+.irow .iname { font-weight: 600; font-size: 12px; }
+.irow .istat { font: 10px var(--mono); color: var(--warn); }
+.irow .ivorp { font: 11px var(--mono); color: var(--dim); text-align: right; }
+.irow .ibody { grid-column: 2 / span 3; font: 10px var(--mono); color: var(--dimmer); }
+.irow .inote { grid-column: 2 / span 3; font-size: 11px; color: var(--dim);
+               line-height: 1.35; margin-top: 2px; }
+.chip.inj.sev2 { background: #3a2d0a; color: var(--warn); }
+.chip.inj.sev3 { background: #3d2410; color: #e08a4a; }
+.chip.inj.sev4 { background: #3d1418; color: var(--bad); }

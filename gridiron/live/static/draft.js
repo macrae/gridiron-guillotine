@@ -181,6 +181,7 @@ function render() {
   renderGrid(d);
   renderPos(d);
   renderMine(d);
+  renderInjuries(d);
   renderNews(d);
   $("pickcount").textContent = `${d.picks_made}`;
   $("minecount").textContent = `${(d.log || []).filter(p => p.mine).length}`;
@@ -194,6 +195,12 @@ function chips(r) {
   let s = "";
   if (r.bye_clash) s += `<span class="chip bye">BYE ${r.bye}</span>`;
   if ((r.news || []).some(n => n.risky)) s += `<span class="chip news">NEWS</span>`;
+  if (r.inj && r.inj.severity > 0) {
+    const body = [r.inj.type, r.inj.detail].filter(v => v && v !== "Not Specified").join(" ");
+    s += `<span class="chip inj sev${r.inj.severity}" title="${esc(r.inj.note || "")}">`
+       + `${esc((r.inj.type || r.inj.status || "").toUpperCase())}`
+       + `${r.inj.weeks_out ? " ~" + r.inj.weeks_out + "wk" : ""}</span>`;
+  }
   // Nacua, McCaffrey, Chase, Jeanty, Love and Hall are all QUESTIONABLE in the
   // live pool -- chipping that is noise that teaches you to ignore chips. It
   // gets a dim dot instead; only genuinely-out players get a red chip.
@@ -384,10 +391,32 @@ function renderMine(d) {
   }).join("") || `<div class="shead">nothing claimed yet — type <b>+name</b> or shift-Enter</div>`;
 }
 
+const SEV_LABEL = {4: "sev", 3: "out", 2: "q", 1: "dtd"};
+
+function renderInjuries(d) {
+  const items = (d.risk || []).filter(x => !x.gone);
+  $("injage").textContent = d.inj_age_h == null
+    ? "not cached — run: python -m gridiron.live.injuries"
+    : `${d.inj_age_h}h old · ${items.length} available players hurt`;
+  $("injlist").innerHTML = items.map(x => {
+    const body = [x.type, x.detail].filter(v => v && v !== "Not Specified").join(" ");
+    const wk = x.weeks_out ? `~${x.weeks_out}wk` : "";
+    return `<div class="irow sev${x.severity}" data-id="${x.id}">
+      <span class="ipos">${x.pos}</span>
+      <span class="iname">${esc(x.name)}</span>
+      <span class="istat">${esc(x.status)}</span>
+      <span class="ivorp">${x.vorp.toFixed(0)}</span>
+      <div class="ibody">${esc(body)}${wk ? " · " + wk : ""}</div>
+      ${x.note ? `<div class="inote">${esc(x.note)}</div>` : ""}
+    </div>`;
+  }).join("") || `<div class="shead">nobody available is hurt</div>`;
+}
+
 function renderNews(d) {
   const items = d.news_risky || [];
   const live = items.filter(x => !x.gone);
-  $("newscount").textContent = live.length ? `${live.length}` : "";
+  const hurt = (d.risk || []).filter(x => !x.gone).length;
+  $("newscount").textContent = hurt ? `${hurt}` : (live.length ? `${live.length}` : "");
   $("newsage").textContent = d.news_age_h == null
     ? "no news cached — run: python -m gridiron.live.news"
     : `${d.news_age_h}h old`;

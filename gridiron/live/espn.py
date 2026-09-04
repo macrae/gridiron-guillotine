@@ -257,6 +257,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  news: {arts} articles covering {players} players")
     except Exception as e:                       # noqa: BLE001 - never fatal
         print(f"  news unavailable ({type(e).__name__}) -- board is still good")
+    try:
+        from .injuries import build as build_inj
+        from .pool import load_pool
+        _, matched, hurt, unmatched = build_inj(
+            args.out / "injuries.json", load_pool(args.out / "player_pool_latest.csv"))
+        print(f"  injuries: {matched} matched, {hurt} carrying an injury"
+              + (f" ({len(unmatched)} deep-roster names not in the pool)"
+                 if unmatched else ""))
+    except Exception as e:                       # noqa: BLE001 - never fatal
+        print(f"  injury report unavailable ({type(e).__name__}) -- board is still good")
     return 0
 
 

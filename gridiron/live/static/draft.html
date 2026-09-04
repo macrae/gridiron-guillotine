@@ -47,7 +47,7 @@
   <button class="tab on" data-tab="board">board</button>
   <button class="tab" data-tab="pos">by position</button>
   <button class="tab" data-tab="grid">draft grid</button>
-  <button class="tab" data-tab="news">news <span id="newscount"></span></button>
+  <button class="tab" data-tab="news">risk <span id="newscount"></span></button>
   <button class="tab" data-tab="mine">mine <span id="minecount"></span></button>
   <button class="tab" data-tab="gone">gone <span id="pickcount"></span></button>
 </nav>
@@ -76,10 +76,12 @@
   </section>
 
   <section id="t-news" class="tabpane" hidden>
-    <div class="shead">injury / role risk <span class="hintlet" id="newsage"></span></div>
+    <div class="shead">injury report <span class="hintlet" id="injage"></span></div>
+    <div id="injlist"></div>
+    <div class="shead">news headlines <span class="hintlet" id="newsage"></span></div>
     <div id="newsrisky"></div>
-    <div class="shead">note: ~50 headlines, so this is what is being talked
-      about now — not coverage of the whole pool. No news is not good news.</div>
+    <div class="shead">the injury report covers the league; the headline feed is
+      ~50 stories, so it is what is being talked about now. No news is not good news.</div>
   </section>
 
   <section id="t-mine" class="tabpane" hidden>

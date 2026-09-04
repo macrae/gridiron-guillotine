@@ -827,3 +827,65 @@ def test_news_items_sort_newest_first():
             for d in (1, 4, 2)]
     got = [i.published for i in index_by_athlete(arts)[1]]
     assert got == sorted(got, reverse=True)
+
+
+# --------------------------------------------------------------------------
+# 16. Injury report — a name join, so instrumented rather than trusted
+# --------------------------------------------------------------------------
+
+def test_injury_cache_failures_are_never_fatal(tmp_path):
+    from gridiron.live.injuries import age_hours, load
+    assert load(tmp_path / "nope.json") == {}
+    assert age_hours(tmp_path / "nope.json") is None
+    bad = tmp_path / "injuries.json"
+    bad.write_text("{ truncated", encoding="utf-8")
+    assert load(bad) == {}
+
+
+def test_severity_orders_worst_first():
+    from gridiron.live.injuries import severity
+    assert severity("Injured Reserve") > severity("Out") > severity("Questionable")
+    assert severity("Questionable") > severity("Active") == 0
+    assert severity(None) >= 0 and severity("Nonsense Status") >= 0
+
+
+@pytest.mark.parametrize("ret,today,want", [
+    ("2026-10-11", __import__("datetime").date(2026, 9, 4), 5),
+    ("2026-09-13", __import__("datetime").date(2026, 9, 4), 1),
+    ("2026-09-01", __import__("datetime").date(2026, 9, 4), None),   # already past
+    (None, None, None),
+    ("garbage", None, None),
+])
+def test_weeks_out(ret, today, want):
+    from gridiron.live.injuries import weeks_out
+    assert weeks_out(ret, today) == want
+
+
+def test_worst_status_wins_when_a_player_appears_twice():
+    """ESPN lists a player once per team entry; keeping the first would
+    under-report someone who moved to IR."""
+    from gridiron.live.injuries import severity
+    recs = [{"status": "Questionable"}, {"status": "Injured Reserve"}]
+    worst = max(recs, key=lambda r: severity(r["status"]))
+    assert worst["status"] == "Injured Reserve"
+
+
+def test_unmatched_fantasy_names_are_reported_not_swallowed(tmp_path, monkeypatch):
+    """This is the only name join in the live path. A silent miss is how you end
+    up trusting a risk report that quietly omits people."""
+    import gridiron.live.injuries as inj
+    from gridiron.live.pool import PlayerPool
+    pool = PlayerPool([_mk(1, "Real Guy")])
+    monkeypatch.setattr(inj, "fetch", lambda timeout=40: {"injuries": [{
+        "abbreviation": "SF",
+        "injuries": [
+            {"status": "Out", "details": {"type": "Knee"},
+             "athlete": {"displayName": "Nobody Here",
+                         "position": {"abbreviation": "RB"}}},
+            {"status": "Questionable", "details": {"type": "Ankle"},
+             "athlete": {"displayName": "Real Guy",
+                         "position": {"abbreviation": "RB"}}},
+        ]}]})
+    path, matched, hurt, unmatched = inj.build(tmp_path / "i.json", pool)
+    assert matched == 1 and hurt == 1
+    assert unmatched == ["Nobody Here (RB SF)"], "the miss must be surfaced"

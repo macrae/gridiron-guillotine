@@ -20,7 +20,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import news as news_mod, snake, vona
+from . import injuries as inj_mod, news as news_mod, snake, vona
 from .pool import PlayerPool, load_pool
 from .recommend import DEFAULT_URGENCY, recommend
 from .store import PickConflict, PickStore
@@ -68,6 +68,9 @@ class DraftSession:
         #: never fatal, because news must not be able to stop a draft.
         self.news = news_mod.load(Path("data/2026/news.json"))
         self.news_age = news_mod.age_hours(Path("data/2026/news.json"))
+        #: player_id -> injury report (status, body part, return date, beat note)
+        self.injuries = inj_mod.load(Path("data/2026/injuries.json"))
+        self.inj_age = inj_mod.age_hours(Path("data/2026/injuries.json"))
         self._rank = {p.player_id: i for i, p in enumerate(pool.players)}
 
     @property
@@ -210,6 +213,7 @@ class DraftSession:
                 "survival": r.survival_at_next, "cliff": r.cliff,
                 "reason": r.reason,
                 "news": (self.news.get(p.player_id) or [])[:3],
+                "inj": self.injuries.get(p.player_id),
                 # A rule above this row when the drop from the previous one is
                 # large: "these are equivalent, then it falls off".
                 "tier_break": prev is not None and (prev - r.score) >= TIER_GAP,
@@ -279,6 +283,20 @@ class DraftSession:
             # How far this room is running ahead of (or behind) national ADP.
             "adp_drift": round(vona.adp_drift(order), 1),
             "news_age_h": None if self.news_age is None else round(self.news_age, 1),
+            "inj_age_h": None if self.inj_age is None else round(self.inj_age, 1),
+            "risk": sorted(
+                ({"id": pid, "name": self.pool.by_id[pid].name,
+                  "pos": self.pool.by_id[pid].pos,
+                  "team": self.pool.by_id[pid].team,
+                  "vorp": self.pool.by_id[pid].vorp,
+                  "gone": pid in drafted,
+                  "status": v["status"], "type": v["type"], "detail": v["detail"],
+                  "weeks_out": v["weeks_out"], "severity": v["severity"],
+                  "note": v["note"]}
+                 for pid, v in self.injuries.items()
+                 if pid in self.pool.by_id and v["severity"] > 0
+                 and self.pool.by_id[pid].draftable),
+                key=lambda x: (-x["severity"], -x["vorp"])),
             "news_risky": sorted(
                 ({"id": pid,
                   "name": self.pool.by_id[pid].name,
