@@ -241,6 +241,26 @@ class PickStore:
             self.conn.execute("SELECT * FROM picks WHERE overall = ?", (overall,)).fetchone()
         )
 
+    def remove(self, overall: int) -> Pick | None:
+        """Delete one pick, leaving its slot EMPTY. Returns what was removed.
+
+        Distinct from delete_shift, which renumbers everything after it. A
+        misclick means the wrong player sits in a slot that genuinely happened,
+        so the slot must stay: gaps() then surfaces it as refillable and every
+        other pick keeps its position. Renumbering mid-draft would be far worse
+        than the mistake being fixed.
+        """
+        row = self.conn.execute(
+            "SELECT * FROM picks WHERE overall = ?", (overall,)
+        ).fetchone()
+        if row is None:
+            return None
+        pick = self._row_to_pick(row)
+        with self.conn:
+            self.conn.execute("DELETE FROM picks WHERE overall = ?", (overall,))
+        self._log("remove", overall=overall, player_id=pick.player_id)
+        return pick
+
     def delete_shift(self, overall: int) -> None:
         """Remove a pick that never happened, pulling everything after it back."""
         from . import snake

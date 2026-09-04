@@ -86,6 +86,7 @@ let CLAIM = false;          // next commit claims the player for my roster
 // through, so the rows beneath them do NOT shift up under a moving cursor --
 // otherwise clicking quickly down the list marks the wrong players.
 let STUCK = new Set();
+let SELCELL = null;         // overall of the grid cell currently selected
 
 // ---------------------------------------------------------------- transport
 
@@ -159,18 +160,20 @@ function render() {
       ? `<b>on the clock</b>`
       : `your next <b>${d.my_next.label}</b> — ${d.my_next.until} away`;
     $("afterpick").textContent = d.my_after
-      ? `then ${d.my_after.label} (${d.my_after.gap} apart)` : "";
+      ? `then ${d.my_after.label} (+${d.my_after.gap})` : "";
   } else {
     $("nextpick").textContent = "no picks left";
     $("afterpick").textContent = "";
   }
-  $("remaining").textContent = `${d.picks_remaining} picks left`;
+  $("remaining").textContent = `${d.picks_remaining} left`;
 
   renderRecs(d);
   renderBest(d);
   renderSlots(d);
   renderLog(d);
   renderRemaining(d);
+  renderSnakeStrip(d);
+  renderGrid(d);
   renderPos(d);
   renderMine(d);
   $("pickcount").textContent = `${d.picks_made}`;
@@ -247,6 +250,82 @@ function renderRemaining(d) {
 
 function goneSet() {
   return new Set((STATE ? STATE.log : []).filter(p => p.id).map(p => p.id));
+}
+
+function cellClass(c, mySlot) {
+  const cls = ["cel", c.st];
+  if (c.m) cls.push("mine");
+  if (c.s === mySlot) cls.push("seat");
+  return cls.join(" ");
+}
+
+function cellTitle(c, teams) {
+  const label = `${Math.floor((c.o - 1) / teams) + 1}.${String((c.o - 1) % teams + 1).padStart(2, "0")} (#${c.o})`;
+  if (c.st === "taken") return `${label} · ${c.n}${c.p ? ` (${c.p} ${c.t})` : ""}${c.m ? " — YOURS" : ""}`;
+  if (c.st === "unknown") return `${label} · unknown pick`;
+  if (c.st === "gap") return `${label} · MISSING — click to fill`;
+  if (c.st === "clock") return `${label} · on the clock`;
+  return `${label} · upcoming`;
+}
+
+function renderSnakeStrip(d) {
+  const g = d.grid && d.grid.rounds;
+  if (!g || !d.on_clock) { $("snakestrip").hidden = true; return; }
+  $("snakestrip").hidden = false;
+  const rnd = d.on_clock.round;
+  const row = g[rnd - 1] || [];
+  $("snakeround").textContent = `R${rnd}`;
+  $("snakecells").innerHTML = row.map(c =>
+    `<span class="${cellClass(c, d.my_slot)}" title="${esc(cellTitle(c, d.teams))}"></span>`
+  ).join("");
+  const until = d.my_next ? d.my_next.until : null;
+  $("snaketogo").textContent = until === null ? ""
+    : until === 0 ? "YOU'RE UP" : `${until} to your pick`;
+}
+
+function renderGrid(d) {
+  const g = d.grid && d.grid.rounds;
+  if (!g) return;
+  const head = `<div class="gcolhead"><span class="rlab"></span>` +
+    Array.from({ length: d.teams }, (_, i) =>
+      `<span class="c ${i + 1 === d.my_slot ? "me" : ""}">${i + 1}</span>`).join("") +
+    `</div>`;
+  $("gridtable").innerHTML = head + g.map((row, i) =>
+    `<div class="grow"><span class="rlab">R${i + 1}</span>` +
+    row.map(c =>
+      `<span class="${cellClass(c, d.my_slot)}${c.s === d.my_slot ? " myseat" : ""}"
+        data-o="${c.o}" data-st="${c.st}"
+        title="${esc(cellTitle(c, d.teams))}"></span>`).join("") +
+    `</div>`).join("");
+  $("gridlegend").innerHTML =
+    `<span class="lg" style="background:#2b6b3a"></span>taken` +
+    `<span class="lg" style="background:var(--mine)"></span>yours` +
+    `<span class="lg" style="background:var(--warn)"></span>on clock` +
+    `<span class="lg" style="background:#7a2b2f"></span>missing` +
+    `<span class="lg" style="background:#1b2230"></span>upcoming`;
+  renderCellBar(d);
+}
+
+function renderCellBar(d) {
+  const bar = $("cellbar");
+  if (SELCELL === null) {
+    bar.innerHTML = `<span class="hintlet">click a cell — a taken pick can be `
+      + `corrected or removed, an empty one filled</span>`;
+    return;
+  }
+  const cell = (d.grid.rounds.flat() || []).find(c => c.o === SELCELL);
+  if (!cell) { SELCELL = null; return renderCellBar(d); }
+  const lab = cellTitle(cell, d.teams).split(" · ")[0];
+  if (cell.st === "taken" || cell.st === "unknown") {
+    bar.innerHTML = `<span>${lab}</span><b>${esc(cell.n)}</b>`
+      + `<button data-act="correct">correct</button>`
+      + `<button data-act="remove" class="danger">remove</button>`
+      + `<button data-act="cancel">esc</button>`;
+  } else {
+    bar.innerHTML = `<span>${lab}</span><span>empty</span>`
+      + `<button data-act="fill">fill this pick</button>`
+      + `<button data-act="cancel">esc</button>`;
+  }
 }
 
 function renderPos(d) {
@@ -361,12 +440,14 @@ function renderLog(d) {
       <span class="ll">${p.label.split(" ")[0]}${p.mine ? " ★" : ""}</span>
       <span class="ln">${esc(p.name)}</span>
       <span class="lp">${p.pos ? p.pos + " " + p.team : "—"}</span>
+      <button class="rmb" data-rm="${p.overall}" title="remove — frees the player, leaves the slot empty">x</button>
     </div>`;
   }).join("");
   host.scrollTop = keep;
 
   const n = (d.gaps || []).length;
-  $("gapwarn").textContent = n ? `${n} missing` : "";
+  $("gapwarn").textContent = n ? `\u26a0 ${n}` : "";
+  $("gapwarn").title = n ? `${n} unfilled pick slot(s) -- those players are still counted as available` : "";
   $("gapwarn").hidden = !n;
 }
 
@@ -693,7 +774,15 @@ $("drop").addEventListener("click", e => {
   if (el) commit(HITS[parseInt(el.dataset.i, 10)]);
 });
 
-$("log").addEventListener("click", e => {
+$("log").addEventListener("click", async e => {
+  const rm = e.target.closest(".rmb");
+  if (rm) {
+    const overall = Number(rm.dataset.rm);
+    const row = (STATE.log || []).find(p => p.overall === overall);
+    const d = await post("/remove", { overall });
+    if (d) toast(`removed ${row ? row.name : "pick"} — #${overall} is now empty`, "warn");
+    return;
+  }
   const el = e.target.closest(".lrow");
   if (!el) return;
   const overall = parseInt(el.dataset.overall, 10);
@@ -741,6 +830,43 @@ $("myrows").addEventListener("click", async e => {
   if (!row) return;
   await post("/mine", { overall: parseInt(row.dataset.overall, 10), mine: false });
   toast("un-claimed", "warn");
+});
+
+$("gridtable").addEventListener("click", e => {
+  const cell = e.target.closest(".cel");
+  if (!cell) return;
+  SELCELL = Number(cell.dataset.o);
+  renderCellBar(STATE);
+});
+
+$("cellbar").addEventListener("click", async e => {
+  const b = e.target.closest("button");
+  if (!b || SELCELL === null) return;
+  const overall = SELCELL;
+  if (b.dataset.act === "cancel") { SELCELL = null; renderCellBar(STATE); return; }
+  if (b.dataset.act === "fill") {
+    ANCHOR = overall; SELCELL = null;
+    showTab("board"); $("q").focus(); refreshDrop();
+    toast(`next entry fills #${overall}`, "warn");
+    return;
+  }
+  if (b.dataset.act === "correct") {
+    EDITING = overall; SELCELL = null;
+    showTab("board"); $("q").focus(); refreshDrop();
+    toast(`type the correct player for #${overall}`, "warn");
+    return;
+  }
+  if (b.dataset.act === "remove") {
+    const cell = STATE.grid.rounds.flat().find(c => c.o === overall);
+    const who = cell ? cell.n : "pick";
+    const d = await post("/remove", { overall });
+    if (d) {
+      SELCELL = null;
+      // The slot stays; it becomes a hole you can refill. Nothing renumbers.
+      toast(`removed ${who} — #${overall} is now empty, ${who} is back on the board`,
+            "warn");
+    }
+  }
 });
 
 $("urg").addEventListener("change", e => post("/config", { urgency: parseFloat(e.target.value) }));

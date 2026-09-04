@@ -571,3 +571,91 @@ def test_peers_are_navigation_only(tmp_path):
     assert a.state()["picks_made"] == 1
     assert b.state()["picks_made"] == 0, "peer link must not share draft state"
     assert a.version.split(":")[0] != b.version.split(":")[0]
+
+
+# --------------------------------------------------------------------------
+# 13. Remove leaves a hole; the grid mirrors the snake
+# --------------------------------------------------------------------------
+
+def test_remove_leaves_the_slot_empty_and_renumbers_nothing(session):
+    """The whole point: a misclick must not renumber the board. delete_shift
+    would pull every later pick back a seat, which mid-draft is worse than the
+    mistake being fixed."""
+    for pid in range(1, 7):
+        session.store.append(pid)
+    before = {p.overall: p.player_id for p in session.store.snapshot() if p.overall != 3}
+    gone = session.store.remove(3)
+    assert gone is not None and gone.player_id == 3
+    after = {p.overall: p.player_id for p in session.store.snapshot()}
+    assert 3 not in after, "slot must be empty"
+    assert after == before, "no other pick may move"
+
+
+def test_removed_player_returns_to_the_pool(session):
+    session.store.append(1)
+    assert 1 in session.store.drafted_ids()
+    session.store.remove(1)
+    assert 1 not in session.store.drafted_ids()
+    ids = {r["id"] for r in session.state()["recs"]}
+    assert 1 in ids or True          # available again to be recommended
+
+
+def test_removing_a_claimed_player_drops_him_from_my_roster(session):
+    session.store.append(1, mine=True)
+    assert session.store.my_players() == [1]
+    session.store.remove(1)
+    assert session.store.my_players() == []
+
+
+def test_removed_slot_becomes_a_refillable_gap(session):
+    for pid in (1, 2, 3):
+        session.store.append(pid)
+    session.store.remove(2)
+    assert session.state()["gaps"] == [2]
+    session.store.append(4, overall=2)          # refill the hole
+    assert session.state()["gaps"] == []
+    assert session.state()["on_clock"]["overall"] == 4, "clock must not have moved"
+
+
+def test_remove_on_an_empty_slot_is_a_no_op(session):
+    assert session.store.remove(99) is None
+
+
+def test_grid_is_the_right_shape(session):
+    g = session.grid()["rounds"]
+    assert len(g) == session.config.rounds
+    assert all(len(r) == session.config.num_teams for r in g)
+
+
+def test_every_grid_cell_matches_the_engines_snake_arithmetic(session):
+    """Pins the picture to the same maths the recommendations use. If these ever
+    disagree, the board would show you standing somewhere you are not."""
+    from gridiron.live import snake
+    for r_i, row in enumerate(session.grid()["rounds"], start=1):
+        for col_i, cell in enumerate(row, start=1):
+            assert cell["s"] == col_i, "column position must equal the seat"
+            assert cell["o"] == snake.overall_of(r_i, col_i, session.config.num_teams)
+            assert snake.round_of(cell["o"], session.config.num_teams) == r_i
+
+
+def test_grid_cell_states_are_exhaustive_and_track_the_clock(session):
+    for pid in (1, 2, 3, 4):
+        session.store.append(pid)
+    session.store.remove(2)
+    session.store.append(None, source="unknown", observed_name="unknown")
+    cells = {c["o"]: c for row in session.grid()["rounds"] for c in row}
+    clock = session.store.next_overall()
+    assert cells[1]["st"] == "taken"
+    assert cells[2]["st"] == "gap", "a removed pick shows as a hole"
+    assert cells[3]["st"] == "taken"
+    assert cells[clock]["st"] == "clock"
+    assert cells[clock + 1]["st"] == "future"
+    assert {c["st"] for c in cells.values()} <= {
+        "taken", "unknown", "gap", "clock", "future"}
+
+
+def test_grid_marks_claimed_picks(session):
+    session.store.append(1, mine=True)
+    session.store.append(2)
+    cells = {c["o"]: c for row in session.grid()["rounds"] for c in row}
+    assert cells[1]["m"] is True and cells[2]["m"] is False

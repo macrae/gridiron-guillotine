@@ -125,6 +125,47 @@ class DraftSession:
             for p in self.pool.players
         ]
 
+    def grid(self) -> dict:
+        """The board in display order: rounds down, slots across, snake applied.
+
+        Built server-side on purpose. The JS already carries one ported
+        algorithm (the name index) and its parity risk; duplicating pick
+        arithmetic in the browser would add a second for no benefit. Here a
+        cell's horizontal position IS its real seat, by construction.
+        """
+        cfg = self.config
+        by_overall = {pk.overall: pk for pk in self.store.snapshot()}
+        clock = self.store.next_overall()
+        rows = []
+        for rnd in range(1, cfg.rounds + 1):
+            row = []
+            for slot in range(1, cfg.num_teams + 1):
+                o = snake.overall_of(rnd, slot, cfg.num_teams)
+                pk = by_overall.get(o)
+                if pk is not None:
+                    pl = self.pool.by_id.get(pk.player_id) if pk.player_id else None
+                    row.append({
+                        "o": o, "s": slot,
+                        "st": "taken" if pl else "unknown",
+                        "n": pl.name if pl else (pk.observed_name or "unknown"),
+                        "p": pl.pos if pl else None,
+                        "t": pl.team if pl else None,
+                        "m": pk.mine,
+                    })
+                elif o == clock:
+                    row.append({"o": o, "s": slot, "st": "clock", "n": None,
+                                "p": None, "t": None, "m": False})
+                elif o < clock:
+                    # Below the clock with nothing recorded: a hole. Either a
+                    # pick entered out of order, or one just removed.
+                    row.append({"o": o, "s": slot, "st": "gap", "n": None,
+                                "p": None, "t": None, "m": False})
+                else:
+                    row.append({"o": o, "s": slot, "st": "future", "n": None,
+                                "p": None, "t": None, "m": False})
+            rows.append(row)
+        return {"rounds": rows}
+
     def state(self) -> dict:
         cfg = self.config
         store = self.store
@@ -235,6 +276,7 @@ class DraftSession:
             "remaining": {
                 pos: len(self.pool.at_position(pos, drafted)) for pos in POSITIONS
             },
+            "grid": self.grid(),
             "roster_slots": self.roster_slots(roster),
             "counts": roster_counts(roster),
             "needs": unfilled_mandatory(roster, cfg),
@@ -369,6 +411,11 @@ class DraftHandler(BaseHTTPRequestHandler):
                         return self._json({"error": "nothing to undo"}, 400)
                 elif route == "/correct":
                     s.store.correct(int(body["overall"]), int(body["player_id"]))
+                elif route == "/remove":
+                    # Leaves the slot empty so gaps() surfaces it as refillable.
+                    gone = s.store.remove(int(body["overall"]))
+                    if gone is None:
+                        return self._json({"error": "no pick there"}, 400)
                 elif route == "/delete":
                     s.store.delete_shift(int(body["overall"]))
                 elif route == "/config":

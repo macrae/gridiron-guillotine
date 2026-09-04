@@ -70,6 +70,13 @@ player for your own roster is a second, explicit act.
 | **by position** tab, click a row | GONE. Shift-click = MINE |
 | **mine** tab, click a row | un-claim |
 | click any row in **gone** | retype it; later picks are untouched |
+| **draft grid** tab, click a cell | correct or **remove** that pick |
+| `x` on a history row | same remove, without leaving the list |
+
+**Removing frees the player and leaves the slot empty** — he goes straight back
+into search and the position counts, the slot turns red, and nothing else
+renumbers. Click the red cell (or the red log row) to fill it. This is the fast
+repair when you recorded the wrong name and do not yet know the right one.
 
 The **by position** tab is the fast path when the room is moving quicker than you
 can type: pick the position chip, then click straight down the list. Rows you
@@ -87,6 +94,9 @@ Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
 
 - **score** is the sort key: `VORP − 0.6 × what you lose by waiting`.
 - **VONA** is the decision: value that evaporates before your next turn.
+- The **snake strip** under the clock is the current round: green taken, amber
+  on the clock, red missing, your seat outlined, and how many picks to your turn.
+  The **draft grid** tab is the same thing for the whole draft.
 - The strip above the tabs is how many are **left** at each position; amber
   means fewer remain than picks before your next turn.
 - **best available at each** explains the top pick. When TE shows `cliff 21.3`

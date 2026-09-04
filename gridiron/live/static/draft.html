@@ -33,11 +33,18 @@
 
 <section id="recs" aria-label="recommendations"></section>
 
+<div id="snakestrip">
+  <span id="snakeround">R1</span>
+  <span id="snakecells"></span>
+  <span id="snaketogo"></span>
+</div>
+
 <div id="remstrip"></div>
 
 <nav id="tabs">
   <button class="tab on" data-tab="board">board</button>
   <button class="tab" data-tab="pos">by position</button>
+  <button class="tab" data-tab="grid">draft grid</button>
   <button class="tab" data-tab="mine">mine <span id="minecount"></span></button>
   <button class="tab" data-tab="gone">gone <span id="pickcount"></span></button>
 </nav>
@@ -57,6 +64,12 @@
     <div class="shead">click a row to mark gone &nbsp;·&nbsp;
       <span class="hintlet">shift-click = mine</span></div>
     <div id="posrows"></div>
+  </section>
+
+  <section id="t-grid" class="tabpane" hidden>
+    <div id="cellbar"></div>
+    <div id="gridwrap"><div id="gridtable"></div></div>
+    <div class="shead" id="gridlegend"></div>
   </section>
 
   <section id="t-mine" class="tabpane" hidden>
