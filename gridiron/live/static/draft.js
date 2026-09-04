@@ -181,6 +181,7 @@ function render() {
   renderGrid(d);
   renderPos(d);
   renderMine(d);
+  renderNews(d);
   $("pickcount").textContent = `${d.picks_made}`;
   $("minecount").textContent = `${(d.log || []).filter(p => p.mine).length}`;
   $("urg").value = d.urgency;
@@ -192,6 +193,7 @@ const SERIOUS_INJ = new Set(["OUT", "INJURY_RESERVE", "SUSPENSION", "DOUBTFUL"])
 function chips(r) {
   let s = "";
   if (r.bye_clash) s += `<span class="chip bye">BYE ${r.bye}</span>`;
+  if ((r.news || []).some(n => n.risky)) s += `<span class="chip news">NEWS</span>`;
   // Nacua, McCaffrey, Chase, Jeanty, Love and Hall are all QUESTIONABLE in the
   // live pool -- chipping that is noise that teaches you to ignore chips. It
   // gets a dim dot instead; only genuinely-out players get a red chip.
@@ -380,6 +382,22 @@ function renderMine(d) {
       <span class="pv">${full.vorp != null ? full.vorp.toFixed(0) : ""}</span>
       <span class="pa">bye ${full.bye || "—"}</span></div>`;
   }).join("") || `<div class="shead">nothing claimed yet — type <b>+name</b> or shift-Enter</div>`;
+}
+
+function renderNews(d) {
+  const items = d.news_risky || [];
+  const live = items.filter(x => !x.gone);
+  $("newscount").textContent = live.length ? `${live.length}` : "";
+  $("newsage").textContent = d.news_age_h == null
+    ? "no news cached — run: python -m gridiron.live.news"
+    : `${d.news_age_h}h old`;
+  $("newsrisky").innerHTML = items.map(x =>
+    `<div class="nrow ${x.gone ? "taken" : ""}" data-id="${x.id}">
+       <span class="npos">${x.pos}</span>
+       <span class="nname">${esc(x.name)}</span>
+       <span class="nvorp">${x.vorp.toFixed(0)}</span>
+       <div class="nhead">${esc(x.headline)}</div>
+     </div>`).join("") || `<div class="shead">nothing flagged</div>`;
 }
 
 function showTab(name) {

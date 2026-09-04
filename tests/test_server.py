@@ -774,3 +774,56 @@ def test_reset_leaves_league_settings_alone(session):
     assert st["my_slot"] == 7
     assert st["teams"] == session.config.num_teams
     assert st["rounds"] == session.config.rounds
+
+
+# --------------------------------------------------------------------------
+# 15. News — a bonus that must never break a draft
+# --------------------------------------------------------------------------
+
+def test_missing_news_cache_is_not_an_error(tmp_path):
+    from gridiron.live.news import age_hours, load
+    assert load(tmp_path / "nope.json") == {}
+    assert age_hours(tmp_path / "nope.json") is None
+
+
+def test_corrupt_news_cache_is_not_an_error(tmp_path):
+    from gridiron.live.news import load
+    p = tmp_path / "news.json"
+    p.write_text("{not json at all", encoding="utf-8")
+    assert load(p) == {}
+
+
+def test_risk_words_do_not_fire_on_ordinary_coverage():
+    """A flag that fires on routine news trains you to ignore flags. The first
+    word list flagged 'Can Geno Smith rewrite his narrative in RETURN to Jets?'
+    as an injury."""
+    from gridiron.live.news import _is_risky
+    assert not _is_risky("Can Geno Smith rewrite his narrative in return to Jets?")
+    assert not _is_risky("How A.J. Brown can elevate Drake Maye's fantasy appeal")
+    assert not _is_risky("Fantasy football fast facts: quick-hit notes")
+    assert _is_risky("Panthers RB Jonathon Brooks still out with knee injury")
+    assert _is_risky("Star WR expected to miss four weeks")
+    assert _is_risky("Backfield now a committee, coach says")
+
+
+def test_news_indexes_by_athlete_id_not_by_name():
+    """Name joins are the failure mode this deliberately avoids."""
+    from gridiron.live.news import index_by_athlete
+    idx = index_by_athlete([{
+        "headline": "Star RB has knee injury",
+        "published": "2026-09-03T00:00:00Z",
+        "links": {"web": {"href": "http://x"}},
+        "categories": [{"type": "athlete", "athlete": {"id": "4429795"}},
+                       {"type": "team", "team": {"id": "8"}}],
+    }])
+    assert list(idx) == [4429795]
+    assert idx[4429795][0].risky is True
+
+
+def test_news_items_sort_newest_first():
+    from gridiron.live.news import index_by_athlete
+    arts = [{"headline": f"item {d}", "published": f"2026-09-0{d}T00:00:00Z",
+             "links": {}, "categories": [{"type": "athlete", "athlete": {"id": "1"}}]}
+            for d in (1, 4, 2)]
+    got = [i.published for i in index_by_athlete(arts)[1]]
+    assert got == sorted(got, reverse=True)

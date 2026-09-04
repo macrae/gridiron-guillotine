@@ -20,7 +20,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import snake, vona
+from . import news as news_mod, snake, vona
 from .pool import PlayerPool, load_pool
 from .recommend import DEFAULT_URGENCY, recommend
 from .store import PickConflict, PickStore
@@ -64,6 +64,10 @@ class DraftSession:
         self.counter = 0
         self.lock = threading.Lock()
         self.replacement = compute_vorp(pool, config)
+        #: player_id -> news items. Loaded once; a missing or stale cache is
+        #: never fatal, because news must not be able to stop a draft.
+        self.news = news_mod.load(Path("data/2026/news.json"))
+        self.news_age = news_mod.age_hours(Path("data/2026/news.json"))
         self._rank = {p.player_id: i for i, p in enumerate(pool.players)}
 
     @property
@@ -205,6 +209,7 @@ class DraftSession:
                 "score": r.score, "vorp": r.vorp, "vona": r.vona,
                 "survival": r.survival_at_next, "cliff": r.cliff,
                 "reason": r.reason,
+                "news": (self.news.get(p.player_id) or [])[:3],
                 # A rule above this row when the drop from the previous one is
                 # large: "these are equivalent, then it falls off".
                 "tier_break": prev is not None and (prev - r.score) >= TIER_GAP,
@@ -273,6 +278,17 @@ class DraftSession:
             "redo": store.redo_label,
             # How far this room is running ahead of (or behind) national ADP.
             "adp_drift": round(vona.adp_drift(order), 1),
+            "news_age_h": None if self.news_age is None else round(self.news_age, 1),
+            "news_risky": sorted(
+                ({"id": pid,
+                  "name": self.pool.by_id[pid].name,
+                  "pos": self.pool.by_id[pid].pos,
+                  "vorp": self.pool.by_id[pid].vorp,
+                  "gone": pid in drafted,
+                  "headline": next(i["headline"] for i in items if i["risky"])}
+                 for pid, items in self.news.items()
+                 if pid in self.pool.by_id and any(i["risky"] for i in items)),
+                key=lambda x: -x["vorp"]),
             "recs": rec_rows,
             "best_at": best_at,
             "remaining": {

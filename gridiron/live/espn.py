@@ -250,6 +250,13 @@ def main(argv: list[str] | None = None) -> int:
     except DataGateError as e:
         print(f"\nABORTED: {e}", file=sys.stderr)
         return 1
+    # News is a bonus, never a gate: a failure here must not block a board.
+    try:
+        from .news import build as build_news
+        _, arts, players = build_news(args.out / "news.json")
+        print(f"  news: {arts} articles covering {players} players")
+    except Exception as e:                       # noqa: BLE001 - never fatal
+        print(f"  news unavailable ({type(e).__name__}) -- board is still good")
     return 0
 
 

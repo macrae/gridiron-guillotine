@@ -502,3 +502,13 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 #resetbtn.armed {
   background: var(--bad); color: #2b0f0f; border-color: var(--bad); font-weight: 700;
 }
+
+.chip.news { background: #3a2a0a; color: #e8b339; }
+.nrow { padding: 5px 12px; border-bottom: 1px solid var(--line);
+        display: grid; grid-template-columns: 34px 1fr auto; gap: 6px; }
+.nrow.taken { opacity: .4; }
+.nrow .npos { font: 700 10px var(--mono); color: var(--dim); }
+.nrow .nname { font-weight: 600; font-size: 12px; }
+.nrow .nvorp { font: 11px var(--mono); color: var(--dim); }
+.nrow .nhead { grid-column: 2 / span 2; font-size: 11px; color: var(--warn);
+               line-height: 1.35; }

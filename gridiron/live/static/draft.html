@@ -47,6 +47,7 @@
   <button class="tab on" data-tab="board">board</button>
   <button class="tab" data-tab="pos">by position</button>
   <button class="tab" data-tab="grid">draft grid</button>
+  <button class="tab" data-tab="news">news <span id="newscount"></span></button>
   <button class="tab" data-tab="mine">mine <span id="minecount"></span></button>
   <button class="tab" data-tab="gone">gone <span id="pickcount"></span></button>
 </nav>
@@ -72,6 +73,13 @@
     <div id="cellbar"></div>
     <div id="gridwrap"><div id="gridtable"></div></div>
     <div class="shead" id="gridlegend"></div>
+  </section>
+
+  <section id="t-news" class="tabpane" hidden>
+    <div class="shead">injury / role risk <span class="hintlet" id="newsage"></span></div>
+    <div id="newsrisky"></div>
+    <div class="shead">note: ~50 headlines, so this is what is being talked
+      about now — not coverage of the whole pool. No news is not good news.</div>
   </section>
 
   <section id="t-mine" class="tabpane" hidden>
