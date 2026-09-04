@@ -269,6 +269,8 @@ class DraftSession:
                 cur, cfg.num_teams, cfg.my_slot, cfg.rounds),
             "picks_made": store.count(),
             "gaps": self.gaps(),
+            "undo": store.undo_label,
+            "redo": store.redo_label,
             # How far this room is running ahead of (or behind) national ADP.
             "adp_drift": round(vona.adp_drift(order), 1),
             "recs": rec_rows,
@@ -384,12 +386,21 @@ class DraftHandler(BaseHTTPRequestHandler):
 
         with s.lock:
             try:
-                if route == "/pick":
+                if route == "/undo":
+                    if s.store.undo() is None:
+                        return self._json({"error": "nothing to undo"}, 400)
+                elif route == "/redo":
+                    if s.store.redo() is None:
+                        return self._json({"error": "nothing to redo"}, 400)
+                elif route == "/pick":
                     pid = body.get("player_id")
                     if pid is None:
                         return self._json({"error": "player_id required"}, 400)
-                    s.store.append(int(pid), overall=body.get("overall"),
-                                   mine=bool(body.get("mine", False)))
+                    who = s.pool.by_id.get(int(pid))
+                    mine = bool(body.get("mine", False))
+                    s.store.checkpoint(
+                        f"{'claimed' if mine else 'gone'}: {who.name if who else pid}")
+                    s.store.append(int(pid), overall=body.get("overall"), mine=mine)
                 elif route == "/mine":
                     # Claim or release a player already recorded as gone.
                     pid = body.get("player_id")
@@ -402,21 +413,35 @@ class DraftHandler(BaseHTTPRequestHandler):
                         overall = hit.overall
                     if overall is None:
                         return self._json({"error": "overall or player_id required"}, 400)
-                    s.store.set_mine(int(overall), bool(body.get("mine", True)))
+                    want = bool(body.get("mine", True))
+                    hit = next((p for p in s.store.snapshot()
+                                if p.overall == int(overall)), None)
+                    who = s.pool.by_id.get(hit.player_id) if hit and hit.player_id else None
+                    s.store.checkpoint(
+                        f"{'claimed' if want else 'released'}: "
+                        f"{who.name if who else '#' + str(overall)}")
+                    s.store.set_mine(int(overall), want)
                 elif route == "/skip":
+                    s.store.checkpoint("unknown pick")
                     s.store.append(None, overall=body.get("overall"),
                                    source="unknown", observed_name="unknown")
-                elif route == "/undo":
-                    if s.store.undo_last() is None:
-                        return self._json({"error": "nothing to undo"}, 400)
                 elif route == "/correct":
+                    who = s.pool.by_id.get(int(body["player_id"]))
+                    s.store.checkpoint(
+                        f"corrected #{body['overall']} -> {who.name if who else '?'}")
                     s.store.correct(int(body["overall"]), int(body["player_id"]))
                 elif route == "/remove":
                     # Leaves the slot empty so gaps() surfaces it as refillable.
+                    hit = next((p for p in s.store.snapshot()
+                                if p.overall == int(body["overall"])), None)
+                    who = s.pool.by_id.get(hit.player_id) if hit and hit.player_id else None
+                    s.store.checkpoint(
+                        f"removed: {who.name if who else '#' + str(body['overall'])}")
                     gone = s.store.remove(int(body["overall"]))
                     if gone is None:
                         return self._json({"error": "no pick there"}, 400)
                 elif route == "/delete":
+                    s.store.checkpoint(f"deleted+shifted #{body['overall']}")
                     s.store.delete_shift(int(body["overall"]))
                 elif route == "/config":
                     if "urgency" in body:
@@ -427,6 +452,7 @@ class DraftHandler(BaseHTTPRequestHandler):
                             return self._json({"error": "slot out of range"}, 400)
                         s.config.my_slot = slot
                 elif route == "/reset":
+                    s.store.checkpoint("reset")
                     s.store.reset()
                 else:
                     return self._json({"error": "not found"}, 404)

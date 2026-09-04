@@ -149,6 +149,11 @@ function render() {
   $("clock").textContent = d.on_clock ? d.on_clock.label : "complete";
   $("turn-flag").textContent = mine ? "YOU'RE UP" : (d.on_clock ? `slot ${d.on_clock.slot}` : "");
   document.title = `${d.league.toUpperCase()} · ${d.on_clock ? d.on_clock.label : "done"}`;
+  // The buttons say what they will do, so a mid-draft undo is never a guess.
+  const ub = $("undob"), rb = $("redob");
+  ub.disabled = !d.undo; rb.disabled = !d.redo;
+  ub.title = d.undo ? `undo — ${d.undo}` : "nothing to undo";
+  rb.title = d.redo ? `redo — ${d.redo}` : "nothing to redo";
   // Same-tab navigation: state is server-side, so leaving loses nothing.
   $("peers").innerHTML = (d.peers || []).map(p =>
     `<a class="peer" href="${esc(p.url)}" title="switch to ${esc(p.name)}">${esc(p.name)} &rarr;</a>`
@@ -318,6 +323,9 @@ function renderCellBar(d) {
   const lab = cellTitle(cell, d.teams).split(" · ")[0];
   if (cell.st === "taken" || cell.st === "unknown") {
     bar.innerHTML = `<span>${lab}</span><b>${esc(cell.n)}</b>`
+      + (cell.m
+          ? `<button data-act="release">not mine</button>`
+          : `<button data-act="claim" class="good">claim as MINE</button>`)
       + `<button data-act="correct">correct</button>`
       + `<button data-act="remove" class="danger">remove</button>`
       + `<button data-act="cancel">esc</button>`;
@@ -609,9 +617,17 @@ async function commit(player) {
 }
 
 async function doUndo() {
-  const before = STATE && STATE.log[0];
+  const what = STATE && STATE.undo;
+  if (!what) { toast("nothing to undo", "warn"); return; }
   const d = await post("/undo", {});
-  if (d && before) toast(`undid ${before.label} · ${before.name}`, "warn");
+  if (d) toast(`undid — ${what}`, "warn");
+}
+
+async function doRedo() {
+  const what = STATE && STATE.redo;
+  if (!what) { toast("nothing to redo", "warn"); return; }
+  const d = await post("/redo", {});
+  if (d) toast(`redid — ${what}`, "good");
 }
 
 async function runCommand(raw) {
@@ -756,8 +772,11 @@ $("q").addEventListener("keydown", async e => {
 document.addEventListener("keydown", e => {
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "z") {
     e.preventDefault();          // else the browser's form undo eats it
-    doUndo();
+    if (e.shiftKey) doRedo(); else doUndo();
     return;
+  }
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "y") {
+    e.preventDefault(); doRedo(); return;
   }
   if (e.key === "Escape") { closeOverlays(); return; }
   // Keep the keyboard in the input no matter where focus wandered.
@@ -832,6 +851,9 @@ $("myrows").addEventListener("click", async e => {
   toast("un-claimed", "warn");
 });
 
+$("undob").addEventListener("click", doUndo);
+$("redob").addEventListener("click", doRedo);
+
 $("gridtable").addEventListener("click", e => {
   const cell = e.target.closest(".cel");
   if (!cell) return;
@@ -848,6 +870,14 @@ $("cellbar").addEventListener("click", async e => {
     ANCHOR = overall; SELCELL = null;
     showTab("board"); $("q").focus(); refreshDrop();
     toast(`next entry fills #${overall}`, "warn");
+    return;
+  }
+  if (b.dataset.act === "claim" || b.dataset.act === "release") {
+    const mine = b.dataset.act === "claim";
+    const cell = STATE.grid.rounds.flat().find(c => c.o === overall);
+    const d = await post("/mine", { overall, mine });
+    if (d) toast(`${mine ? "MINE" : "released"} — ${cell ? cell.n : "pick"}`,
+                 mine ? "good" : "warn");
     return;
   }
   if (b.dataset.act === "correct") {

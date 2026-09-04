@@ -478,3 +478,15 @@ body.myturn .peer:hover { background: rgba(0,0,0,.28); color: #000; }
   font: 10px var(--mono); line-height: 1;
 }
 .rmb:hover { border-color: var(--bad); color: var(--bad); }
+
+/* ---------- undo / redo ---------- */
+#undob, #redob {
+  background: rgba(0,0,0,.24); border: none; color: #fff;
+  border-radius: 3px; width: 24px; height: 22px; cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 0;
+}
+#undob:hover:not(:disabled), #redob:hover:not(:disabled) { background: rgba(0,0,0,.45); }
+#undob:disabled, #redob:disabled { opacity: .28; cursor: default; }
+body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06210c; }
+#cellbar button.good { border-color: #2f6a3a; color: var(--good); }
+#cellbar button.good:hover { background: var(--good); color: #06210c; border-color: var(--good); }

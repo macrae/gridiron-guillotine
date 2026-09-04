@@ -73,9 +73,72 @@ class PickStore:
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.conn.row_factory = sqlite3.Row
+        self._undo: list[tuple[str, list[tuple]]] = []
+        self._redo: list[tuple[str, list[tuple]]] = []
         self.conn.executescript(SCHEMA)
         self._migrate()
         self.conn.commit()
+
+    # -- undo / redo -------------------------------------------------------
+    #
+    # Snapshot the whole picks table before every mutation rather than tracking
+    # inverse operations. A draft is at most ~180 rows, so a snapshot is cheap,
+    # and it is correct by construction for EVERY operation -- append, remove,
+    # correct, claim, release, skip -- including ones whose inverse is awkward
+    # to express. Inverse-op tracking is where undo implementations get subtly
+    # wrong, and this is not the week to find that out.
+
+    UNDO_DEPTH = 60
+
+    def _columns(self) -> list[str]:
+        return [r["name"] for r in self.conn.execute("PRAGMA table_info(picks)")]
+
+    def _dump(self) -> list[tuple]:
+        return [tuple(r) for r in self.conn.execute(
+            "SELECT * FROM picks ORDER BY overall").fetchall()]
+
+    def _load(self, rows: list[tuple]) -> None:
+        cols = self._columns()
+        ph = ",".join("?" * len(cols))
+        with self.conn:
+            self.conn.execute("DELETE FROM picks")
+            if rows:
+                self.conn.executemany(
+                    f"INSERT INTO picks({','.join(cols)}) VALUES({ph})", rows)
+
+    def checkpoint(self, label: str) -> None:
+        """Record the state BEFORE a mutation. Clears the redo branch, because
+        acting after an undo makes the old forward history unreachable."""
+        self._undo.append((label, self._dump()))
+        del self._undo[:-self.UNDO_DEPTH]
+        self._redo.clear()
+
+    def undo(self) -> str | None:
+        """Step back one operation. Returns its label, or None if nothing to undo."""
+        if not self._undo:
+            return None
+        label, rows = self._undo.pop()
+        self._redo.append((label, self._dump()))
+        self._load(rows)
+        self._log("undo", label=label)
+        return label
+
+    def redo(self) -> str | None:
+        if not self._redo:
+            return None
+        label, rows = self._redo.pop()
+        self._undo.append((label, self._dump()))
+        self._load(rows)
+        self._log("redo", label=label)
+        return label
+
+    @property
+    def undo_label(self) -> str | None:
+        return self._undo[-1][0] if self._undo else None
+
+    @property
+    def redo_label(self) -> str | None:
+        return self._redo[-1][0] if self._redo else None
 
     def _migrate(self) -> None:
         """Add columns to a database created by an earlier version."""

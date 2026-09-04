@@ -659,3 +659,85 @@ def test_grid_marks_claimed_picks(session):
     session.store.append(2)
     cells = {c["o"]: c for row in session.grid()["rounds"] for c in row}
     assert cells[1]["m"] is True and cells[2]["m"] is False
+
+
+# --------------------------------------------------------------------------
+# 14. Undo / redo — snapshot based, so every operation is reversible
+# --------------------------------------------------------------------------
+
+def test_undo_reverses_a_claim_not_just_an_append(session):
+    """The reported case: a player marked gone who should have been MINE.
+    An append-only undo could not express this; a snapshot undo can."""
+    session.store.checkpoint("gone"); session.store.append(1)
+    session.store.checkpoint("claim"); session.store.set_mine(1, True)
+    assert session.store.my_players() == [1]
+    assert session.store.undo() == "claim"
+    assert session.store.my_players() == []
+    assert 1 in session.store.drafted_ids(), "the pick itself must survive"
+
+
+def test_undo_and_redo_round_trip_through_every_operation(session):
+    ops = []
+    session.store.checkpoint("a"); session.store.append(1); ops.append("a")
+    session.store.checkpoint("b"); session.store.append(2, mine=True); ops.append("b")
+    session.store.checkpoint("c"); session.store.remove(1); ops.append("c")
+    session.store.checkpoint("d"); session.store.correct(2, 3); ops.append("d")
+    final = session.store.snapshot()
+    for label in reversed(ops):
+        assert session.store.undo() == label
+    assert session.store.snapshot() == []
+    for label in ops:
+        assert session.store.redo() == label
+    assert session.store.snapshot() == final, "redo must restore exactly"
+
+
+def test_undo_stack_is_empty_at_the_start_and_reports_it(session):
+    assert session.store.undo() is None
+    assert session.store.redo() is None
+    assert session.store.undo_label is None and session.store.redo_label is None
+
+
+def test_acting_after_an_undo_clears_the_redo_branch(session):
+    """Standard editor semantics: the old forward history is unreachable."""
+    session.store.checkpoint("one"); session.store.append(1)
+    session.store.checkpoint("two"); session.store.append(2)
+    session.store.undo()
+    assert session.store.redo_label == "two"
+    session.store.checkpoint("three"); session.store.append(3)
+    assert session.store.redo_label is None
+    assert session.store.drafted_ids() == {1, 3}
+
+
+def test_labels_describe_what_will_be_undone(session):
+    session.store.checkpoint("gone: Player One"); session.store.append(1)
+    assert session.store.undo_label == "gone: Player One"
+    session.store.undo()
+    assert session.store.redo_label == "gone: Player One"
+
+
+def test_undo_survives_a_remove_that_left_a_hole(session):
+    for pid in (1, 2, 3):
+        session.store.append(pid)
+    session.store.checkpoint("removed 2")
+    session.store.remove(2)
+    assert session.state()["gaps"] == [2]
+    session.store.undo()
+    assert session.state()["gaps"] == []
+    assert {p.overall for p in session.store.snapshot()} == {1, 2, 3}
+
+
+def test_undo_depth_is_bounded(session):
+    from gridiron.live.store import PickStore
+    for i in range(1, PickStore.UNDO_DEPTH + 20):
+        session.store.checkpoint(f"op{i}")
+        session.store.append(i)
+    assert len(session.store._undo) == PickStore.UNDO_DEPTH
+
+
+def test_state_exposes_undo_and_redo_labels(session):
+    st = session.state()
+    assert st["undo"] is None and st["redo"] is None
+    session.store.checkpoint("gone: X"); session.store.append(1)
+    assert session.state()["undo"] == "gone: X"
+    session.store.undo()
+    assert session.state()["redo"] == "gone: X"
