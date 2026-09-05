@@ -27,11 +27,10 @@ html, body {
 }
 
 body {
-  max-width: 520px; margin: 0 auto;
+  width: 100%; margin: 0;
   min-height: 100vh;
   display: flex; flex-direction: column;
 }
-@media (max-width: 560px) { body { max-width: 100%; } }
 
 /* ---------- header band ---------- */
 
@@ -291,7 +290,7 @@ html.boardpage body { display: flex; flex-direction: column; }
 #panel { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
 #logsec { border-bottom: none; }
 #log { max-height: none; overflow: visible; }
-#band, #turnstrip, #entry, #recs, #foot { flex: 0 0 auto; }
+#band, #turnstrip, #snakestrip, #entry, #foot { flex: 0 0 auto; }
 
 /* questionable is too common to chip -- a dim dot carries it instead */
 .dot {
@@ -572,8 +571,16 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
   margin-left: auto; padding: 1px 8px; border-radius: 3px;
   background: #ff6b35; color: #2b0d00; font-weight: 600; white-space: nowrap;
 }
-/* Kill the "your turn" glow while the seat is a guess -- it would be lying. */
+/* Kill every "your turn" signal while the seat is a guess -- all of them are
+   derived from the placeholder, so the loudest thing on the page would be a
+   claim the board has already admitted it cannot make. Striking through the
+   flag while leaving the whole band green said both things at once. */
 body.seatunset.myturn { animation: none; }
+body.seatunset.myturn #band { background: var(--accent); color: #fff; }
+body.seatunset.myturn #turn-flag { background: rgba(0,0,0,.2); }
+body.seatunset.myturn #q { border-color: var(--line); }
+body.seatunset.myturn .card.top { border-left-color: var(--mine); }
+body.seatunset.myturn .tab.on { border-bottom-color: var(--accent); }
 body.seatunset #turn-flag { opacity: .45; text-decoration: line-through; }
 
 /* ---- seat control -----------------------------------------------------
@@ -649,10 +656,8 @@ select.unset {
 
 /* Roughly three cards tall, so the fourth peeking is the cue that it scrolls. */
 #recs {
-  max-height: 46vh;
-  /* Shrinkable and scrollable: this is the element that absorbs a short
-     viewport, rather than crushing the filter row or the strips below. */
-  flex: 0 1 auto;
+  /* Owns the remaining height of the left column and scrolls inside it. */
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -668,3 +673,43 @@ select.unset {
 }
 .emptyrec b { color: var(--ink, #e6e9ee); }
 @media (prefers-reduced-motion: reduce) { #recs { scroll-behavior: auto; } }
+
+
+/* ---- two-column board -------------------------------------------------
+   Used on a desktop next to a Yahoo draft window, never on a phone, so the
+   old 520px phone column wasted most of the screen and forced scrolling
+   between the rankings and everything else. The header stack -- who is on the
+   clock, your seat, the round strip -- spans both columns because it is true
+   of the whole board. Below it: rankings on the left, panels on the right,
+   each scrolling independently so neither can push the other off-screen. */
+#cols {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(400px, 1fr) minmax(430px, 1.05fr);
+}
+#colL, #colR {
+  display: flex; flex-direction: column;
+  min-height: 0; min-width: 0;      /* or long player names blow out the grid */
+  overflow: hidden;
+}
+#colR {
+  border-left: 1px solid var(--line);
+  background: color-mix(in srgb, var(--panel) 35%, transparent);
+}
+/* The input is the command line for the whole board, but a 900px-wide text
+   field looks broken -- cap it and let the dropdown follow. */
+#colL #q { max-width: 760px; }
+#drop { max-width: 760px; }
+
+/* One screen too narrow for two columns: stack, and let the page scroll. */
+@media (max-width: 880px) {
+  html.boardpage, html.boardpage body { height: auto; overflow: auto; }
+  #cols { grid-template-columns: 1fr; }
+  #colL, #colR { overflow: visible; }
+  #colR { border-left: 0; border-top: 1px solid var(--line); }
+  #recs, #panel { max-height: 60vh; }
+}
+
+/* Toasts belong over the column that owns the input, not the page centre. */
+#toasts { left: 0; right: auto; max-width: 520px; }
