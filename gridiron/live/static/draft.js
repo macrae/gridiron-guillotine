@@ -548,12 +548,30 @@ function esc(s) {
 
 // ---------------------------------------------------------------- toasts
 
+//: A routine confirmation goes in the hint line under the input -- space that
+//: is already reserved and covers nothing. Only things you must READ float
+//: over the board, and those clear fast and dismiss on click.
+let FLASH_T = null;
+
+function flash(msg, kind = "") {
+  const h = $("hint");
+  clearTimeout(FLASH_T);
+  h.textContent = msg;
+  h.className = kind;
+  FLASH_T = setTimeout(() => { if ($("hint").textContent === msg) refreshDrop(); }, 1400);
+}
+
+//: kind: "" and "good" are routine and go inline. "warn" and "bad" float,
+//: because they report something that did not go the way you asked.
 function toast(msg, kind = "") {
+  if (kind === "" || kind === "good") return flash(msg, kind);
   const el = document.createElement("div");
   el.className = "toast " + kind;
   el.textContent = msg;
+  el.title = "click to dismiss";
+  el.addEventListener("click", () => el.remove());
   $("toasts").appendChild(el);
-  setTimeout(() => el.remove(), 5000);
+  setTimeout(() => el.remove(), kind === "bad" ? 3500 : 2400);
 }
 
 function flashRow(overall) {
@@ -761,7 +779,7 @@ async function openDrawer(slot) {
 }
 
 async function markPlayer(id, mine) {
-  if (!BOARD.length) { toast("still loading the board…", "warn"); return; }
+  if (!BOARD.length) { flash("still loading the board…", "warn"); return; }
   const player = BY_ID.get(Number(id));
   if (!player) { toast("unknown player", "bad"); return; }
   const gone = goneSet();
@@ -838,7 +856,7 @@ $("q").addEventListener("keydown", async e => {
     if (!isDecisive(HITS) && CURSOR === 0 && !HITS[0]._picked) {
       const exact = HITS.findIndex(h => normalize(h.name) === normalize(q));
       if (exact === -1) {
-        toast("ambiguous — choose with ↓", "warn");
+        flash("ambiguous — choose with ↓", "warn");
         moveCursor(0);
         $("hint").textContent = "ambiguous — choose with ↓ then Enter";
         $("hint").className = "warn";
@@ -890,7 +908,7 @@ $("log").addEventListener("click", async e => {
   if (el.classList.contains("gap")) {
     // A hole has no pick to correct -- the next name typed gets appended there.
     ANCHOR = overall; EDITING = null;
-    toast(`next entry fills #${overall}`, "warn");
+    flash(`next entry fills #${overall}`, "warn");
   } else {
     EDITING = overall; ANCHOR = null;
   }
@@ -951,7 +969,7 @@ $("cellbar").addEventListener("click", async e => {
   if (b.dataset.act === "fill") {
     ANCHOR = overall; SELCELL = null;
     showTab("board"); $("q").focus(); refreshDrop();
-    toast(`next entry fills #${overall}`, "warn");
+    flash(`next entry fills #${overall}`, "warn");
     return;
   }
   if (b.dataset.act === "claim" || b.dataset.act === "release") {
@@ -965,7 +983,7 @@ $("cellbar").addEventListener("click", async e => {
   if (b.dataset.act === "correct") {
     EDITING = overall; SELCELL = null;
     showTab("board"); $("q").focus(); refreshDrop();
-    toast(`type the correct player for #${overall}`, "warn");
+    flash(`type the correct player for #${overall}`, "warn");
     return;
   }
   if (b.dataset.act === "remove") {
