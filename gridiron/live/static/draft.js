@@ -183,7 +183,13 @@ document.addEventListener("change", e => {
 // ---- player hover card -------------------------------------------------
 // The rows carry a name and some numbers; the reason to take or avoid someone
 // lives in the injury report and the scouting note, which were only reachable
-// from the research tab. Hovering any row now answers "can I start him".
+// from the research tab. Hovering a row now answers "can I start him".
+//
+// Confined to the right column's tables. The ranking list in the left column is
+// the primary reading surface -- you scan down it with the cursor -- so a card
+// following the pointer there covers the exact thing being read. Same reason
+// routine toasts were moved off the board.
+const HOVER_ZONES = "#bestrows, #morerows, #posrows";
 //
 // Delegated from document because every row is re-rendered on each poll, so
 // per-row listeners would be attached and thrown away several times a second.
@@ -210,12 +216,22 @@ function placeCard(el, x, y) {
   el.hidden = false;
   const r = el.getBoundingClientRect();
   const pad = 12;
-  // Flip rather than overflow: near the right edge or the bottom the card
-  // would otherwise be clipped by the column it is anchored in.
+
+  // The card is never allowed to spill into the left column. That column is
+  // the reading surface, and covering it with a popup from the other side of
+  // the screen is the same mistake as the old floating toasts -- the fix is
+  // not just "do not trigger there", it is "do not land there either".
+  const col = document.getElementById("colR");
+  const cr = col ? col.getBoundingClientRect() : null;
+  const minL = cr && cr.width > r.width + pad * 2 ? cr.left + pad : pad;
+  const maxR = window.innerWidth - pad;
+
+  // Flip left of the cursor near the right edge, then clamp into the column.
   let left = x + 16, top = y + 14;
-  if (left + r.width > window.innerWidth - pad) left = x - r.width - 16;
+  if (left + r.width > maxR) left = x - r.width - 16;
+  left = Math.min(Math.max(left, minL), maxR - r.width);
   if (top + r.height > window.innerHeight - pad) top = Math.max(pad, y - r.height - 14);
-  el.style.left = `${Math.max(pad, left)}px`;
+  el.style.left = `${left}px`;
   el.style.top = `${Math.max(pad, top)}px`;
 }
 
@@ -249,7 +265,7 @@ function cardHTML(b) {
 
 document.addEventListener("mouseover", e => {
   const row = e.target.closest("[data-id]");
-  if (!row || row.closest("#hovercard")) return;
+  if (!row || !row.closest(HOVER_ZONES)) return;
   const id = parseInt(row.dataset.id, 10);
   if (!id || id === HOVER_ID) return;
   clearTimeout(HOVER_T);
@@ -273,7 +289,7 @@ document.addEventListener("mouseover", e => {
 
 document.addEventListener("mouseout", e => {
   const row = e.target.closest("[data-id]");
-  if (row && !row.contains(e.relatedTarget)) hideCard();
+  if (row && row.closest(HOVER_ZONES) && !row.contains(e.relatedTarget)) hideCard();
 });
 // Any real interaction dismisses it -- a card left hanging over the board
 // during a pick is exactly the problem we already fixed once with toasts.

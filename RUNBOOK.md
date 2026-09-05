@@ -59,10 +59,14 @@ Type into the box: `/slot 7` — recalculates instantly, no restart.
 
 ## Hovering a player
 
-Hover any row -- board, by position, next up, or a recommendation card -- for a
+Hover any row in the **right column** -- board, next up, or by position -- for a
 card answering "can I start him": the traffic-light verdict in words and colour,
 a plain-language starting outlook, the injury report entry, the scouting note,
 and the season outlook.
+
+The ranking list in the left column has no hover card, by design: it is the
+primary reading surface and you scan down it with the cursor. The card also
+cannot spill into that column even when it opens leftward from the far right.
 
 Fetched per player on demand and cached, so it costs one ~1KB request the first
 time you hover someone and nothing after. The card never intercepts a click, so
