@@ -360,7 +360,14 @@ function renderRecs(d) {
   host.scrollTop = 0;
 
   const more = $("morerows");
-  more.innerHTML = "";
+  more.innerHTML = `
+    <div class="mrow thead">
+      <span class="mr">#</span>
+      <span class="mn">player</span>
+      <span class="mp">pos&#8202;/&#8202;team</span>
+      <span class="ms" title="VORP adjusted for what your roster still needs and how likely he is to last — this is what the ranking sorts on">score</span>
+      <span></span>
+    </div>`;
   d.recs.slice(3, 8).forEach((r, i) => {
     if (r.tier_break) more.insertAdjacentHTML("beforeend", `<div class="tierbreak"></div>`);
     more.insertAdjacentHTML("beforeend", `
@@ -481,7 +488,16 @@ function renderPos(d) {
     .sort((a, b) => b.vorp - a.vorp)
     .slice(0, 60);
   let prev = null, n = 0;
-  $("posrows").innerHTML = rows.map(p => {
+  const THEAD_POS = `
+    <div class="prow thead">
+      <span class="pr">#</span>
+      <span class="pn">player</span>
+      <span class="pp">team</span>
+      <span class="pv" title="projected points above a replacement-level starter at this position — comparable across positions">vorp</span>
+      <span class="pa" title="average draft position — where the market takes him">adp</span>
+      <span></span>
+    </div>`;
+  $("posrows").innerHTML = THEAD_POS + (rows.map(p => {
     const isGone = gone.has(p.id);
     let out = "";
     if (!isGone) {
@@ -498,7 +514,7 @@ function renderPos(d) {
       <span class="pa">${p.adp ? p.adp.toFixed(0) : "—"}</span>
       ${isGone ? "" : '<button class="mineb" type="button" title="claim">+</button>'}</div>`;
     return out;
-  }).join("") || `<div class="shead">none left</div>`;
+  }).join("") || `<div class="shead">none left</div>`);
 }
 
 function renderMine(d) {
@@ -563,9 +579,21 @@ function showTab(name) {
     el.hidden = el.id !== `t-${name}`;
 }
 
+//: Header rows reuse the row class so the grid template is shared -- a header
+//: with its own column widths drifts out of alignment the first time a row
+//: class changes, which is worse than no header at all.
+const THEAD_BEST = `
+  <div class="brow thead">
+    <span class="bp">pos</span>
+    <span class="bn">best still available</span>
+    <span class="bc" title="how many draftable players are left at this position">left</span>
+    <span class="bk" title="VORP you give up if you wait until your next pick to take this position — the drop from the best one now to the best one then">cliff</span>
+    <span></span>
+  </div>`;
+
 function renderBest(d) {
   const host = $("bestrows");
-  host.innerHTML = "";
+  host.innerHTML = THEAD_BEST;
   // The cliff column is the reasoning made visible: it is why a 76-VORP TE can
   // outrank three ~90-VORP RBs.
   const maxCliff = Math.max(1, ...Object.values(d.best_at).map(b => b.cliff));
@@ -578,7 +606,7 @@ function renderBest(d) {
         <span class="bp">${pos}</span>
         <span class="bn">${esc(b.name)}</span>
         <span class="bc">${b.count}</span>
-        <span class="bk">cliff ${b.cliff.toFixed(1)}</span>
+        <span class="bk">${b.cliff.toFixed(1)}</span>
         <button class="mineb" type="button" title="claim for your roster">+</button>
       </div>`);
   }
