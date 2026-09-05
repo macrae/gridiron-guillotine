@@ -140,7 +140,7 @@
 </div>
 
 <footer id="foot">
-  <label id="urgwrap" title="0 = best available (VORP)   1 = pure urgency (VONA)">
+  <label id="urgwrap" title="How much the score discounts a player by what you could get instead at your next pick. 0 = pure best-available; 1 = pure value-over-next-available. Measured optimum is 0.2 in both leagues — above 0.3 it degrades fast (0.8 costs 17-39 pts, 1.0 costs 31-44). Leave it alone unless you have a reason.">
     urgency
     <input id="urg" type="range" min="0" max="1" step="0.05" value="0.2">
     <span id="urgval">0.60</span>
@@ -171,6 +171,12 @@
       cliff is why a 76-VORP TE can beat three 90-VORP RBs.</dd>
     <dt>urg</dt><dd>score minus VORP — how much of the ranking is urgency rather
       than raw value.</dd>
+    <dt>urgency<br>(the slider)</dt><dd>how much the score discounts a player by
+      what you could get instead at your next pick. <b>0.2 is the measured
+      optimum in both leagues</b> — 0 to 0.3 is a flat band, but above that it
+      degrades fast: 0.5 costs 5–11 points, 0.8 costs 17–39, 1.0 costs 31–44.
+      Moving it mid-draft never beat leaving it alone. If you must be wrong, be
+      wrong <b>low</b> — 0 costs 1–5 points, and errors upward cost tenfold.</dd>
     <dt>% to last</dt><dd>chance he is still on the board at your next pick.</dd>
     <dt>ADP</dt><dd>average draft position: where the room is expected to take
       him. Value sits where ADP is far later than VORP rank.</dd>

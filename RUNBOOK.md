@@ -57,6 +57,47 @@ Type into the box: `/slot 7` — recalculates instantly, no restart.
 
 ---
 
+## The urgency dial
+
+`score = VORP - urgency x e_next`, where `e_next` is the expected VORP of the
+best player still there at your next pick. 0 is pure best-available; 1 is pure
+value-over-next-available.
+
+**Leave it at 0.2.** Measured across every seat in both leagues, paired seeds:
+
+| urgency | FirstDown | 2MinuteDrill |
+|---|---|---|
+| 0.0 | -0.9 | -4.9 |
+| 0.1 | -1.1 | -3.2 |
+| **0.2** | **best** | **best** |
+| 0.3 | -0.7 | -1.2 |
+| 0.5 | -4.7 | -11.4 |
+| 0.8 | -17.2 | -39.1 |
+| 1.0 | -31.5 | -43.7 |
+
+Three things fall out of this:
+
+  * **0 to 0.3 is a flat band.** Anywhere in it is fine; the differences are
+    within a couple of points.
+  * **The error is one-directional.** Too low costs 1-5 points. Too high costs
+    17-44. If you are unsure, sit low.
+  * **Do not schedule it.** Ramping it up after round 3 tied with leaving it
+    alone; ramping it down was 7-13 points worse. There is no round at which the
+    dial wants to move.
+
+Urgency is worth slightly more against a disciplined room, because e_next is
+computed from ADP and a room that ignores ADP makes that estimate wrong:
+
+| room | urg 0.0 | urg 0.2 | urg 0.5 |
+|---|---|---|---|
+| chalk | 2332.9 | **2342.7** | 2324.5 |
+| normal | 2357.2 | **2362.7** | 2351.7 |
+| chaotic | **2436.1** | 2435.6 | 2432.0 |
+
+In a wild room 0.0 does edge ahead -- by half a point, which is nothing. The
+honest reading is that 0.2 is never wrong, so there is no live situation worth
+reaching for the slider mid-draft.
+
 ## Research page
 
 `http://127.0.0.1:8100/research` — or the **research** link in the header.
