@@ -889,3 +889,66 @@ def test_unmatched_fantasy_names_are_reported_not_swallowed(tmp_path, monkeypatc
     path, matched, hurt, unmatched = inj.build(tmp_path / "i.json", pool)
     assert matched == 1 and hurt == 1
     assert unmatched == ["Nobody Here (RB SF)"], "the miss must be surfaced"
+
+
+# --------------------------------------------------------------------------
+# 17. Research dossiers
+# --------------------------------------------------------------------------
+
+def test_dossier_cache_failures_are_never_fatal(tmp_path):
+    from gridiron.live.dossier import age_hours, load
+    assert load(tmp_path / "nope.json") == {}
+    assert age_hours(tmp_path / "nope.json") is None
+    bad = tmp_path / "d.json"
+    bad.write_text("{ truncated", encoding="utf-8")
+    assert load(bad) == {}
+
+
+def test_dossier_skips_team_defenses(tmp_path, monkeypatch):
+    """D/ST are team entries, not athletes -- requesting an overview is a
+    guaranteed miss that would read as a failure and mask real ones."""
+    import gridiron.live.dossier as dos
+    from gridiron.live.pool import PlayerPool
+    players = [_mk(1, "Real Back", "RB"), _mk(2, "Some D/ST", "DST")]
+    for p, v in zip(players, (100.0, 90.0)):
+        object.__setattr__(p, "vorp", v)
+    calls = []
+    monkeypatch.setattr(dos, "fetch_one",
+                        lambda pid, timeout=20: calls.append(pid) or {"news": []})
+    dos.build(tmp_path / "d.json", PlayerPool(players), depth=10, pause=0)
+    assert calls == [1], "a DST must never be requested"
+
+
+def test_a_failed_dossier_is_skipped_not_fatal(tmp_path, monkeypatch):
+    import gridiron.live.dossier as dos
+    from gridiron.live.pool import PlayerPool
+    players = [_mk(i, f"P{i} X", "RB") for i in (1, 2, 3)]
+    for i, p in enumerate(players):
+        object.__setattr__(p, "vorp", 100.0 - i)
+    monkeypatch.setattr(dos, "fetch_one",
+                        lambda pid, timeout=20: None if pid == 2 else {"news": []})
+    _, got, failed = dos.build(tmp_path / "d.json", PlayerPool(players),
+                               depth=10, pause=0)
+    assert got == 2 and failed == 1, "partial research beats none"
+
+
+def test_research_payload_has_a_row_per_draftable_player(session):
+    r = session.research()
+    assert r["league"] == session.league
+    ids = {x["id"] for x in r["players"]}
+    assert ids == {p.player_id for p in session.pool.players if p.draftable}
+    for row in r["players"]:
+        for f in ("name", "pos", "vorp", "vorp_rank", "adp_rank", "gone"):
+            assert f in row
+
+
+def test_research_marks_drafted_players(session):
+    session.store.append(1)
+    row = next(x for x in session.research()["players"] if x["id"] == 1)
+    assert row["gone"] is True
+
+
+def test_research_ranks_are_dense_and_start_at_one(session):
+    rows = session.research()["players"]
+    ranks = sorted(x["vorp_rank"] for x in rows)
+    assert ranks == list(range(1, len(rows) + 1))

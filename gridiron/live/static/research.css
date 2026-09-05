@@ -1,0 +1,79 @@
+/* Research dossiers. A separate page, so it is free to be wider than the
+   500px draft column -- this is reading, not reacting under a clock. */
+
+body.research { max-width: 980px; height: auto; overflow: auto; display: block; }
+
+#rband {
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; gap: 12px;
+  height: 44px; padding: 0 14px; background: var(--accent); color: #fff;
+  font-weight: 600; box-shadow: 0 1px 0 rgba(0,0,0,.4);
+}
+#rleague { text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
+#rtitle { font: 11px var(--mono); opacity: .8; }
+#rband .peer { margin-left: auto; }
+#rage { font: 10px var(--mono); opacity: .75; }
+
+#rcontrols {
+  position: sticky; top: 44px; z-index: 39;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 8px 14px; background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+#rq { flex: 1; min-width: 180px; height: 30px; padding: 0 10px;
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--line); border-radius: 5px; font: 13px var(--mono); }
+#rq:focus { outline: none; border-color: var(--mine); }
+#rsort { background: var(--bg); color: var(--text); border: 1px solid var(--line);
+         border-radius: 5px; padding: 5px 8px; font: 11px var(--mono); }
+.rtog { font: 11px var(--mono); color: var(--dim); display: flex; gap: 4px;
+        align-items: center; cursor: pointer; }
+#rcount { font: 11px var(--mono); color: var(--dimmer); margin-left: auto; }
+.pfilt { font: 10px var(--mono); padding: 4px 9px; border-radius: 4px;
+         border: 1px solid var(--line); color: var(--dim); background: none;
+         cursor: pointer; }
+.pfilt.on { background: var(--mine); border-color: var(--mine); color: #fff; }
+
+/* ---- dossier card ---- */
+.dos { border-bottom: 1px solid var(--line); padding: 12px 14px; }
+.dos.gone { opacity: .4; }
+.dhead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dhead .rank { font: 700 13px var(--mono); color: var(--dimmer); min-width: 30px; }
+.dhead .nm { font-size: 17px; font-weight: 700; }
+.dhead .meta { font: 11px var(--mono); color: var(--dim); }
+.dnums { margin-left: auto; display: flex; gap: 14px; align-items: baseline;
+         font: 11px var(--mono); color: var(--dim); }
+.dnums b { color: var(--text); font-size: 15px; }
+.dnums .lbl { color: var(--dimmer); font-size: 9px; display: block;
+              text-transform: uppercase; letter-spacing: .08em; }
+
+.dsec { margin-top: 9px; }
+.dsec h4 { margin: 0 0 3px; font: 700 9.5px var(--mono); letter-spacing: .1em;
+           text-transform: uppercase; color: var(--dimmer); }
+.dsec p { margin: 0; font-size: 12.5px; line-height: 1.5; color: var(--text); }
+.dsec.scout p { color: #cfe3d4; }
+.dsec.outlook p { color: var(--dim); }
+.dsec .more { background: none; border: none; color: var(--mine);
+              font: 10px var(--mono); cursor: pointer; padding: 2px 0; }
+
+.dinj { margin-top: 8px; padding: 7px 10px; border-radius: 5px;
+        background: #2a1417; border-left: 3px solid var(--bad); }
+.dinj.sev2 { background: #2a2410; border-left-color: var(--warn); }
+.dinj.sev3 { background: #2c1e10; border-left-color: #d2622a; }
+.dinj .top { font: 700 11px var(--mono); color: var(--warn); }
+.dinj.sev4 .top { color: var(--bad); }
+.dinj .note { font-size: 12px; color: var(--dim); margin-top: 3px; line-height: 1.45; }
+
+.dnews { margin-top: 8px; }
+.dnews a { display: block; font-size: 12px; color: var(--dim);
+           text-decoration: none; padding: 2px 0; }
+.dnews a:hover { color: var(--text); }
+.dnews .dt { font: 9.5px var(--mono); color: var(--dimmer); margin-right: 6px; }
+
+.dstats { margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap;
+          font: 10.5px var(--mono); color: var(--dimmer); }
+.dstats b { color: var(--dim); font-weight: 600; }
+
+#rfoot { padding: 14px; font: 11px var(--mono); color: var(--dimmer);
+         border-top: 1px solid var(--line); }
+#rlist .shead { padding: 20px 14px; }

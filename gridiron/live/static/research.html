@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>research</title>
+<link rel="stylesheet" href="/static/draft.css">
+<link rel="stylesheet" href="/static/research.css">
+</head>
+<body class="research">
+
+<header id="rband">
+  <span id="rleague">—</span>
+  <span id="rtitle">research dossiers</span>
+  <a class="peer" href="/">&larr; draft board</a>
+  <span id="rage"></span>
+</header>
+
+<div id="rcontrols">
+  <input id="rq" type="search" placeholder="filter by name…" autocomplete="off">
+  <span id="rpos"></span>
+  <label class="rtog"><input type="checkbox" id="rhide" checked> hide drafted</label>
+  <label class="rtog"><input type="checkbox" id="rrisk"> risk only</label>
+  <select id="rsort">
+    <option value="vorp">sort: VORP</option>
+    <option value="adp">sort: ADP</option>
+    <option value="risk">sort: injury severity</option>
+    <option value="value">sort: value vs ADP</option>
+  </select>
+  <span id="rcount"></span>
+</div>
+
+<main id="rlist"></main>
+
+<footer id="rfoot">
+  <span>scouting notes and outlooks are ESPN/RotoWire editorial, not model
+    output — read them as opinion.</span>
+</footer>
+
+<script src="/static/research.js"></script>
+</body>
+</html>

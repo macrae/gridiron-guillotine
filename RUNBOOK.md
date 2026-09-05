@@ -12,6 +12,10 @@ cd ~/gridiron-guillotine
 # 1. Refresh the board — pool, news AND the injury report
 .venv/bin/python -m gridiron.live.espn
 
+# 2. Build the research dossiers (~1 min, once per league, do this the night before)
+.venv/bin/python -m gridiron.live.dossier --league 2MinuteDrill
+.venv/bin/python -m gridiron.live.dossier --league FirstDown --out data/2026/dossier.json
+
 # 2. Launch. Slot can be wrong here -- you can fix it from the page.
 .venv/bin/python rundraft.py --league main --slot 3 --port 8100 --accent "#c0392b"
 ```
@@ -50,6 +54,20 @@ server.
 ## When your slot is assigned
 
 Type into the box: `/slot 7` — recalculates instantly, no restart.
+
+---
+
+## Research page
+
+`http://127.0.0.1:8100/research` — or the **research** link in the header.
+
+A separate reading view, one dossier per player: scouting note, season outlook,
+per-player news, prior-season stats, injury report, VORP/ADP. Filter by
+position or name, sort by VORP / ADP / injury severity / value-vs-ADP, and
+toggle "risk only" to see just the hurt.
+
+It is deliberately separate from the board and does not poll, so it cannot
+interfere with a live draft. Read it the night before.
 
 ---
 

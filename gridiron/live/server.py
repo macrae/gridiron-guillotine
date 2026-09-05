@@ -20,7 +20,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import injuries as inj_mod, news as news_mod, snake, vona
+from . import dossier as dos_mod, injuries as inj_mod, news as news_mod, snake, vona
 from .pool import PlayerPool, load_pool
 from .recommend import DEFAULT_URGENCY, recommend
 from .store import PickConflict, PickStore
@@ -71,6 +71,9 @@ class DraftSession:
         #: player_id -> injury report (status, body part, return date, beat note)
         self.injuries = inj_mod.load(Path("data/2026/injuries.json"))
         self.inj_age = inj_mod.age_hours(Path("data/2026/injuries.json"))
+        #: Pre-draft research: scouting notes, outlooks, per-player news.
+        self.dossiers = dos_mod.load(Path("data/2026/dossier.json"))
+        self.dossier_age = dos_mod.age_hours(Path("data/2026/dossier.json"))
         self._rank = {p.player_id: i for i, p in enumerate(pool.players)}
 
     @property
@@ -172,6 +175,37 @@ class DraftSession:
                                 "p": None, "t": None, "m": False})
             rows.append(row)
         return {"rounds": rows}
+
+    def research(self) -> dict:
+        """Everything known about each player, for the reading view.
+
+        Built fresh per request like /state: this page is opened between picks,
+        not polled, so there is nothing to cache and nothing to invalidate.
+        """
+        drafted = self.store.drafted_ids()
+        ranked = sorted((p for p in self.pool.players if p.draftable),
+                        key=lambda p: -p.vorp)
+        vorp_rank = {p.player_id: i for i, p in enumerate(ranked, 1)}
+        by_adp = sorted((p for p in ranked if p.adp > 0), key=lambda p: p.adp)
+        adp_rank = {p.player_id: i for i, p in enumerate(by_adp, 1)}
+        out = []
+        for p in ranked:
+            out.append({
+                "id": p.player_id, "name": p.name, "pos": p.pos, "team": p.team,
+                "bye": p.bye_week, "proj": p.proj_points, "adp": p.adp,
+                "vorp": p.vorp,
+                "vorp_rank": vorp_rank[p.player_id],
+                "adp_rank": adp_rank.get(p.player_id, len(ranked)),
+                "gone": p.player_id in drafted,
+                "injury": self.injuries.get(p.player_id),
+                "dossier": self.dossiers.get(p.player_id),
+            })
+        return {
+            "league": self.league, "accent": self.accent,
+            "dossier_age_h": None if self.dossier_age is None
+                             else round(self.dossier_age, 1),
+            "players": out,
+        }
 
     def state(self) -> dict:
         cfg = self.config
@@ -392,6 +426,11 @@ class DraftHandler(BaseHTTPRequestHandler):
 
         if route in ("/", "/index.html"):
             return self._static("draft.html")
+        if route in ("/research", "/research.html"):
+            return self._static("research.html")
+        if route == "/research-data":
+            with s.lock:
+                return self._json(s.research())
         if route.startswith("/static/"):
             return self._static(route[len("/static/"):])
         if route == "/board":
