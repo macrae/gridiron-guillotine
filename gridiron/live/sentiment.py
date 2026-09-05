@@ -107,3 +107,44 @@ def assess(injury: dict | None, dossier: dict | None,
 
 def _v(level: str, reason: str, detail: str | None) -> dict:
     return {"level": level, "reason": reason, "detail": (detail or "")[:280] or None}
+
+
+#: Plain-language starting outlook, keyed by what actually produced the verdict.
+#: The lamp answers "is there a problem"; this answers "can I start him", which
+#: is the question you are really asking when you hover a row mid-draft.
+def describe_start(verdict: dict, injury: dict | None = None) -> str:
+    """One sentence on whether this player can be counted on in your lineup.
+
+    Deliberately phrased in terms of STARTING, not health. A fully fit back in a
+    committee is a worse start than a healthy one, and a player with a one-week
+    knock is a fine draft pick -- those are different sentences, and collapsing
+    them into "injured / not injured" is what makes a coloured dot useless.
+    """
+    level = verdict.get("level")
+    reason = (verdict.get("reason") or "").lower()
+    weeks = (injury or {}).get("weeks_out")
+
+    if level == RED:
+        if weeks:
+            return (f"Cannot start him for about {weeks} weeks. "
+                    f"Draft only as a stash you can afford to bench.")
+        return ("Out with no return date. A roster spot held for an unknown "
+                "number of weeks.")
+
+    if level == AMBER:
+        if "role risk" in reason:
+            return ("Fit, but his snaps are not secure — a committee or role "
+                    "battle. Startable, with weeks where he disappears.")
+        if weeks:
+            return (f"Expected back within about {weeks} week"
+                    f"{'s' if weeks != 1 else ''}. Likely costs you a game, "
+                    f"not a season.")
+        if "practice concern" in reason:
+            return ("Practice participation is a question. Probably plays; "
+                    "check the report before kickoff.")
+        return ("Carrying a tag. Likely plays, but confirm before you start "
+                "him in week 1.")
+
+    return ("Nothing flagged in the injury report, the scouting note, or the "
+            "headlines — no reason found not to start him. That is silence in "
+            "the feeds, not a medical clearance.")

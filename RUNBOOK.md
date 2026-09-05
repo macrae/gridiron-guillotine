@@ -57,6 +57,22 @@ Type into the box: `/slot 7` — recalculates instantly, no restart.
 
 ---
 
+## Hovering a player
+
+Hover any row -- board, by position, next up, or a recommendation card -- for a
+card answering "can I start him": the traffic-light verdict in words and colour,
+a plain-language starting outlook, the injury report entry, the scouting note,
+and the season outlook.
+
+Fetched per player on demand and cached, so it costs one ~1KB request the first
+time you hover someone and nothing after. The card never intercepts a click, so
+hovering and then clicking to mark a player gone works normally.
+
+Note the green wording: "silence in the feeds, not a medical clearance". A green
+lamp on a player whose outlook mentions missing eight games last season is the
+lamp working correctly -- it reports current flags, not career risk. Read the
+outlook.
+
 ## The urgency dial
 
 `score = VORP - urgency x e_next`, where `e_next` is the expected VORP of the

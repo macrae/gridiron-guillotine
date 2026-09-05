@@ -10,7 +10,7 @@ import math
 
 import pytest
 
-from gridiron.live import names, snake, vona
+from gridiron.live import names, sentiment, snake, vona
 from gridiron.live.pool import Player, PlayerPool
 from gridiron.live.recommend import recommend
 from gridiron.live.vorp import LeagueConfig, compute_vorp, replacement_ranks
@@ -563,3 +563,49 @@ def test_empty_starting_slot_outranks_bench_depth(pool):
     recs = recommend(pool, drafted, roster, league, current_pick=75, top_n=1)
     assert recs[0].player.pos == "WR", (
         f"left WR2 empty and took {recs[0].player.pos} {recs[0].player.name}")
+
+
+# --------------------------------------------------------------------------
+# Starting outlook
+#
+# The lamp says whether there is a problem; this says whether you can start
+# him, which is a different question. A fit player in a committee and a player
+# with a one-week knock are both amber and need opposite sentences.
+# --------------------------------------------------------------------------
+
+def test_start_red_with_a_date_gives_the_number_of_weeks():
+    v = {"level": "red", "reason": "Injured Reserve"}
+    s = sentiment.describe_start(v, {"weeks_out": 6})
+    assert "about 6 weeks" in s
+    assert "stash" in s
+
+
+def test_start_red_without_a_date_says_so_rather_than_inventing_one():
+    s = sentiment.describe_start({"level": "red", "reason": "Out, no return date"}, {})
+    assert "no return date" in s
+    assert "week" not in s.split("weeks")[0].replace("weeks", "")  # no fake number
+
+
+def test_start_role_risk_is_about_snaps_not_health():
+    v = {"level": "amber", "reason": 'role risk — “committee”'}
+    s = sentiment.describe_start(v, None)
+    assert "snaps" in s and "committee" in s
+    # It must NOT imply he is hurt -- that is the whole distinction.
+    assert "injur" not in s.lower() and "back within" not in s
+
+
+def test_start_short_injury_is_framed_as_a_game_not_a_season():
+    v = {"level": "amber", "reason": "Questionable — about 1 week"}
+    s = sentiment.describe_start(v, {"weeks_out": 1})
+    assert "1 week" in s and "not a season" in s
+
+
+def test_start_green_refuses_to_claim_a_clean_bill_of_health():
+    s = sentiment.describe_start({"level": "green", "reason": "nothing flagged"}, None)
+    assert "silence in the feeds" in s
+    assert "medical clearance" in s        # states what it is NOT
+
+
+def test_start_handles_a_missing_injury_record():
+    for lvl in ("red", "amber", "green"):
+        assert sentiment.describe_start({"level": lvl, "reason": ""}, None)

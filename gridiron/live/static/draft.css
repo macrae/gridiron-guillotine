@@ -738,3 +738,74 @@ select.unset {
 .brow.thead span[title], .mrow.thead span[title], .prow.thead span[title] {
   cursor: help; border-bottom: 1px dotted var(--line);
 }
+
+/* ---- player hover card ------------------------------------------------
+   The rows carry a name and numbers; the reason to take or avoid someone was
+   only reachable from the research tab. This answers "can I start him" without
+   leaving the pick.
+
+   pointer-events: none is load-bearing -- clicking a row marks a player gone,
+   and a card under the cursor that swallowed that click would be a bug you
+   only notice mid-draft. */
+#hovercard {
+  position: fixed; z-index: 90; pointer-events: none;
+  width: 340px; max-height: 74vh; overflow: hidden;
+  background: var(--panel2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 7px;
+  box-shadow: 0 12px 36px rgba(0,0,0,.7);
+  font-size: 12px; line-height: 1.45;
+}
+#hovercard[hidden] { display: none; }
+#hovercard.lv-red   { border-color: #7a2a2a; }
+#hovercard.lv-amber { border-color: #7a5a1e; }
+#hovercard.lv-green { border-color: #24512f; }
+
+/* The verdict, before anything else, in words and colour at once. */
+.hcbar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px; font: 700 10px var(--mono);
+  text-transform: uppercase; letter-spacing: .09em;
+}
+.hcbar.green { background: #14301b; color: #7ee08d; }
+.hcbar.amber { background: #33280c; color: #e8c25e; }
+.hcbar.red   { background: #351616; color: #f08a8a; }
+.hcbar .hcreason {
+  margin-left: auto; text-transform: none; letter-spacing: 0;
+  font-weight: 400; opacity: .75; font-size: 10px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 58%;
+}
+
+.hchead {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  padding: 8px 10px 2px;
+}
+.hchead b { font-size: 15px; }
+.hchead span { font: 10.5px var(--mono); color: var(--dim); }
+
+.hcnums { display: flex; gap: 14px; padding: 2px 10px 7px; font: 11px var(--mono); }
+.hcnums i { display: block; font-style: normal; font-size: 8.5px;
+            text-transform: uppercase; letter-spacing: .1em; color: var(--dimmer); }
+
+/* The sentence you are actually hovering for. */
+.hcstart {
+  margin: 0 10px 9px; padding: 7px 9px; border-radius: 5px;
+  border-left: 3px solid var(--line); background: var(--bg);
+  font-size: 12.5px;
+}
+.hcstart.green { border-left-color: var(--good); }
+.hcstart.amber { border-left-color: var(--warn); }
+.hcstart.red   { border-left-color: var(--bad); }
+
+.hcinj, .hcsec { padding: 0 10px 8px; }
+.hcinj i, .hcsec i {
+  display: block; font-style: normal; font: 700 8.5px var(--mono);
+  text-transform: uppercase; letter-spacing: .1em; color: var(--dimmer);
+  margin-bottom: 2px;
+}
+.hcinj { color: var(--warn); font: 11px var(--mono); }
+.hcinj .hcnote {
+  display: block; margin-top: 3px; color: var(--dim);
+  font: 11.5px/1.45 -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+.hcsec.dim { color: var(--dim); }
+.hcsec code { font: 10.5px var(--mono); color: var(--mine); }

@@ -180,6 +180,107 @@ document.addEventListener("change", e => {
     setSeat(parseInt(e.target.value, 10));
 });
 
+// ---- player hover card -------------------------------------------------
+// The rows carry a name and some numbers; the reason to take or avoid someone
+// lives in the injury report and the scouting note, which were only reachable
+// from the research tab. Hovering any row now answers "can I start him".
+//
+// Delegated from document because every row is re-rendered on each poll, so
+// per-row listeners would be attached and thrown away several times a second.
+const BLURBS = new Map();          // id -> payload, fetched once per player
+let HOVER_T = null, HOVER_ID = null;
+
+async function getBlurb(id) {
+  if (BLURBS.has(id)) return BLURBS.get(id);
+  const r = await fetch(`/blurb?id=${id}`, { cache: "no-store" });
+  if (!r.ok) return null;
+  const b = await r.json();
+  BLURBS.set(id, b);
+  return b;
+}
+
+function hideCard() {
+  clearTimeout(HOVER_T);
+  HOVER_ID = null;
+  const el = document.getElementById("hovercard");
+  if (el) el.hidden = true;
+}
+
+function placeCard(el, x, y) {
+  el.hidden = false;
+  const r = el.getBoundingClientRect();
+  const pad = 12;
+  // Flip rather than overflow: near the right edge or the bottom the card
+  // would otherwise be clipped by the column it is anchored in.
+  let left = x + 16, top = y + 14;
+  if (left + r.width > window.innerWidth - pad) left = x - r.width - 16;
+  if (top + r.height > window.innerHeight - pad) top = Math.max(pad, y - r.height - 14);
+  el.style.left = `${Math.max(pad, left)}px`;
+  el.style.top = `${Math.max(pad, top)}px`;
+}
+
+function cardHTML(b) {
+  const lvl = (b.sent && b.sent.level) || "green";
+  const word = { green: "no concern", amber: "some concern", red: "serious concern" }[lvl];
+  const inj = b.injury;
+  const injLine = inj ? [inj.status, [inj.type, inj.detail].filter(v => v && v !== "Not Specified").join(" "),
+                         inj.weeks_out ? `~${inj.weeks_out}wk` : ""].filter(Boolean).join(" · ") : "";
+  return `
+    <div class="hcbar ${lvl}"><span class="lamp ${lvl}"></span>${esc(word)}
+      <span class="hcreason">${esc((b.sent && b.sent.reason) || "")}</span></div>
+    <div class="hchead">
+      <b>${esc(b.name)}</b>
+      <span>${esc(b.pos)} ${esc(b.team)} · bye ${b.bye}</span>
+    </div>
+    <div class="hcnums">
+      <span><i>vorp</i>${b.vorp.toFixed(0)}</span>
+      <span><i>proj</i>${b.proj.toFixed(0)}</span>
+      <span><i>adp</i>${b.adp ? b.adp.toFixed(1) : "—"}</span>
+    </div>
+    <div class="hcstart ${lvl}">${esc(b.start)}</div>
+    ${injLine ? `<div class="hcinj"><i>injury report</i>${esc(injLine)}
+      ${inj.note ? `<span class="hcnote">${esc(inj.note)}</span>` : ""}</div>` : ""}
+    ${b.scouting ? `<div class="hcsec"><i>scouting · ${esc(b.scouting.published)}</i>
+      ${esc(b.scouting.headline)}</div>` : ""}
+    ${b.outlook ? `<div class="hcsec dim"><i>outlook</i>${esc(b.outlook)}…</div>` : ""}
+    ${!b.has_dossier ? `<div class="hcsec dim">no dossier — run
+      <code>python -m gridiron.live.dossier</code></div>` : ""}`;
+}
+
+document.addEventListener("mouseover", e => {
+  const row = e.target.closest("[data-id]");
+  if (!row || row.closest("#hovercard")) return;
+  const id = parseInt(row.dataset.id, 10);
+  if (!id || id === HOVER_ID) return;
+  clearTimeout(HOVER_T);
+  HOVER_ID = id;
+  // A short delay so sweeping the cursor across the list does not fire a
+  // request and a card for every row it crosses.
+  HOVER_T = setTimeout(async () => {
+    const b = await getBlurb(id);
+    if (!b || HOVER_ID !== id) return;
+    let el = document.getElementById("hovercard");
+    if (!el) {
+      el = document.createElement("div");
+      el.id = "hovercard";
+      document.body.appendChild(el);
+    }
+    el.className = "lv-" + ((b.sent && b.sent.level) || "green");
+    el.innerHTML = cardHTML(b);
+    placeCard(el, e.clientX, e.clientY);
+  }, 220);
+});
+
+document.addEventListener("mouseout", e => {
+  const row = e.target.closest("[data-id]");
+  if (row && !row.contains(e.relatedTarget)) hideCard();
+});
+// Any real interaction dismisses it -- a card left hanging over the board
+// during a pick is exactly the problem we already fixed once with toasts.
+document.addEventListener("click", hideCard, true);
+document.addEventListener("keydown", hideCard, true);
+window.addEventListener("scroll", hideCard, true);
+
 function banner(msg) {
   let el = document.getElementById("errbar");
   if (!el) {

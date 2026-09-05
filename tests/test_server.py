@@ -1079,3 +1079,43 @@ def test_unconfirmed_seat_still_recommends(tmp_path):
                      LeagueConfig(num_teams=10, rounds=16, my_slot=1),
                      PickStore(tmp_path / "r.sqlite", 10), slot_confirmed=False)
     assert s.state()["recs"]
+
+
+# --------------------------------------------------------------------------
+# Hover blurbs
+# --------------------------------------------------------------------------
+
+def test_blurb_unknown_player_is_none(session):
+    assert session.blurb(99999999) is None
+
+
+def test_blurb_omits_an_active_injury_record(session):
+    """"Active" is the report saying nothing is wrong. Rendering it under an
+    INJURY REPORT heading flags a player who has no flag."""
+    pid = session.pool.players[0].player_id
+    session.injuries[pid] = {"status": "Active", "severity": 0, "note": ""}
+    assert session.blurb(pid)["injury"] is None
+
+
+def test_blurb_keeps_a_real_injury(session):
+    pid = session.pool.players[0].player_id
+    session.injuries[pid] = {"status": "Questionable", "severity": 2,
+                             "type": "Groin", "weeks_out": 1, "note": "limited"}
+    b = session.blurb(pid)
+    assert b["injury"]["status"] == "Questionable"
+    assert b["injury"]["weeks_out"] == 1
+    assert b["start"]                      # always phrased, never blank
+
+
+def test_blurb_does_not_print_the_same_sentence_twice(session):
+    """Scouting and injury notes are routinely the same wire sentence."""
+    pid = session.pool.players[0].player_id
+    same = "Nacua (groin) was off to the side for team drills."
+    session.injuries[pid] = {"status": "Questionable", "severity": 2, "note": same}
+    session.dossiers[pid] = {"scouting": {"headline": same, "published": "Mon"}}
+    b = session.blurb(pid)
+    assert b["injury"]["note"] == same
+    assert b["scouting"] is None
+    # A genuinely different note is still carried.
+    session.dossiers[pid] = {"scouting": {"headline": "Different report.", "published": "Mon"}}
+    assert session.blurb(pid)["scouting"]["headline"] == "Different report."

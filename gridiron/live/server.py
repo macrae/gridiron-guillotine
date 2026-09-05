@@ -144,6 +144,43 @@ class DraftSession:
             for p in self.pool.players
         ]
 
+    def blurb(self, player_id: int) -> dict | None:
+        """Everything worth knowing about one player, in a hover-sized package.
+
+        Served on demand rather than pushed with the state. The full dossier
+        payload is ~1MB; this is a few hundred bytes for the one player under
+        the cursor, and the client caches it, so hovering a row costs one small
+        request the first time and nothing after.
+        """
+        p = self.pool.by_id.get(player_id)
+        if p is None:
+            return None
+        inj = self.injuries.get(player_id)
+        dos = self.dossiers.get(player_id) or {}
+        verdict = sent_mod.assess(inj, dos)
+        scout = dos.get("scouting") or {}
+        return {
+            "id": p.player_id, "name": p.name, "pos": p.pos, "team": p.team,
+            "bye": p.bye_week,
+            "vorp": round(p.vorp, 1), "proj": round(p.proj_points, 1),
+            "adp": p.adp,
+            "sent": verdict,
+            "start": sent_mod.describe_start(verdict, inj),
+            "injury": {
+                "status": inj.get("status"), "type": inj.get("type"),
+                "detail": inj.get("detail"), "weeks_out": inj.get("weeks_out"),
+                "note": inj.get("note"), "severity": inj.get("severity", 0),
+            } if inj and inj.get("severity", 0) > 0 else None,
+            "scouting": {"headline": scout.get("headline"),
+                         "published": scout.get("published")}
+            if scout.get("headline")
+            and (scout.get("headline") or "").strip() != ((inj or {}).get("note") or "").strip()
+            else None,
+            # Trimmed: this is a hover card, not the research tab.
+            "outlook": (dos.get("outlook") or "")[:300] or None,
+            "has_dossier": bool(dos),
+        }
+
     def grid(self) -> dict:
         """The board in display order: rounds down, slots across, snake applied.
 
@@ -455,6 +492,13 @@ class DraftHandler(BaseHTTPRequestHandler):
                 return self._json(s.research())
         if route.startswith("/static/"):
             return self._static(route[len("/static/"):])
+        if route == "/blurb":
+            try:
+                pid = int(parse_qs(url.query).get("id", [""])[0])
+            except ValueError:
+                return self._json({"error": "bad id"}, 400)
+            b = s.blurb(pid)
+            return self._json(b) if b else self._json({"error": "unknown"}, 404)
         if route == "/board":
             return self._json({"players": s.board_rows(),
                                "teams": s.config.num_teams,
