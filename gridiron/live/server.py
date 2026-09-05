@@ -241,13 +241,19 @@ class DraftSession:
         order = [(self.pool.by_id[pk.player_id], pk.overall)
                  for pk in store.snapshot()
                  if pk.player_id in self.pool.by_id]
+        # Deep enough to explore, not just to obey. 100 costs ~5ms and puts at
+        # least eight of every startable position in reach -- the 8th-best TE
+        # sits at overall rank 62, so a shallower list cannot answer "the top
+        # three all have injury flags, who else is there". K and DST never score
+        # into this list at all (the bench-only gate); the by-position tab owns
+        # those, and nobody agonises over a kicker.
         recs = [] if done else recommend(
-            self.pool, drafted, roster, cfg, cur, top_n=10, urgency=self.urgency,
+            self.pool, drafted, roster, cfg, cur, top_n=100, urgency=self.urgency,
             drafted_order=order,
         )
         rec_rows = []
         prev = None
-        for r in recs:
+        for rank_i, r in enumerate(recs):
             p = r.player
             rec_rows.append({
                 "id": p.player_id, "name": p.name, "pos": p.pos, "team": p.team,
@@ -257,7 +263,9 @@ class DraftSession:
                 "score": r.score, "vorp": r.vorp, "vona": r.vona,
                 "survival": r.survival_at_next, "cliff": r.cliff,
                 "reason": r.reason,
-                "news": (self.news.get(p.player_id) or [])[:3],
+                # Headlines only where they will actually be read. Carrying
+                # them for all 100 would roughly double the poll payload.
+                "news": (self.news.get(p.player_id) or [])[:3] if rank_i < 12 else [],
                 # `inj` is the status string and has been since the first
                 # build; the richer report gets its own key rather than
                 # overloading one that existing render code already types.

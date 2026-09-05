@@ -12,7 +12,9 @@
   <b>SEAT NOT SET</b>
   <span>the draft order isn't out yet — every recommendation below assumes
   slot <b id="seatguess">1</b>, which is a placeholder.</span>
-  <span class="fix">type <b>/slot N</b> the moment you know</span>
+  <label class="fix">set it now
+    <select id="seatsel-warn" aria-label="your draft seat"></select>
+  </label>
 </div>
 
 <header id="band">
@@ -27,6 +29,9 @@
 </header>
 
 <div id="turnstrip">
+  <label id="seatbox">seat
+    <select id="seatsel" aria-label="your draft seat"></select>
+  </label>
   <span id="nextpick">—</span>
   <span id="afterpick"></span>
   <span id="gapwarn" hidden></span>
@@ -41,6 +46,7 @@
   <div id="legend"><b>Enter</b> marks gone &nbsp;·&nbsp; <b class="claim">+name</b> or <b class="claim">shift-Enter</b> claims for your roster &nbsp;·&nbsp; <b>⌘Z</b> undo &nbsp;·&nbsp; <b>/h</b> help</div>
 </div>
 
+<div id="recfilter" role="group" aria-label="filter recommendations by position"></div>
 <section id="recs" aria-label="recommendations"></section>
 
 <div id="snakestrip">

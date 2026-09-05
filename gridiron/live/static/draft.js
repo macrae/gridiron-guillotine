@@ -81,6 +81,14 @@ let ANCHOR = null;          // forced overall for the next entry
 let POLL_FAILS = 0;
 let TAB = localStorage.getItem("gg:tab") || "board";
 let POSFILTER = localStorage.getItem("gg:pos") || "RB";
+//: Filter applied to the LIVE recommendation list (distinct from POSFILTER,
+//: which drives the static by-position tab). It answers a question about ONE
+//: pick -- "the top three are all flagged, who else is there" -- so it clears
+//: itself the moment the board advances. Left sticky, you could filter to TE,
+//: draft a TE, and spend your next pick reading a TE-only list without ever
+//: noticing the real best available was hidden.
+let RECPOS = "ALL";
+let RECPOS_PICK = null;
 let CLAIM = false;          // next commit claims the player for my roster
 // Players just marked from the position list. They stay rendered, struck
 // through, so the rows beneath them do NOT shift up under a moving cursor --
@@ -136,6 +144,42 @@ async function poll() {
   }
 }
 
+// The seat drives VONA, picks-until-turn and the whole recommendation order,
+// so it must be changeable in one visible gesture -- not a slash command you
+// have to already know about. Changing it hits /config, which recomputes from
+// the pool already in memory: no reload, no reset, picks untouched.
+const SEAT_SELECTS = ["seatsel", "seatsel-warn"];
+
+function syncSeatControls(d) {
+  for (const id of SEAT_SELECTS) {
+    const sel = document.getElementById(id);
+    if (!sel) continue;
+    if (sel.options.length !== d.teams) {
+      sel.innerHTML = "";
+      for (let i = 1; i <= d.teams; i++) {
+        const o = document.createElement("option");
+        o.value = String(i);
+        o.textContent = String(i);
+        sel.appendChild(o);
+      }
+    }
+    // Never yank the value out from under an open dropdown.
+    if (document.activeElement !== sel) sel.value = String(d.my_slot);
+    sel.classList.toggle("unset", d.slot_confirmed === false);
+  }
+}
+
+async function setSeat(slot) {
+  const d = await post("/config", { my_slot: slot });
+  STATE = d; render();
+  flash(`seat ${slot} — recommendations recomputed`, "good");
+}
+
+document.addEventListener("change", e => {
+  if (e.target && SEAT_SELECTS.includes(e.target.id))
+    setSeat(parseInt(e.target.value, 10));
+});
+
 function banner(msg) {
   let el = document.getElementById("errbar");
   if (!el) {
@@ -174,6 +218,7 @@ function render() {
   $("seatwarn").hidden = !unset;
   if (unset) $("seatguess").textContent = d.my_slot;
   document.body.classList.toggle("seatunset", unset);
+  syncSeatControls(d);
 
   $("league").textContent = d.league;
   $("clock").textContent = d.on_clock ? d.on_clock.label : "complete";
@@ -257,12 +302,44 @@ function chips(r) {
 function renderRecs(d) {
   const host = $("recs");
   host.innerHTML = "";
-  if (d.done) { host.innerHTML = `<div id="done">draft complete</div>`; return; }
-  d.recs.slice(0, 3).forEach((r, i) => {
-    if (r.tier_break && i > 0) host.insertAdjacentHTML("beforeend", `<div class="tierbreak"></div>`);
+  if (d.done) {
+    $("recfilter").innerHTML = "";
+    host.innerHTML = `<div id="done">draft complete</div>`;
+    return;
+  }
+
+  // Clear the filter whenever the board moves on.
+  const nowAt = d.on_clock ? d.on_clock.overall : null;
+  if (RECPOS_PICK !== null && RECPOS_PICK !== nowAt) RECPOS = "ALL";
+  RECPOS_PICK = nowAt;
+
+  // Counts come from the full list so a chip never lies about what is behind it.
+  const counts = {};
+  d.recs.forEach(r => { counts[r.pos] = (counts[r.pos] || 0) + 1; });
+  const order = ["ALL", "QB", "RB", "WR", "TE"];
+  $("recfilter").innerHTML = order
+    .filter(p => p === "ALL" || counts[p])
+    .map(p => `<button class="rchip ${p === RECPOS ? "on" : ""}" data-rpos="${p}">${p}` +
+              `<i>${p === "ALL" ? d.recs.length : counts[p]}</i></button>`).join("");
+
+  const rows = d.recs
+    .map((r, i) => ({ r, rank: i + 1 }))
+    .filter(x => RECPOS === "ALL" || x.r.pos === RECPOS);
+
+  if (!rows.length) {
+    host.innerHTML = `<div class="emptyrec">no ${RECPOS} in the live list —
+      the <b>by position</b> tab ranks every ${RECPOS} on the board</div>`;
+    return;
+  }
+
+  rows.forEach(({ r, rank }, i) => {
+    // tier_break is a property of the FULL ordering, so it only means anything
+    // while the list is unfiltered.
+    if (r.tier_break && i > 0 && RECPOS === "ALL")
+      host.insertAdjacentHTML("beforeend", `<div class="tierbreak"></div>`);
     host.insertAdjacentHTML("beforeend", `
-      <div class="card ${i === 0 ? "top" : ""}" data-id="${r.id}">
-        <div class="rank">${i + 1}</div>
+      <div class="card ${rank === 1 ? "top" : ""}" data-id="${r.id}">
+        <div class="rank">${rank}</div>
         <div>
           <div class="name">${lamp(r.sent)}${esc(r.name)}${chips(r)}</div>
           <div class="pt">${r.pos} ${r.team} · proj ${r.proj.toFixed(0)} · adp ${r.adp.toFixed(1)} · bye ${r.bye}</div>
@@ -277,6 +354,7 @@ function renderRecs(d) {
         <div class="why">${esc(r.reason)}</div>
       </div>`);
   });
+  host.scrollTop = 0;
 
   const more = $("morerows");
   more.innerHTML = "";
@@ -931,6 +1009,13 @@ wireMarkable("bestrows");
 document.getElementById("tabs").addEventListener("click", e => {
   const b = e.target.closest(".tab");
   if (b) { STUCK.clear(); showTab(b.dataset.tab); render(); $("q").focus(); }
+});
+
+$("recfilter").addEventListener("click", e => {
+  const b = e.target.closest("button[data-rpos]");
+  if (!b) return;
+  RECPOS = b.dataset.rpos;
+  render();
 });
 
 $("poschips").addEventListener("click", e => {
