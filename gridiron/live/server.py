@@ -20,7 +20,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import dossier as dos_mod, injuries as inj_mod, news as news_mod, snake, vona
+from . import (dossier as dos_mod, injuries as inj_mod, news as news_mod,
+               sentiment as sent_mod, snake, vona)
 from .pool import PlayerPool, load_pool
 from .recommend import DEFAULT_URGENCY, recommend
 from .store import PickConflict, PickStore
@@ -131,7 +132,9 @@ class DraftSession:
             {"id": p.player_id, "name": p.name, "pos": p.pos, "team": p.team,
              "vorp": round(p.vorp, 1), "adp": p.adp, "bye": p.bye_week,
              "rank": self._rank[p.player_id], "inj": p.injury_status,
-             "draftable": p.draftable}
+             "draftable": p.draftable,
+             "sent": sent_mod.assess(self.injuries.get(p.player_id),
+                                     self.dossiers.get(p.player_id))["level"]}
             for p in self.pool.players
         ]
 
@@ -198,6 +201,8 @@ class DraftSession:
                 "adp_rank": adp_rank.get(p.player_id, len(ranked)),
                 "gone": p.player_id in drafted,
                 "injury": self.injuries.get(p.player_id),
+                "sent": sent_mod.assess(self.injuries.get(p.player_id),
+                                        self.dossiers.get(p.player_id)),
                 "dossier": self.dossiers.get(p.player_id),
             })
         return {
@@ -251,6 +256,8 @@ class DraftSession:
                 # build; the richer report gets its own key rather than
                 # overloading one that existing render code already types.
                 "injury": self.injuries.get(p.player_id),
+                "sent": sent_mod.assess(self.injuries.get(p.player_id),
+                                        self.dossiers.get(p.player_id)),
                 # A rule above this row when the drop from the previous one is
                 # large: "these are equivalent, then it falls off".
                 "tier_break": prev is not None and (prev - r.score) >= TIER_GAP,

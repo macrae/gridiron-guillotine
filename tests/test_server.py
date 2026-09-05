@@ -952,3 +952,75 @@ def test_research_ranks_are_dense_and_start_at_one(session):
     rows = session.research()["players"]
     ranks = sorted(x["vorp_rank"] for x in rows)
     assert ranks == list(range(1, len(rows) + 1))
+
+
+# --------------------------------------------------------------------------
+# 18. Research sentiment — the traffic light
+# --------------------------------------------------------------------------
+
+def test_no_data_is_green_but_means_only_that_nothing_was_flagged():
+    from gridiron.live.sentiment import assess
+    v = assess(None, None)
+    assert v["level"] == "green" and v["reason"] == "nothing flagged"
+
+
+def test_an_active_status_is_not_a_concern():
+    """The injury report lists healthy players explicitly as Active. Treating a
+    present status as a concern turned 82% of the top 190 amber, including
+    Gibbs, which makes the light useless."""
+    from gridiron.live.sentiment import assess
+    assert assess({"status": "Active", "severity": 0}, None)["level"] == "green"
+
+
+@pytest.mark.parametrize("inj,want", [
+    ({"status": "Injured Reserve", "severity": 4}, "red"),
+    ({"status": "Suspension", "severity": 4}, "red"),
+    ({"status": "Out", "severity": 3, "weeks_out": 5}, "red"),
+    ({"status": "Out", "severity": 3, "weeks_out": None}, "red"),
+    ({"status": "Doubtful", "severity": 3, "weeks_out": 1}, "amber"),
+    ({"status": "Questionable", "severity": 2, "weeks_out": 1}, "amber"),
+    ({"status": "Questionable", "severity": 2, "weeks_out": 4}, "red"),
+])
+def test_injury_severity_maps_to_a_level(inj, want):
+    from gridiron.live.sentiment import assess
+    assert assess(inj, None)["level"] == want
+
+
+def test_role_risk_is_amber_even_for_a_healthy_player():
+    """'Ability to start regularly' is not only about health -- a fit back in a
+    committee is still a bad start."""
+    from gridiron.live.sentiment import assess
+    d = {"scouting": {"headline": "Coach says the backfield will be a committee"}}
+    v = assess(None, d)
+    assert v["level"] == "amber" and "committee" in v["reason"]
+
+
+def test_only_the_headline_is_searched_not_the_story_body():
+    """A scouting story about one player routinely discusses his teammates'
+    injuries. Matching the body flagged healthy players -- Etienne's own
+    headline said 'fully healthy' while his story mentioned a teammate 'out for
+    the season'."""
+    from gridiron.live.sentiment import assess
+    d = {"scouting": {
+        "headline": "Etienne is fully healthy heading into the season",
+        "story": "Ty Chandler (knee) is out for the season and will miss "
+                 "the year after landing on injured reserve."}}
+    assert assess(None, d)["level"] == "green"
+
+
+def test_every_verdict_states_its_reason():
+    """A coloured dot you cannot interrogate is worse than no dot."""
+    from gridiron.live.sentiment import assess
+    for inj in (None, {"status": "Out", "severity": 3, "weeks_out": 6},
+                {"status": "Questionable", "severity": 2, "weeks_out": 1}):
+        v = assess(inj, None)
+        assert v["reason"], v
+
+
+def test_sentiment_reaches_the_board_and_the_research_page(session):
+    session.injuries = {1: {"status": "Out", "severity": 3, "weeks_out": 6,
+                            "note": "out a while", "type": "Knee", "detail": None}}
+    rec = session.state()["recs"][0]
+    assert "sent" in rec and rec["sent"]["level"] in ("red", "amber", "green")
+    assert all("sent" in r for r in session.research()["players"])
+    assert all("sent" in r for r in session.board_rows())

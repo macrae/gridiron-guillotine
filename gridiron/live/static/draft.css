@@ -534,3 +534,16 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 #errbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   background: var(--bad); color: #2b0f0f; font: 600 12px var(--mono);
   padding: 6px 12px; text-align: center; }
+
+/* ---------- research sentiment lamp ----------
+   green = nothing flagged in any feed, NOT a clean bill of health.
+   amber = a one-to-two game question, or a role/committee risk.
+   red   = multi-week absence, or an open-ended one. */
+.lamp {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  margin-right: 6px; vertical-align: 1px; flex: 0 0 auto;
+}
+.lamp.green { background: #2f7d43; }
+.lamp.amber { background: var(--warn); }
+.lamp.red   { background: var(--bad); box-shadow: 0 0 5px rgba(248,81,73,.6); }
+.dhead .lamp { width: 9px; height: 9px; margin-right: 8px; vertical-align: 2px; }

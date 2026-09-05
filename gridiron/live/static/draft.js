@@ -214,6 +214,14 @@ function render() {
 
 const SERIOUS_INJ = new Set(["OUT", "INJURY_RESERVE", "SUSPENSION", "DOUBTFUL"]);
 
+function lamp(sent) {
+  if (!sent) return "";
+  const s = typeof sent === "string" ? {level: sent, reason: ""} : sent;
+  const tip = s.reason ? `${s.level.toUpperCase()} — ${s.reason}` +
+                         (s.detail ? `\n\n${s.detail}` : "") : s.level;
+  return `<span class="lamp ${s.level}" title="${esc(tip)}"></span>`;
+}
+
 function chips(r) {
   let s = "";
   if (r.bye_clash) s += `<span class="chip bye">BYE ${r.bye}</span>`;
@@ -249,7 +257,7 @@ function renderRecs(d) {
       <div class="card ${i === 0 ? "top" : ""}" data-id="${r.id}">
         <div class="rank">${i + 1}</div>
         <div>
-          <div class="name">${esc(r.name)}${chips(r)}</div>
+          <div class="name">${lamp(r.sent)}${esc(r.name)}${chips(r)}</div>
           <div class="pt">${r.pos} ${r.team} · proj ${r.proj.toFixed(0)} · adp ${r.adp.toFixed(1)} · bye ${r.bye}</div>
         </div>
         <div class="nums">
@@ -270,7 +278,7 @@ function renderRecs(d) {
     more.insertAdjacentHTML("beforeend", `
       <div class="mrow" data-id="${r.id}">
         <span class="mr">${i + 4}</span>
-        <span class="mn">${esc(r.name)}${chips(r)}</span>
+        <span class="mn">${lamp(r.sent)}${esc(r.name)}${chips(r)}</span>
         <span class="mp">${r.pos} ${r.team}</span>
         <span class="ms">${r.score.toFixed(1)}</span>
         <button class="mineb" type="button" title="claim for your roster">+</button>
@@ -396,7 +404,7 @@ function renderPos(d) {
     const cls = isGone ? (claimed.has(p.id) ? "prow taken claimed" : "prow taken") : "prow";
     out += `<div class="${cls}" data-id="${p.id}">
       <span class="pr">${isGone ? "" : n}</span>
-      <span class="pn">${esc(p.name)}</span>
+      <span class="pn">${lamp(p.sent)}${esc(p.name)}</span>
       <span class="pp">${isGone ? (claimed.has(p.id) ? "MINE" : "gone") : p.team}</span>
       <span class="pv">${p.vorp.toFixed(0)}</span>
       <span class="pa">${p.adp ? p.adp.toFixed(0) : "—"}</span>
@@ -411,7 +419,7 @@ function renderMine(d) {
     const full = BY_ID.get(p.id) || {};
     return `<div class="prow claimed" data-overall="${p.overall}">
       <span class="pr">${p.pos || "?"}</span>
-      <span class="pn">${esc(p.name)}</span>
+      <span class="pn">${lamp(p.sent)}${esc(p.name)}</span>
       <span class="pp">${p.team || ""}</span>
       <span class="pv">${full.vorp != null ? full.vorp.toFixed(0) : ""}</span>
       <span class="pa">bye ${full.bye || "—"}</span></div>`;

@@ -123,6 +123,11 @@ Commands: `/u` undo · `/j 47` next entry is pick #47 · `/t 9` show team 9 ·
   engine working, not a glitch.
 - A **dashed rule** in the list is a tier break — everything below it is a step
   down.
+- The **dot before each name** is the research verdict. Hover it for the reason.
+  · **green** nothing flagged in any feed — NOT a clean bill of health, the
+    feeds do not cover everyone equally
+  · **amber** a one-to-two game question, or a role/committee risk
+  · **red** multi-week absence, or one with no stated return
 - `BYE 13` amber chip = clashes with someone already on your roster.
 - An injury chip (`GROIN ~1wk`, `KNEE ~5wk`) means the ESPN injury report has
   something. Hover it for the beat-writer note — that is where role risk lives

@@ -62,7 +62,8 @@ function card(p, n) {
   return `<article class="dos ${p.gone ? "gone" : ""}">
     <div class="dhead">
       <span class="rank">${n}</span>
-      <span class="nm">${esc(p.name)}</span>
+      <span class="nm">${p.sent ? `<span class="lamp ${p.sent.level}" title="${
+        esc(p.sent.level.toUpperCase() + " — " + p.sent.reason)}"></span>` : ""}${esc(p.name)}</span>
       <span class="meta">${p.pos} ${p.team} · bye ${p.bye}${p.gone ? " · DRAFTED" : ""}</span>
       <span class="dnums">
         <span><span class="lbl">vorp</span><b>${p.vorp.toFixed(0)}</b></span>
