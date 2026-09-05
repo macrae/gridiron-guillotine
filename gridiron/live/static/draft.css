@@ -552,3 +552,26 @@ body.myturn #undob, body.myturn #redob { background: rgba(0,0,0,.16); color: #06
 .dhead .lamp { width: 9px; height: 9px; margin-right: 8px; vertical-align: 2px; }
 
 #hint.good { color: var(--good); }
+
+/* ---- unconfirmed seat -------------------------------------------------
+   FirstDown releases its draft order 30 minutes before the draft, so the
+   board runs on a placeholder seat until then. A placeholder silently
+   corrupts VONA, picks-until-turn and the whole recommendation order, so
+   this bar does not fade, cannot be dismissed, and steals the accent
+   colour that normally means "your turn". */
+#seatwarn {
+  display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline;
+  padding: 6px 10px; font-size: 12px; line-height: 1.35;
+  background: repeating-linear-gradient(135deg,
+    #7a2100 0 12px, #8d2900 12px 24px);
+  color: #ffe2d2; border-bottom: 2px solid #ff6b35;
+}
+#seatwarn[hidden] { display: none; }
+#seatwarn b { color: #fff; }
+#seatwarn .fix {
+  margin-left: auto; padding: 1px 8px; border-radius: 3px;
+  background: #ff6b35; color: #2b0d00; font-weight: 600; white-space: nowrap;
+}
+/* Kill the "your turn" glow while the seat is a guess -- it would be lying. */
+body.seatunset.myturn { animation: none; }
+body.seatunset #turn-flag { opacity: .45; text-decoration: line-through; }

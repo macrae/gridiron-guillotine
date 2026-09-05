@@ -45,7 +45,13 @@ class DraftSession:
 
     def __init__(self, league: str, pool: PlayerPool, config: LeagueConfig,
                  store: PickStore, accent: str = "#c0392b",
-                 peers: list[dict] | None = None):
+                 peers: list[dict] | None = None, slot_confirmed: bool = True):
+        #: False when the draft order is not out yet and `config.my_slot` is a
+        #: placeholder. Every seat-dependent number -- VONA, picks-until-turn,
+        #: the whole recommendation order -- is wrong for a placeholder, and
+        #: wrong silently, which is the dangerous kind. The UI refuses to be
+        #: quiet about it until /slot confirms a real seat.
+        self.slot_confirmed = slot_confirmed
         self.league = league
         #: Other leagues running right now, as [{"name", "url"}]. Purely a
         #: navigation convenience -- the processes stay fully independent, which
@@ -300,6 +306,7 @@ class DraftSession:
             "teams": cfg.num_teams,
             "rounds": cfg.rounds,
             "my_slot": cfg.my_slot,
+            "slot_confirmed": self.slot_confirmed,
             "urgency": self.urgency,
             "on_clock": None if done else {
                 "overall": cur,
@@ -534,6 +541,7 @@ class DraftHandler(BaseHTTPRequestHandler):
                         if not 1 <= slot <= s.config.num_teams:
                             return self._json({"error": "slot out of range"}, 400)
                         s.config.my_slot = slot
+                        s.slot_confirmed = True
                 elif route == "/reset":
                     s.store.checkpoint("reset")
                     s.store.reset()
@@ -558,8 +566,11 @@ class DraftServer(ThreadingHTTPServer):
 def serve(session: DraftSession, port: int = 8100, host: str = "127.0.0.1") -> None:
     handler = type("BoundHandler", (DraftHandler,), {"session": session})
     server = DraftServer((host, port), handler)
+    seat = (f"slot {session.config.my_slot}/{session.config.num_teams}"
+            if session.slot_confirmed else
+            f"SEAT UNSET (placeholder {session.config.my_slot}) -- use /slot N")
     print(f"  {session.league}: http://{host}:{port}"
-          f"   slot {session.config.my_slot}/{session.config.num_teams}"
+          f"   {seat}"
           f"   {len(session.pool.players)} players", flush=True)
     try:
         server.serve_forever()
@@ -571,7 +582,8 @@ def serve(session: DraftSession, port: int = 8100, host: str = "127.0.0.1") -> N
 
 def build_session(league: str, pool_csv: Path, db_path: Path,
                   config: LeagueConfig, accent: str = "#c0392b",
-                  peers: list[dict] | None = None) -> DraftSession:
+                  peers: list[dict] | None = None,
+                  slot_confirmed: bool = True) -> DraftSession:
     pool = load_pool(pool_csv)
     store = PickStore(db_path, config.num_teams)
-    return DraftSession(league, pool, config, store, accent, peers)
+    return DraftSession(league, pool, config, store, accent, peers, slot_confirmed)

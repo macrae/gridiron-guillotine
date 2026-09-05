@@ -1024,3 +1024,58 @@ def test_sentiment_reaches_the_board_and_the_research_page(session):
     assert "sent" in rec and rec["sent"]["level"] in ("red", "amber", "green")
     assert all("sent" in r for r in session.research()["players"])
     assert all("sent" in r for r in session.board_rows())
+
+
+# --------------------------------------------------------------------------
+# Unconfirmed seat
+#
+# FirstDown releases its draft order 30 minutes before the draft, so the board
+# necessarily runs on a placeholder seat until then. A placeholder is not a
+# cosmetic problem: my_slot drives VONA, picks-until-turn, and the entire
+# recommendation ordering, so an unconfirmed seat produces confident numbers
+# that are simply wrong. These pin the state that lets the UI say so.
+# --------------------------------------------------------------------------
+
+def test_session_defaults_to_confirmed(session):
+    """Existing callers -- and every league whose order is already known --
+    must keep behaving exactly as before."""
+    assert session.slot_confirmed is True
+    assert session.state()["slot_confirmed"] is True
+
+
+def test_unconfirmed_seat_is_exposed_in_state(tmp_path):
+    players = [_mk(i + 1, n) for i, n in enumerate(PARITY_NAMES)]
+    s = DraftSession("test", PlayerPool(players),
+                     LeagueConfig(num_teams=10, rounds=16, my_slot=1),
+                     PickStore(tmp_path / "u.sqlite", 10), slot_confirmed=False)
+    st = s.state()
+    assert st["slot_confirmed"] is False
+    # The placeholder is still a legal seat -- snake arithmetic must not break
+    # just because the seat is unknown.
+    assert st["my_slot"] == 1
+    assert st["grid"]["rounds"][0][0]["s"] == 1
+
+
+def test_setting_the_slot_confirms_it(tmp_path):
+    players = [_mk(i + 1, n) for i, n in enumerate(PARITY_NAMES)]
+    s = DraftSession("test", PlayerPool(players),
+                     LeagueConfig(num_teams=10, rounds=16, my_slot=1),
+                     PickStore(tmp_path / "c.sqlite", 10), slot_confirmed=False)
+    assert s.state()["slot_confirmed"] is False
+    s.config.my_slot = 7          # what the /config route does
+    s.slot_confirmed = True
+    st = s.state()
+    assert st["slot_confirmed"] is True and st["my_slot"] == 7
+    # And the grid must follow the new seat, not the placeholder.
+    mine = [c["o"] for row in st["grid"]["rounds"] for c in row if c["s"] == 7]
+    assert mine[:3] == [7, 14, 27]
+
+
+def test_unconfirmed_seat_still_recommends(tmp_path):
+    """The warning must not disable the board -- browsing before the order
+    drops is exactly what the pre-draft half hour is for."""
+    players = [_mk(i + 1, n) for i, n in enumerate(PARITY_NAMES)]
+    s = DraftSession("test", PlayerPool(players),
+                     LeagueConfig(num_teams=10, rounds=16, my_slot=1),
+                     PickStore(tmp_path / "r.sqlite", 10), slot_confirmed=False)
+    assert s.state()["recs"]

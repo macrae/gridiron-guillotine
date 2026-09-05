@@ -34,7 +34,10 @@ print = functools.partial(__builtins__.print if not isinstance(__builtins__, dic
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Live draft board.")
     ap.add_argument("--league", default="main", help="league name; keys the SQLite file")
-    ap.add_argument("--slot", type=int, required=True, help="your draft slot (1-N)")
+    ap.add_argument("--slot", type=int, required=True,
+                    help="your draft slot (1-N), or 0 if the draft order has "
+                         "not been released yet -- the board will then nag "
+                         "until you set it with /slot N")
     ap.add_argument("--teams", type=int, default=12)
     ap.add_argument("--rounds", type=int, default=15)
     ap.add_argument("--port", type=int, default=8100)
@@ -61,8 +64,16 @@ def main(argv: list[str] | None = None) -> int:
         print(f"no player pool at {args.pool}\n"
               f"build one with:  python -m gridiron.live.espn", file=sys.stderr)
         return 1
-    if not 1 <= args.slot <= args.teams:
-        print(f"--slot must be 1..{args.teams}", file=sys.stderr)
+    # 0 means "order not out yet". Snake arithmetic still needs a real number,
+    # so seat 1 stands in -- but nothing is allowed to present it as fact.
+    slot_confirmed = args.slot != 0
+    if args.slot == 0:
+        args.slot = 1
+        print("  draft order not released -- running on a PLACEHOLDER seat.\n"
+              "  Set it with /slot N in the board the moment you know it.")
+    elif not 1 <= args.slot <= args.teams:
+        print(f"--slot must be 1..{args.teams}, or 0 if the order is unknown",
+              file=sys.stderr)
         return 1
 
     # League settings: explicit --config, else a per-league file if one exists,
@@ -124,6 +135,7 @@ def main(argv: list[str] | None = None) -> int:
         config=cfg,
         accent=args.accent,
         peers=peers,
+        slot_confirmed=slot_confirmed,
     )
     if args.urgency is not None:
         session.urgency = max(0.0, min(1.0, args.urgency))

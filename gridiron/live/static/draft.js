@@ -168,6 +168,13 @@ function render() {
   const mine = d.on_clock && d.on_clock.mine;
   document.body.classList.toggle("myturn", !!mine);
 
+  // An unconfirmed seat makes VONA, picks-until-turn and the entire ordering
+  // wrong -- and wrong quietly. This is the one warning that never auto-hides.
+  const unset = d.slot_confirmed === false;
+  $("seatwarn").hidden = !unset;
+  if (unset) $("seatguess").textContent = d.my_slot;
+  document.body.classList.toggle("seatunset", unset);
+
   $("league").textContent = d.league;
   $("clock").textContent = d.on_clock ? d.on_clock.label : "complete";
   $("turn-flag").textContent = mine ? "YOU'RE UP" : (d.on_clock ? `slot ${d.on_clock.slot}` : "");
@@ -753,7 +760,7 @@ async function runCommand(raw) {
       break;
     case "slot":
       if (arg) { await post("/config", { my_slot: parseInt(arg, 10) });
-                 toast(`your slot → ${arg}`, "good"); }
+                 toast(`your slot → ${arg} — seat confirmed`, "warn"); }
       break;
     case "r": await openDrawer(STATE.my_slot); break;
     case "h": case "?": toggleHelp(true); break;
