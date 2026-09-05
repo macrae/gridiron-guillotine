@@ -1,8 +1,16 @@
 "use strict";
-/* Research dossiers — a reading view, deliberately separate from the draft
- * board. It shares the board's data but none of its urgency: no polling loop,
- * no keyboard capture, nothing that can interfere with a live draft.
+/* Research dossiers.
+ *
+ * Runs in two places from one copy: the standalone /research page, and a tab on
+ * the draft board. Everything is inside an IIFE because the board already owns
+ * `$`, `render` and `esc` at global scope -- loading this file alongside
+ * draft.js without the wrapper silently redefines all three.
+ *
+ * On the board the payload is ~1MB, so it is fetched once, lazily, the first
+ * time the tab is opened -- never at page load, and never again per pick.
+ * Drafted state is instead pushed in from the board via syncGone().
  */
+(function () {
 
 const $ = id => document.getElementById(id);
 const POSITIONS = ["QB", "RB", "WR", "TE", "K", "DST"];
@@ -14,12 +22,19 @@ function esc(s) {
     c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
 
+let BOOTED = false;
+
 async function boot() {
+  if (BOOTED) return;
+  BOOTED = true;
+  $("rlist").innerHTML = `<div class="shead">loading dossiers…</div>`;
   const r = await fetch("/research-data", { cache: "no-store" });
   DATA = await r.json();
-  document.documentElement.style.setProperty("--accent", DATA.accent);
-  $("rleague").textContent = DATA.league;
-  $("rage").textContent = DATA.dossier_age_h == null
+  // The board sets its own accent from league config; only the standalone page
+  // needs this, and overwriting it there would repaint the live header.
+  if (!ON_BOARD) document.documentElement.style.setProperty("--accent", DATA.accent);
+  if ($("rleague")) $("rleague").textContent = DATA.league;
+  if ($("rage")) $("rage").textContent = DATA.dossier_age_h == null
     ? "no dossiers — run: python -m gridiron.live.dossier"
     : `dossiers ${DATA.dossier_age_h}h old · ${DATA.players.filter(p => p.dossier).length} of ${DATA.players.length}`;
   $("rpos").innerHTML = POSITIONS.map(p =>
@@ -36,6 +51,7 @@ function scoreFor(p, mode) {
 }
 
 function render() {
+  if (!DATA) return;
   const q = $("rq").value.trim().toLowerCase();
   const hideGone = $("rhide").checked;
   const riskOnly = $("rrisk").checked;
@@ -118,4 +134,29 @@ $("rlist").addEventListener("click", e => {
   if (el) { el.hidden = !el.hidden; b.textContent = el.hidden ? "read the full report" : "hide"; }
 });
 
-boot();
+// ---- wiring -----------------------------------------------------------
+// The board owns the accent and boots this lazily; the standalone page boots
+// immediately and paints its own.
+const ON_BOARD = document.documentElement.classList.contains("boardpage");
+
+if (ON_BOARD) {
+  //: Called by draft.js when the research tab is opened, and again whenever the
+  //: pick log changes while it is visible. Drafted state is pushed rather than
+  //: refetched -- a 1MB round trip per pick would be absurd.
+  window.GGResearch = {
+    open() { boot().then(render); },
+    syncGone(goneIds) {
+      if (!DATA) return;
+      let changed = false;
+      for (const p of DATA.players) {
+        const g = goneIds.has(p.id);
+        if (g !== p.gone) { p.gone = g; changed = true; }
+      }
+      if (changed) render();
+    },
+  };
+} else {
+  boot();
+}
+
+})();

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>draft</title>
 <link rel="stylesheet" href="/static/draft.css">
+<link rel="stylesheet" href="/static/research.css">
 </head>
 <body>
 
@@ -23,7 +24,8 @@
   <span id="turn-flag"></span>
   <button id="undob" type="button" title="undo">&#8630;</button>
   <button id="redob" type="button" title="redo">&#8631;</button>
-  <a class="peer" href="/research" title="scouting, outlooks, news">research</a>
+  <a class="peer" href="/research" target="_blank" rel="noopener"
+     title="the same dossiers as the research tab, as a full page — for a second monitor">research &#8599;</a>
   <span id="peers"></span>
   <span id="conn" class="pill" title="connection">•</span>
 </header>
@@ -68,6 +70,7 @@
   <button class="tab" data-tab="pos">by position</button>
   <button class="tab" data-tab="grid">draft grid</button>
   <button class="tab" data-tab="news">risk <span id="newscount"></span></button>
+  <button class="tab" data-tab="research">research</button>
   <button class="tab" data-tab="mine">mine <span id="minecount"></span></button>
   <button class="tab" data-tab="gone">gone <span id="pickcount"></span></button>
 </nav>
@@ -102,6 +105,24 @@
     <div id="newsrisky"></div>
     <div class="shead">the injury report covers the league; the headline feed is
       ~50 stories, so it is what is being talked about now. No news is not good news.</div>
+  </section>
+
+  <section id="t-research" class="tabpane" hidden>
+    <div id="rcontrols">
+      <input id="rq" type="search" placeholder="filter by name…" autocomplete="off">
+      <span id="rpos"></span>
+      <label class="rtog"><input type="checkbox" id="rhide" checked> hide drafted</label>
+      <label class="rtog"><input type="checkbox" id="rrisk"> risk only</label>
+      <select id="rsort">
+        <option value="vorp">sort: VORP</option>
+        <option value="adp">sort: ADP</option>
+        <option value="risk">sort: injury severity</option>
+        <option value="value">sort: value vs ADP</option>
+      </select>
+      <span id="rcount"></span>
+    </div>
+    <div id="rlist"></div>
+    <div class="shead" id="rage"></div>
   </section>
 
   <section id="t-mine" class="tabpane" hidden>
@@ -161,5 +182,6 @@
 <div id="toasts"></div>
 
 <script src="/static/draft.js"></script>
+<script src="/static/research.js"></script>
 </body>
 </html>

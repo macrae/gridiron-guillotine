@@ -3,8 +3,13 @@
 
 /* The board locks scrolling so its clock cannot be scrolled away. This page is
    for reading, so it must scroll -- and it shares the board's stylesheet, which
-   is how it inherited the lock. */
-html, body.research { height: auto; overflow: visible; }
+   is how it inherited the lock.
+
+   The :not(.boardpage) matters. The board now loads this file too (research is
+   a tab there), and a bare `html` selector would unlock the board's scroll lock
+   from a stylesheet that has nothing to do with it -- the same cross-page leak
+   as before, running the other way. */
+html:not(.boardpage), body.research { height: auto; overflow: visible; }
 body.research { max-width: 980px; margin: 0 auto; display: block; }
 
 #rband {
@@ -81,3 +86,28 @@ body.research { max-width: 980px; margin: 0 auto; display: block; }
 #rfoot { padding: 14px; font: 11px var(--mono); color: var(--dimmer);
          border-top: 1px solid var(--line); }
 #rlist .shead { padding: 20px 14px; }
+
+
+/* ---- research as a board tab ------------------------------------------
+   Same markup and the same script as the standalone page; only the chrome
+   differs. Here it lives inside the right column's scrolling panel, so the
+   controls stick to the top of that panel rather than to a page header that
+   does not exist. */
+html.boardpage #rcontrols {
+  top: 0;
+  padding: 7px 10px;
+  gap: 6px;
+}
+html.boardpage #rq { min-width: 120px; height: 26px; font-size: 12px; }
+html.boardpage .dos { padding: 10px 10px; }
+html.boardpage .dhead .nm { font-size: 15px; }
+html.boardpage .dnums { gap: 10px; }
+html.boardpage #rlist .shead { padding: 16px 10px; }
+html.boardpage #rage {
+  padding: 8px 10px; border-top: 1px solid var(--line); opacity: .7;
+}
+/* The panel is narrower than the reading page: let the numbers wrap under the
+   name instead of squeezing the name to nothing. */
+@media (max-width: 1500px) {
+  html.boardpage .dnums { margin-left: 0; width: 100%; }
+}

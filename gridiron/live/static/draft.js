@@ -219,6 +219,9 @@ function render() {
   if (unset) $("seatguess").textContent = d.my_slot;
   document.body.classList.toggle("seatunset", unset);
   syncSeatControls(d);
+  // Drafted state is pushed into the research view rather than refetched.
+  if (TAB === "research" && window.GGResearch)
+    window.GGResearch.syncGone(new Set(draftedMap().keys()));
 
   $("league").textContent = d.league;
   $("clock").textContent = d.on_clock ? d.on_clock.label : "complete";
@@ -551,6 +554,8 @@ function renderNews(d) {
 
 function showTab(name) {
   TAB = name;
+  // ~1MB of dossiers, fetched the first time it is asked for and never again.
+  if (name === "research" && window.GGResearch) window.GGResearch.open();
   localStorage.setItem("gg:tab", name);
   for (const el of document.querySelectorAll(".tab"))
     el.classList.toggle("on", el.dataset.tab === name);
