@@ -280,8 +280,8 @@ body.myturn .card.top { border-left-color: var(--good); }
    Making the page itself non-scrolling and giving the log the only overflow
    turns that from a discipline problem into a structural guarantee. */
 
-html, body { height: 100dvh; overflow: hidden; }
-body { display: flex; flex-direction: column; }
+html.boardpage, html.boardpage body { height: 100dvh; overflow: hidden; }
+html.boardpage body { display: flex; flex-direction: column; }
 /* One scroll region. Everything above #panel is pinned, so the clock, the
    input and the top 3 cannot be scrolled away -- a layout invariant rather
    than a discipline problem. */

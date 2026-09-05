@@ -1,7 +1,11 @@
 /* Research dossiers. A separate page, so it is free to be wider than the
    500px draft column -- this is reading, not reacting under a clock. */
 
-body.research { max-width: 980px; height: auto; overflow: auto; display: block; }
+/* The board locks scrolling so its clock cannot be scrolled away. This page is
+   for reading, so it must scroll -- and it shares the board's stylesheet, which
+   is how it inherited the lock. */
+html, body.research { height: auto; overflow: visible; }
+body.research { max-width: 980px; margin: 0 auto; display: block; }
 
 #rband {
   position: sticky; top: 0; z-index: 40;
