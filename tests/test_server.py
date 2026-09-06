@@ -1170,3 +1170,51 @@ def test_bulk_preview_strips_the_junk_people_actually_paste(session):
 def test_bulk_preview_ignores_blank_lines(session):
     p = session.bulk_preview(f"\n\n{PARITY_NAMES[0]}\n   \n")
     assert len(p["items"]) == 1
+
+
+# --------------------------------------------------------------------------
+# Audit-log recovery
+#
+# The SQLite store is destroyed by ordinary events -- a --reset relaunch, a
+# crashed machine. The append-only log survives them, but only matters if it
+# can be read back, which is what lost 28 live picks.
+# --------------------------------------------------------------------------
+
+def test_recover_takes_the_appends_after_the_last_reset():
+    from gridiron.live.recover import last_session
+    ev = [{"op": "append", "player_id": 1}, {"op": "reset"},
+          {"op": "append", "player_id": 2}, {"op": "append", "player_id": 3}]
+    assert [e["player_id"] for e in last_session(ev)] == [2, 3]
+
+
+def test_recover_walks_back_past_trailing_resets():
+    """A relaunch with --reset writes a reset before any pick is made, so the
+    newest reset is usually NOT the boundary you want."""
+    from gridiron.live.recover import last_session
+    ev = [{"op": "append", "player_id": 1},
+          {"op": "reset"},
+          {"op": "append", "player_id": 7}, {"op": "append", "player_id": 8},
+          {"op": "reset"}, {"op": "reset"}, {"op": "reset"}]
+    assert [e["player_id"] for e in last_session(ev)] == [7, 8]
+
+
+def test_recover_returns_empty_when_nothing_was_ever_recorded():
+    from gridiron.live.recover import last_session
+    assert last_session([{"op": "reset"}, {"op": "reset"}]) == []
+    assert last_session([]) == []
+
+
+def test_recover_survives_a_torn_final_line(tmp_path):
+    from gridiron.live.recover import load_events
+    p = tmp_path / "a.jsonl"
+    p.write_text('{"op":"append","player_id":1}\n{"op":"append","player_i')
+    assert [e["player_id"] for e in load_events(p)] == [1]
+
+
+def test_recover_preserves_pick_numbers_and_ownership():
+    from gridiron.live.recover import last_session
+    ev = [{"op": "reset"},
+          {"op": "append", "player_id": 5, "overall": 5, "mine": True},
+          {"op": "append", "player_id": 9, "overall": 6, "mine": False}]
+    got = last_session(ev)
+    assert [(e["overall"], e["mine"]) for e in got] == [(5, True), (6, False)]
