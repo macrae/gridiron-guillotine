@@ -809,3 +809,76 @@ select.unset {
 }
 .hcsec.dim { color: var(--dim); }
 .hcsec code { font: 10.5px var(--mono); color: var(--mine); }
+
+/* ---- catch-up paste ---------------------------------------------------
+   Shown when a multi-line paste lands in the input. Modal on purpose: it is
+   about to write many picks at once, so it should stop the world and be read.
+   The preview exists because a silently skipped name shifts every later pick
+   by one, which is a quieter and worse problem than being behind. */
+#catchup {
+  position: fixed; inset: 6vh 8vw auto 8vw; max-height: 82vh; z-index: 95;
+  display: flex; flex-direction: column;
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.75);
+}
+#catchup[hidden] { display: none; }
+#cuhead {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-bottom: 1px solid var(--line);
+}
+#cuhead b { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+#cusum { font: 11px var(--mono); color: var(--dim); }
+#cucancel, #cugo {
+  background: var(--panel); color: var(--text);
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 4px 10px; font: 11px var(--mono); cursor: pointer;
+}
+#cucancel { margin-left: auto; }
+#cugo { background: var(--good); border-color: var(--good); color: #06210c;
+        font-weight: 700; }
+#cugo:disabled { background: var(--panel); color: var(--dimmer);
+                 border-color: var(--line); cursor: not-allowed; font-weight: 400; }
+
+#culist { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+.curow {
+  display: grid; grid-template-columns: 1fr 1fr 110px;
+  gap: 10px; align-items: baseline;
+  padding: 3px 12px; font-size: 12px;
+  border-left: 3px solid transparent;
+}
+.curow .cin  { font: 11px var(--mono); color: var(--dim);
+               overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.curow .cout { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.curow .cst  { font: 10px var(--mono); text-align: right; }
+.curow.cok  { border-left-color: var(--good); }
+.curow.cbad { border-left-color: var(--bad); background: #2a1417; }
+.curow.cbad .cst { color: var(--bad); }
+.curow.cdup { border-left-color: var(--dimmer); opacity: .55; }
+
+#cufoot {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 12px; border-top: 1px solid var(--line);
+}
+#cufoot .hintlet { flex: 1; font-size: 11px; color: var(--dim); line-height: 1.4; }
+
+/* ---- column swap ------------------------------------------------------
+   Which side the rankings sit on depends on the desk, not the draft -- where
+   the Yahoo window is, which monitor, which hand. Done with grid `order` so
+   the DOM is untouched: the hover card clamps to #colR by measuring it, and
+   moving nodes would also invalidate every cached element reference. */
+body.swapped #cols { grid-template-columns: minmax(430px, 1.05fr) minmax(400px, 1fr); }
+body.swapped #colL { order: 2; }
+body.swapped #colR { order: 1; border-left: 0; border-right: 1px solid var(--line); }
+/* Toasts follow the input, which travels with the rankings column. */
+body.swapped #toasts { left: auto; right: 0; }
+#swapbtn {
+  background: var(--panel2); color: var(--dim);
+  border: 1px solid var(--line); border-radius: 4px;
+  width: 22px; height: 20px; cursor: pointer; font-size: 12px; line-height: 1;
+}
+#swapbtn:hover { color: var(--text); border-color: #3d4650; }
+#swapbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+@media (max-width: 880px) {
+  body.swapped #colL, body.swapped #colR { order: 0; }
+  body.swapped #colR { border-right: 0; }
+}

@@ -1119,3 +1119,54 @@ def test_blurb_does_not_print_the_same_sentence_twice(session):
     # A genuinely different note is still carried.
     session.dossiers[pid] = {"scouting": {"headline": "Different report.", "published": "Mon"}}
     assert session.blurb(pid)["scouting"]["headline"] == "Different report."
+
+
+# --------------------------------------------------------------------------
+# Bulk catch-up
+#
+# Falling behind is a real failure mode: a fast room, a break, an autodrafting
+# mock. The danger is not the typing -- it is that a silently skipped name
+# shifts every later pick by one, so the preview must be honest before anything
+# is written.
+# --------------------------------------------------------------------------
+
+def test_bulk_preview_writes_nothing(session):
+    before = len(session.store.snapshot())
+    p = session.bulk_preview("\n".join(PARITY_NAMES[:3]))
+    assert p["ready"] == 3
+    assert len(session.store.snapshot()) == before
+
+
+def test_bulk_preview_flags_unmatched_rather_than_dropping_it(session):
+    p = session.bulk_preview(f"{PARITY_NAMES[0]}\nNot A Real Person\n{PARITY_NAMES[1]}")
+    assert [i["status"] for i in p["items"]] == ["ok", "unmatched", "ok"]
+    assert p["problems"] == 1
+
+
+def test_bulk_preview_marks_already_drafted(session):
+    pid = session.pool.by_id[[p.player_id for p in session.pool.players][0]].player_id
+    name = session.pool.by_id[pid].name
+    session.store.append(pid)
+    assert session.bulk_preview(name)["items"][0]["status"] == "already"
+
+
+def test_bulk_preview_marks_a_repeat_inside_the_same_block(session):
+    n = PARITY_NAMES[0]
+    p = session.bulk_preview(f"{n}\n{n}")
+    assert [i["status"] for i in p["items"]] == ["ok", "duplicate"]
+    assert p["ready"] == 1
+
+
+def test_bulk_preview_strips_the_junk_people_actually_paste(session):
+    n = PARITY_NAMES[0]
+    pos = session.pool.by_id[
+        next(p.player_id for p in session.pool.players if p.name == n)].pos
+    for line in (f"1. {n}", f"12) {n}", f"3.04 {n}", f"{n} - {pos}", f"{n} ({pos} SF)"):
+        got = session.bulk_preview(line)["items"][0]
+        assert got["status"] == "ok", (line, got)
+        assert got["name"] == n, (line, got)
+
+
+def test_bulk_preview_ignores_blank_lines(session):
+    p = session.bulk_preview(f"\n\n{PARITY_NAMES[0]}\n   \n")
+    assert len(p["items"]) == 1

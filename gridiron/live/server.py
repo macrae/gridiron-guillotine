@@ -14,13 +14,14 @@ instead of waiting for its next poll.
 from __future__ import annotations
 
 import json
+import re
 import secrets
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from . import (dossier as dos_mod, injuries as inj_mod, news as news_mod,
+from . import (dossier as dos_mod, injuries as inj_mod, names, news as news_mod,
                sentiment as sent_mod, snake, vona)
 from .pool import PlayerPool, load_pool
 from .recommend import DEFAULT_URGENCY, recommend
@@ -143,6 +144,48 @@ class DraftSession:
                                      self.dossiers.get(p.player_id))["level"]}
             for p in self.pool.players
         ]
+
+    def bulk_preview(self, text: str) -> dict:
+        """Resolve a pasted block of names without recording anything.
+
+        Falling behind is a real failure mode -- a fast room, a bathroom break,
+        an autodrafting mock -- and typing your way back one player at a time is
+        exactly what you do not have time for. This resolves the whole block
+        first so you can see what it will do before it does it: an unmatched
+        name silently skipped would shift every later pick by one, which is far
+        worse than a slow catch-up.
+        """
+        rows = self.pool.as_rows()
+        drafted = self.store.drafted_ids()
+        seen: set[int] = set()
+        items: list[dict] = []
+        for raw in (text or "").splitlines():
+            line = raw.strip()
+            # Tolerate what people actually paste: numbering, round.pick
+            # prefixes, and a trailing position/team.
+            line = re.sub(r"^\s*(?:\d+[.):]|\d+\.\d+)\s*", "", line)
+            line = re.sub(r"\s*[-,(]\s*(QB|RB|WR|TE|K|D/?ST|DEF)\b.*$", "", line,
+                          flags=re.I).strip()
+            if not line:
+                continue
+            hit = names.match(line, rows)
+            if hit is None:
+                items.append({"input": raw.strip(), "status": "unmatched"})
+                continue
+            pid = hit["player_id"]
+            pl = self.pool.by_id.get(pid)
+            status = ("already" if pid in drafted else
+                      "duplicate" if pid in seen else "ok")
+            if status == "ok":
+                seen.add(pid)
+            items.append({"input": raw.strip(), "status": status, "id": pid,
+                          "name": pl.name if pl else hit.get("name"),
+                          "pos": pl.pos if pl else "", "team": pl.team if pl else ""})
+        return {
+            "items": items,
+            "ready": sum(1 for i in items if i["status"] == "ok"),
+            "problems": sum(1 for i in items if i["status"] != "ok"),
+        }
 
     def blurb(self, player_id: int) -> dict | None:
         """Everything worth knowing about one player, in a hover-sized package.
@@ -543,6 +586,22 @@ class DraftHandler(BaseHTTPRequestHandler):
                     s.store.checkpoint(
                         f"{'claimed' if mine else 'gone'}: {who.name if who else pid}")
                     s.store.append(int(pid), overall=body.get("overall"), mine=mine)
+                elif route == "/bulk":
+                    prev = s.bulk_preview(body.get("text", ""))
+                    if body.get("preview"):
+                        return self._json(prev)
+                    ok = [i for i in prev["items"] if i["status"] == "ok"]
+                    if not ok:
+                        return self._json({"error": "nothing to record",
+                                           **prev}, 400)
+                    # ONE checkpoint for the whole block: catching up twenty
+                    # picks then needing twenty undos to back it out would be a
+                    # worse trap than being behind.
+                    s.store.checkpoint(f"caught up {len(ok)} picks")
+                    for i in ok:
+                        s.store.append(int(i["id"]), source="bulk",
+                                       observed_name=i["input"])
+                    return self._json({**s.state(), "bulk": prev})
                 elif route == "/mine":
                     # Claim or release a player already recorded as gone.
                     pid = body.get("player_id")

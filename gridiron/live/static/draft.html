@@ -145,6 +145,8 @@
     <input id="urg" type="range" min="0" max="1" step="0.05" value="0.2">
     <span id="urgval">0.60</span>
   </label>
+  <button id="swapbtn" type="button"
+          title="swap the columns — rankings and panels change sides">&#8646;</button>
   <button id="resetbtn" type="button" title="clear every pick and start over">reset</button>
   <button id="helpbtn" type="button">?</button>
 </footer>
@@ -204,6 +206,20 @@
     <dt>RESET</dt><dd>bottom-right, next to this button. Clears every pick —
       click it twice to confirm. Undo brings it all back</dd>
   </dl>
+</div>
+
+<div id="catchup" hidden>
+  <div id="cuhead">
+    <b>catch up</b>
+    <span id="cusum"></span>
+    <button id="cucancel" type="button">esc</button>
+  </div>
+  <div id="culist"></div>
+  <div id="cufoot">
+    <span class="hintlet">unmatched lines are skipped — fix them by hand after,
+      or cancel and edit the paste. One undo reverts the whole batch.</span>
+    <button id="cugo" type="button">record</button>
+  </div>
 </div>
 
 <div id="toasts"></div>

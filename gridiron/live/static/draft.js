@@ -294,8 +294,74 @@ document.addEventListener("mouseout", e => {
 // Any real interaction dismisses it -- a card left hanging over the board
 // during a pick is exactly the problem we already fixed once with toasts.
 document.addEventListener("click", hideCard, true);
-document.addEventListener("keydown", hideCard, true);
+document.addEventListener("keydown", e => {
+  hideCard();
+  if (e.key === "Escape" && !$("catchup").hidden) { e.stopPropagation(); closeCatchup(); }
+}, true);
 window.addEventListener("scroll", hideCard, true);
+
+// ---- catch-up paste ----------------------------------------------------
+// Typing your way back one player at a time is exactly what you do not have
+// time for when you are behind. Paste the block instead.
+//
+// It previews before it writes, because an unmatched name silently skipped
+// shifts every later pick by one -- a quiet corruption that is much worse than
+// simply being behind.
+let CATCHUP_TEXT = "";
+
+async function catchupPreview(text) {
+  const prev = await post("/bulk", { text, preview: true });
+  CATCHUP_TEXT = text;
+  const cls = { ok: "cok", unmatched: "cbad", already: "cdup", duplicate: "cdup" };
+  const label = { ok: "", unmatched: "no match", already: "already gone",
+                  duplicate: "repeated above" };
+  $("culist").innerHTML = prev.items.map(i => `
+    <div class="curow ${cls[i.status]}">
+      <span class="cin">${esc(i.input)}</span>
+      <span class="cout">${i.name ? esc(`${i.name} · ${i.pos} ${i.team}`) : ""}</span>
+      <span class="cst">${label[i.status]}</span>
+    </div>`).join("") || `<div class="shead">nothing to read</div>`;
+  $("cusum").textContent =
+    `${prev.ready} to record` + (prev.problems ? ` · ${prev.problems} skipped` : "");
+  $("cugo").disabled = prev.ready === 0;
+  $("cugo").textContent = `record ${prev.ready}`;
+  $("catchup").hidden = false;
+}
+
+function closeCatchup() { $("catchup").hidden = true; CATCHUP_TEXT = ""; }
+
+$("q").addEventListener("paste", e => {
+  const text = (e.clipboardData || window.clipboardData).getData("text") || "";
+  if (!text.includes("\n")) return;          // ordinary paste, leave it alone
+  e.preventDefault();
+  catchupPreview(text).catch(err => toast(`catch-up failed: ${err.message}`, "bad"));
+});
+
+$("cucancel").addEventListener("click", closeCatchup);
+$("cugo").addEventListener("click", async () => {
+  const text = CATCHUP_TEXT;
+  closeCatchup();
+  const d = await post("/bulk", { text });
+  STATE = d; render();
+  const n = (d.bulk?.items || []).filter(i => i.status === "ok").length;
+  toast(`caught up ${n} picks — ⌘Z undoes all of them`, "warn");
+  clearInput(); $("q").focus();
+});
+
+// Which side the rankings sit on is a property of the desk, not the draft, so
+// it persists. Grid `order` does the swap -- moving the nodes would break the
+// hover card's column clamp and every cached element reference.
+function applySwap(on) {
+  document.body.classList.toggle("swapped", on);
+  localStorage.setItem("gg:swap", on ? "1" : "0");
+  const b = document.getElementById("swapbtn");
+  if (b) b.title = on ? "rankings on the right — click to swap back"
+                      : "rankings on the left — click to swap";
+}
+applySwap(localStorage.getItem("gg:swap") === "1");
+
+document.addEventListener("DOMContentLoaded", () =>
+  applySwap(localStorage.getItem("gg:swap") === "1"));
 
 function banner(msg) {
   let el = document.getElementById("errbar");
@@ -1241,6 +1307,8 @@ $("cellbar").addEventListener("click", async e => {
   }
 });
 
+$("swapbtn").addEventListener("click",
+  () => applySwap(!document.body.classList.contains("swapped")));
 $("urg").addEventListener("change", e => post("/config", { urgency: parseFloat(e.target.value) }));
 $("urg").addEventListener("input", e => { $("urgval").textContent = Number(e.target.value).toFixed(2); });
 // Two-step, not a modal: a modal is slow under a clock, and a bare click on a
