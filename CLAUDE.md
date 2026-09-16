@@ -767,6 +767,9 @@ The new package structure supports:
 
 ## 📁 **File Organization Principles**
 
+- **Season notes / activity log**: `NOTES.md` — league IDs, pending waivers/trades, weekly post-mortems, decisions (e.g. "keep Warren"), and things to keep track of. Read it first when asked about the leagues, and append to it after any league activity.
+
+
 ### **Package Structure Logic**
 - **`core/`**: Business logic and strategy algorithms
 - **`data/`**: All data processing, validation, and scraping

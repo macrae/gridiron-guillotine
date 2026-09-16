@@ -21,6 +21,10 @@
 
 A research-validated fantasy football draft strategy application that combines Hero-RB methodology (20.2% advance rate vs 16.7% baseline) with **persistent SQLite database**, pre-computed player scores, real-time NFL news integration from ESPN/NFL.com/RotoWire, and live draft management.
 
+## 📓 Season Notes
+
+Ongoing notes and logs live in [`NOTES.md`](NOTES.md): league setup, recent activity (waivers, trades, lineup calls), weekly post-mortems, and open items to keep track of during the season.
+
 ## 🚀 Quick Start
 
 ### Installation
