@@ -35,31 +35,36 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 ## Open items / pending
 
 ### 2MinuteDrill
-- [ ] **Waiver 1 (Sep 16):** $6 Devaughn Vele, drop Tyjae Spears
-- [ ] **Waiver 2 (Sep 16):** $3 Khalil Shakir, drop Tyjae Spears (fallback; skipped if #1 hits)
+- [x] **Waiver 1 (Sep 16): WON** — Devaughn Vele added for $6, Tyjae Spears dropped. FAAB now $94.
+- [x] **Waiver 2 (Sep 16):** Shakir claim skipped, as designed (same drop as claim 1).
 - [ ] **Trade proposed (Sep 15) to CaliBayBoi510:** Tee Higgins for Aaron Jones + Hunter Henry.
       If declined → resend for Stefon Diggs, then Jameson Williams.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
-- [x] Lineup Wk2: Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **Sutton (flex)** / Dicker / Steelers
+- [x] Lineup Wk2 (verified Sep 16): Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **Sutton (flex)** / Dicker / Steelers. Bench: Henry, A. Jones, Golden, K. Murray (Q), Vele. IR empty.
 - **Decision: keep Tyler Warren.** Not trading him; Henry is a throw-in only.
 
 ### First Down
-- [x] Lineup Wk2 (set Sep 15): Hurts / Achane / J. Love / Lamb / Rice / McLaurin / **Kittle (TE)** / **Sutton (flex)** / Aubrey / Steelers. Tuten and Andrews benched.
+- [x] Lineup Wk2 (set Sep 15, verified Sep 16): Hurts / Achane / J. Love / Lamb / Rice / McLaurin / **Kittle (TE)** / **Sutton (flex)** / Aubrey / Steelers. Bench: Andrews, Tuten, Dobbins, Golden, Shough, Boston. IR empty.
 - [x] **Cancelled (Sep 15):** stray waiver claim "Add Hunter Henry, drop Spears" — origin unclear (possibly a mis-clicked Add during the 2MD Vele flow). Would have spent waiver priority #1 on a third TE. Sean cancelled it; priority #1 preserved.
-- [ ] **Wednesday Sep 17, after waivers clear** (players show "FA" not "W (date)" in Roster Status) — add as FREE AGENTS so priority #1 is not spent:
-      1. Buccaneers DEF (DEF1 proj vs CLE) — drop Tyjae Spears.
-      2. Devaughn Vele (or Denzel Boston if Vele is gone) — drop Tyler Shough (Stroud, J. Love, Mayfield are all FAs; a QB2 is dead weight).
-      Deliberately NOT filed as waiver claims on Sep 15: doing so would run them through waivers and drop priority from #1 to #10. Sean confirmed: wait for Wednesday.
-      Pending transactions in FD as of Sep 15 evening = the Hampton trade proposal only. No waiver claims (the Vele/Shakir claims are in 2MD).
+- [x] **Sep 16, FA add (no priority cost):** Denzel Boston added, Tyjae Spears dropped. Waiver priority still #1.
+      Decisions: **no defense streaming** (Sean: "defense isn't an optimization I want to focus on, Steelers are fine"); **Shough stays** as QB2 for now.
+      Bench now: Andrews, Tuten, Dobbins, Golden, Boston, Shough.
 - [ ] **Trade proposed (Sep 15) to Billy Ba Ba Ba:** Omarion Hampton for Terry McLaurin (they have an EMPTY WR3 slot and six RBs). If declined → Sutton + Golden for TreVeyon Henderson, then RJ Harvey.
 - [ ] Trade 2: McLaurin + Golden → T & T's Prenup for Bucky Irving.
-- [ ] Trade 3: Sutton + Spears → —HA HA— for Chuba Hubbard.
+- [ ] Trade 3: Sutton + Dobbins → —HA HA— for Chuba Hubbard (Spears is gone).
 - Deebo and Hurting bad are chasing the same RBs → send the Hampton offer first.
 
 ---
 
 ## Log
+
+### 2026-09-16 — Waivers processed
+- 2MD: Vele claim won ($6, Spears dropped). Shakir fallback skipped. Both trade proposals (Higgins / Hampton) still open, no response from Bjohn or Billy.
+- FD: no claims filed (by design). Wire cleared. Billy Ba Ba Ba used their claim on Vele, so the Hampton-for-McLaurin offer is now a smaller upgrade for them (WR3 9.5 → 13.7) rather than filling an empty slot. Still worth leaving open.
+- FD: added Denzel Boston, dropped Spears (free agent, priority #1 intact). Sean declined the Bucs DEF stream (keeping Steelers) and kept Shough.
+- Both Week 2 lineups verified on Yahoo. No starters play Thursday (DET@BUF), so nothing locks before Sunday 1:00.
+- **Sunday checklist:** Kyler Murray status (IR slot if designated); Sunday-morning inactives → swap-ins are Vele/Golden (2MD), Boston/Golden (FD).
 
 ### 2026-09-15 — Week 1 post-mortem, Week 2 plan
 **Results.** 0-2.
@@ -88,7 +93,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $0 of $100 so far (two claims pending: $6 / $3).
+- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). $94 left.
 - Waiver priority (FD): #1, intact (stray Henry claim cancelled Sep 15).
 - Trades proposed: 2 (2MD → CaliBayBoi510 for Higgins; FD → Billy Ba Ba Ba for Hampton; both Sep 15). Trades accepted: 0.
 - Yahoo API scope fix: not done.
