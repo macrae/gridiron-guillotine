@@ -44,7 +44,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Sun Sep 27 | FD | Flex Sutton vs Tuten is a tie (10.9 each); default Sutton. | default set |
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
-| Standing | both | No open trade offers. Fallback trade ideas kept in Open items; none active. | standing |
+| Any day | 2MD | Trade offer to phukumean: A. Jones for A.J. Brown. If accepted, move Brown to IR and put Sutton in the flex. Commissioner review applies; 1-day reject window. | pending |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
@@ -88,6 +88,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 - [x] **Waiver 2 (Sep 16):** Shakir claim skipped, as designed (same drop as claim 1).
 - [x] ~~**Trade proposed (Sep 15) to CaliBayBoi510:** Tee Higgins for Aaron Jones + Hunter Henry.~~ **Closed by Sep 20**: no longer pending when Sean asked to withdraw it; not in the league trade log, so Bjohn most likely rejected it (Yahoo doesn't log rejections).
       If declined → resend for Stefon Diggs, then Jameson Williams.
+- [ ] **Trade proposed (Sep 21) to phukumean:** Aaron Jones for A.J. Brown (IR, high-ankle sprain, ~Week 6–7 return). If accepted: move Brown to the empty IR slot; Sutton takes the flex. Note sent: Mason on IR, Brown clogging their bench, Jones starts right away.
 - [ ] **Waiver (Sep 23): $9 Tre Tucker, drop Hunter Henry** (Sean lowered it from $14 on Sep 21). See FAAB log below.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
@@ -109,6 +110,12 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Log
+
+### 2026-09-21 — Trade scan, both leagues (Yahoo rest-of-season projections, every rostered player)
+- **2MD, SENT Sep 21:** Aaron Jones → phukumean for **A.J. Brown** (IR, high-ankle sprain, ~6 weeks, earliest return Week 6 Oct 18). We have an empty IR slot; phukumean has Brown clogging their bench, Jordan Mason on IR and Chris Rodriguez as RB3. Cost to us: Jones leaves the flex, Sutton plays it for 3–4 weeks.
+- 2MD, checked and rejected: Murray has little trade value (his ROS proj 295 is below every team's QB1); Hall for a WR loses because Jones becomes our RB2; Henry is tied up in the pending Tucker claim.
+- **FD:** no deal worth forcing. We're within ±12 of league median at every lineup slot. Only marginal idea: Shough → House of Tweez (QB1 is 27 below median) for Jadarian Price (Q) or Jalen Coker. Sean previously chose to keep Shough.
+- RB-desperate teams to watch (FD): Hurting bad (RB1 -52, RB2 -31), —HA HA— (RB1 -51), Deebo (RB2 -36). Their surplus is WRs/QBs we don't need.
 
 ### 2026-09-21 — First Down: Schultz passed on
 - Sean asked about Dalton Schultz; decided to skip. Same injury-contingent logic as the Tucker repricing, plus it would cost waiver priority #1 and we already carry two TEs who project higher.
@@ -196,5 +203,5 @@ Budgets Sep 21: TD 100, SHAWN 96, phukumean 100, Duffel 100, Hit Em 100, $KB 100
 Tendencies: RocGPT = aggressive on WR/RB breakouts ($11–12); 619ers = pays for names ($27 Kittle); Sacala/$KB = $0 bidders; SHAWN = FA streamer, small bids; TD, phukumean, Duffel, OnlyBags have never bid.
 No prior-season data reachable (no history link on Yahoo; API is 403).
 - Waiver priority (FD): #1, intact (stray Henry claim cancelled Sep 15).
-- Trades proposed: 2 (Sep 15). Accepted: 0. Both closed Sep 20 (Higgins offer gone/likely rejected; Hampton offer withdrawn). No open offers.
+- Trades proposed: 3. Accepted: 0. Sep 15 offers closed Sep 20. Open: 2MD A. Jones → phukumean for A.J. Brown (Sep 21).
 - Yahoo API scope fix: not done.
