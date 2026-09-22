@@ -51,6 +51,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 - [x] **Sep 16, FA add (no priority cost):** Denzel Boston added, Tyjae Spears dropped. Waiver priority still #1.
       Decisions: **no defense streaming** (Sean: "defense isn't an optimization I want to focus on, Steelers are fine"); **Shough stays** as QB2 for now.
       Bench now: Andrews, Tuten, Dobbins, Golden, Boston, Shough.
+- **Decision (Sep 21): skip Dalton Schultz (HOU TE).** His Week 2 (26.0) came with Nico Collins out; Week 3 proj 9.9 is below Kittle 11.2 and Andrews 10.8. He's on waivers until Sep 23, so a claim would burn priority #1. Revisit only as a free agent after waivers clear AND only if Collins is out long-term.
 - [x] ~~**Trade proposed (Sep 15) to Billy Ba Ba Ba:** Omarion Hampton for Terry McLaurin~~ **Withdrawn Sep 20 at Sean's request.** (they have an EMPTY WR3 slot and six RBs). If declined → Sutton + Golden for TreVeyon Henderson, then RJ Harvey.
 - [ ] Trade 2: McLaurin + Golden → T & T's Prenup for Bucky Irving.
 - [ ] Trade 3: Sutton + Dobbins → —HA HA— for Chuba Hubbard (Spears is gone).
@@ -59,6 +60,9 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 ---
 
 ## Log
+
+### 2026-09-21 — First Down: Schultz passed on
+- Sean asked about Dalton Schultz; decided to skip. Same injury-contingent logic as the Tucker repricing, plus it would cost waiver priority #1 and we already carry two TEs who project higher.
 
 ### 2026-09-21 — Week 2 FINAL: 2-0 week, both teams now 1-1
 - 2MinuteDrill: **W 158.58 – 140.06** over TD (1st). Stafford 35.98 on MNF (327 yds, 4 TD, 1 INT; LAR 28-6 over NYG). Taylor 29.2, Olave 22.6, A. Jones 15.5 at flex.
