@@ -39,7 +39,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 - [x] **Waiver 2 (Sep 16):** Shakir claim skipped, as designed (same drop as claim 1).
 - [x] ~~**Trade proposed (Sep 15) to CaliBayBoi510:** Tee Higgins for Aaron Jones + Hunter Henry.~~ **Closed by Sep 20**: no longer pending when Sean asked to withdraw it; not in the league trade log, so Bjohn most likely rejected it (Yahoo doesn't log rejections).
       If declined → resend for Stefon Diggs, then Jameson Williams.
-- [ ] **Waiver (Sep 23): $14 Tre Tucker, drop Hunter Henry.** See FAAB log below.
+- [ ] **Waiver (Sep 23): $9 Tre Tucker, drop Hunter Henry** (Sean lowered it from $14 on Sep 21). See FAAB log below.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
 - [x] Lineup Wk2 (verified Sep 16): Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **Sutton (flex)** / Dicker / Steelers. Bench: Henry, A. Jones, Golden, K. Murray (Q), Vele. IR empty.
@@ -67,6 +67,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ### 2026-09-21 — Tre Tucker bid
 - Placed $14 on Tre Tucker (LV WR), dropping Hunter Henry. Processes Sep 23.
+- **Revised to $9 by Sean.** Reason: Tucker's value depends on Bowers being out (Week 1 with Bowers: 2 catches, 27 yds), so it's a rental. $9 beats the $0 bidders, SHAWN's history and the $6 Vele price; it loses to a RocGPT-style $10+ bid, which is acceptable.
+- Lesson for future bids: price contingent-role players (backup-dependent) off the Vele comp (~$6-9), not the Worthy/Mitchell comps ($11-12).
 - Why $14: beats every breakout-WR comp this season ($6, $11, $12) and RocGPT's $12 pattern; avoids the $10/$12 anchors because we lose all ties; about 15% of the remaining $94. Sean OK losing him.
 - Tucker's Week 2 spike (27.9 in this scoring) came with Brock Bowers out; Bowers is OUT again Week 3, so the role holds at least one more week. Yahoo-wide trend: 3,335 adds vs 258 drops.
 
@@ -122,7 +124,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). $94 left. Pending: $14 Tucker (Sep 23).
+- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). $94 left. Pending: $9 Tucker (Sep 23).
 
 ### 2MinuteDrill FAAB market (all winning bids, 2026)
 Rules: FAB, $100 budget, 2-day waivers, **continual rolling-list tiebreak** (we are 12th of 12 as of Sep 21, so every tie loses; avoid round numbers).
