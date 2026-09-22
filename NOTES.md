@@ -34,6 +34,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 3 punchlist (Sep 22–28)
 
+**Status as of Mon Sep 21, after MNF:** both teams 1-1 after a 2-0 week. Open: 1 waiver claim (2MD Tucker $9), 1 trade offer (2MD Jones for A.J. Brown). First Down has nothing pending; waiver priority #1.
+
 | When | League | Item | Status |
 |---|---|---|---|
 | Wed Sep 23 | 2MD | Waiver: $9 Tre Tucker, drop Hunter Henry. If lost, keep Henry and the $94. | pending |
@@ -45,6 +47,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
 | Any day | 2MD | Trade offer to phukumean: A. Jones for A.J. Brown. If accepted, move Brown to IR and put Sutton in the flex. Commissioner review applies; 1-day reject window. | pending |
+| If Brown trade clears before Wed | 2MD | Brown to IR opens a bench spot, so the Tucker claim no longer needs a drop. Decide whether to edit the claim to keep Henry (bye cover for Warren, Week 13). | conditional |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
