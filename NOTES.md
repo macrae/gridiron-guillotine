@@ -32,6 +32,55 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ---
 
+## Week 3 punchlist (Sep 22–28)
+
+| When | League | Item | Status |
+|---|---|---|---|
+| Wed Sep 23 | 2MD | Waiver: $9 Tre Tucker, drop Hunter Henry. If lost, keep Henry and the $94. | pending |
+| Thu Sep 24, before 8:15 pm | FD | Decide WR3: McLaurin (9.9) vs Golden (10.0) vs Boston (10.1). **Golden locks at Thursday kickoff (GB vs ATL).** Boston/McLaurin can wait to Sunday. | open |
+| Fri Sep 25 | 2MD | QB: Stafford (@DEN, 19.8) vs Kyler Murray (@TB, 20.4, cleared concussion protocol). Decide after Friday practice reports. | open |
+| Fri Sep 25 | FD | J.K. Dobbins (Q) status. RB4, so depth only; Jonah Coleman is his backup if he sits long-term. | watch |
+| Sun Sep 27 AM | both | Check inactives. Swap-ins: 2MD Sutton/Golden/Vele; FD Boston/Golden/Tuten. | open |
+| Sun Sep 27 | FD | Flex Sutton vs Tuten is a tie (10.9 each); default Sutton. | default set |
+| Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
+| Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
+| Standing | both | No open trade offers. Fallback trade ideas kept in Open items; none active. | standing |
+
+Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
+
+### Week 3 lineups (as set Sep 21)
+**2MinuteDrill: S Dot Sack vs RocGPT (Yahoo 50/50, 117.7 vs 118.0)**
+| Slot | Player | Game | Proj |
+|---|---|---|---|
+| QB | Matthew Stafford | @ DEN, Sun 8:20 pm | 19.8 |
+| RB | Jonathan Taylor | vs HOU | 17.4 |
+| RB | Breece Hall | @ DET | 15.4 |
+| WR | Chris Olave | vs LV | 16.6 |
+| WR | Garrett Wilson | @ DET | 12.8 |
+| TE | Tyler Warren | vs HOU | 10.7 |
+| FLEX | Aaron Jones | @ TB | 11.4 |
+| K | Cameron Dicker | @ BUF | 7.9 |
+| DEF | Steelers | vs CIN | 5.7 |
+Bench: Kyler Murray 20.4, Courtland Sutton 10.9, Matthew Golden 10.0 (Thu), Hunter Henry 10.0 (pending drop), Devaughn Vele 9.4. IR empty.
+
+**First Down: MacRazy vs House of Tweez (Yahoo 50/50, 127.2 vs 126.9)**
+| Slot | Player | Game | Proj |
+|---|---|---|---|
+| QB | Jalen Hurts | @ CHI, Mon 8:15 pm | 18.9 |
+| RB | De'Von Achane | vs KC | 15.9 |
+| RB | Jeremiyah Love | @ SF | 15.3 |
+| WR | CeeDee Lamb | vs BAL | 17.8 |
+| WR | Rashee Rice | @ MIA | 12.4 |
+| WR | Terry McLaurin | vs SEA | 9.9 |
+| TE | George Kittle | vs ARI | 11.2 |
+| FLEX | Courtland Sutton | vs LAR, Sun 8:20 pm | 10.9 |
+| K | Brandon Aubrey | vs BAL | 9.2 |
+| DEF | Steelers | vs CIN | 5.7 |
+Bench: Tyler Shough 17.6, Bhayshul Tuten 10.9, Mark Andrews 10.8, Denzel Boston 10.1, Matthew Golden 10.0 (Thu), J.K. Dobbins (Q) 7.5. IR empty.
+Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
+
+---
+
 ## Open items / pending
 
 ### 2MinuteDrill
