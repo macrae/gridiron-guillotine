@@ -63,7 +63,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 ### 2026-09-21 — Week 2 FINAL: 2-0 week, both teams now 1-1
 - 2MinuteDrill: **W 158.58 – 140.06** over TD (1st). Stafford 35.98 on MNF (327 yds, 4 TD, 1 INT; LAR 28-6 over NYG). Taylor 29.2, Olave 22.6, A. Jones 15.5 at flex.
 - First Down: **W 140.06 – 129.06** over T & T's Prenup. Nabers held to 1.1 (1 catch); Rams DEF 11.0 wasn't enough. Lamb 35.3, Kittle 18.0, Aubrey 16.0.
-- Both wins came from Sunday starters plus two lineup calls: Jones over Sutton (2MD, +10.0) and Kittle over Andrews (FD).
+- Lineup call that paid: Jones over Sutton in the 2MD flex (15.5 vs 5.5, +10.0). Kittle (18.0) started at TE in FD over Andrews.
 
 ### 2026-09-21 — Tre Tucker bid
 - Placed $14 on Tre Tucker (LV WR), dropping Hunter Henry. Processes Sep 23.
