@@ -38,7 +38,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 | When | League | Item | Status |
 |---|---|---|---|
-| Wed Sep 23 | 2MD | Waiver: $9 Tre Tucker, drop Hunter Henry. If lost, keep Henry and the $94. | pending |
+| ~~Wed Sep 23~~ | 2MD | Tucker lost at $9; OnlyBags paid $20. Henry stays, $94 intact. | done |
 | Thu Sep 24, before 8:15 pm | FD | Decide WR3: McLaurin (9.9) vs Golden (10.0) vs Boston (10.1). **Golden locks at Thursday kickoff (GB vs ATL).** Boston/McLaurin can wait to Sunday. | open |
 | Fri Sep 25 | 2MD | QB: Stafford (@DEN, 19.8) vs Kyler Murray (@TB, 20.4, cleared concussion protocol). Decide after Friday practice reports. | open |
 | Fri Sep 25 | FD | J.K. Dobbins (Q) status. RB4, so depth only; Jonah Coleman is his backup if he sits long-term. | watch |
@@ -47,7 +47,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
 | Any day | 2MD | Trade offer to phukumean: A. Jones for A.J. Brown. If accepted, move Brown to IR and put Sutton in the flex. Commissioner review applies; 1-day reject window. | pending |
-| If Brown trade clears before Wed | 2MD | Brown to IR opens a bench spot, so the Tucker claim no longer needs a drop. Decide whether to edit the claim to keep Henry (bye cover for Warren, Week 13). | conditional |
+| Fri Sep 25 | 2MD | **Aaron Jones (knee) did not practice Wed; status Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
@@ -92,7 +92,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 - [x] ~~**Trade proposed (Sep 15) to CaliBayBoi510:** Tee Higgins for Aaron Jones + Hunter Henry.~~ **Closed by Sep 20**: no longer pending when Sean asked to withdraw it; not in the league trade log, so Bjohn most likely rejected it (Yahoo doesn't log rejections).
       If declined → resend for Stefon Diggs, then Jameson Williams.
 - [ ] **Trade proposed (Sep 21) to phukumean:** Aaron Jones for A.J. Brown (IR, high-ankle sprain, ~Week 6–7 return). If accepted: move Brown to the empty IR slot; Sutton takes the flex. Note sent: Mason on IR, Brown clogging their bench, Jones starts right away.
-- [ ] **Waiver (Sep 23): $9 Tre Tucker, drop Hunter Henry** (Sean lowered it from $14 on Sep 21). See FAAB log below.
+- [x] **Waiver (Sep 23): LOST Tre Tucker.** OnlyBags won him at **$20**. Our $9 (and even the original $14) was never close. Henry stays; FAAB still $94.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
 - [x] Lineup Wk2 (verified Sep 16): Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **Sutton (flex)** / Dicker / Steelers. Bench: Henry, A. Jones, Golden, K. Murray (Q), Vele. IR empty.
@@ -113,6 +113,12 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Log
+
+### 2026-09-23 — Waivers: lost Tucker, market repriced
+- Tucker went to OnlyBags for **$20**; our bid was $9. Even the original $14 loses. No regret at $9, but the league's price level moved: $25 for Shough, $20 Tucker, $14 A. Mitchell.
+- Previously-passive teams (OnlyBags, Hit Em Wit Da Flex) started bidding. Four teams still sit at or near $100.
+- Aaron Jones (knee) did not practice Wednesday; Vikings say he still has a chance, designations Friday. He is our 2MD flex and the piece in the pending A.J. Brown offer.
+- FD unchanged: no pending transactions, waiver priority #1 intact.
 
 ### 2026-09-21 — Trade scan, both leagues (Yahoo rest-of-season projections, every rostered player)
 - **2MD, SENT Sep 21:** Aaron Jones → phukumean for **A.J. Brown** (IR, high-ankle sprain, ~6 weeks, earliest return Week 6 Oct 18). We have an empty IR slot; phukumean has Brown clogging their bench, Jordan Mason on IR and Chris Rodriguez as RB3. Cost to us: Jones leaves the flex, Sutton plays it for 3–4 weeks.
@@ -187,9 +193,10 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). $94 left. Pending: $9 Tucker (Sep 23).
+- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). **$94 left.** Lost Tucker at $9 (went for $20).
 
 ### 2MinuteDrill FAAB market (all winning bids, 2026)
+**Week 3 market jumped sharply** (Sep 23): Shough $25 ($KB), Tre Tucker $20 (OnlyBags), Adonai Mitchell $14 (SHAWN), Jonah Coleman $8 (SHAWN), Kyle Pitts $7 (Hit Em), Wicks $6 (SHAWN), Chiefs DEF $5 (OnlyBags). Teams that had never bid (OnlyBags, Hit Em) are now spending. Recalibrate: Week 1-2 comps ($6-12) are stale; breakout skill players now cost $20+.
 Rules: FAB, $100 budget, 2-day waivers, **continual rolling-list tiebreak** (we are 12th of 12 as of Sep 21, so every tie loses; avoid round numbers).
 | Date | Player | Winner | Bid |
 |---|---|---|---|
