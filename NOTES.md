@@ -47,7 +47,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
 | ~~Any day~~ | 2MD | Brown offer withdrawn Sep 23. No open trade offers in either league. | done |
-| Fri Sep 25 | 2MD | **Aaron Jones (knee) did not practice Wed; status Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
+| Fri Sep 25 | 2MD | **Reminder scheduled:** cloud routine `trig_01GRCa48ajh7TJi7uUbw4cxe` fires Fri 1pm PT / 4pm ET and reports Jones's designation + flex call. https://claude.ai/code/routines/trig_01GRCa48ajh7TJi7uUbw4cxe <br> **Aaron Jones (knee): DNP Wed, LIMITED Thu; designation Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
@@ -93,6 +93,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
       If declined → resend for Stefon Diggs, then Jameson Williams.
 - [x] ~~Trade to phukumean: Aaron Jones for A.J. Brown~~ **Withdrawn Sep 23** at Sean's call (no response in 2 days, and Jones's knee made it moot). Jones stays; no open offers in either league.
 - [x] **Waiver (Sep 23): LOST Tre Tucker.** OnlyBags won him at **$20**. Our $9 (and even the original $14) was never close. Henry stays; FAAB still $94.
+- [ ] **Flex plan (2MD):** hold Jones; do NOT start Golden Thu (he locks 8:15pm Thu). If Jones is OUT Friday → Sutton (plays SNF, so swappable Sunday afternoon); Vele is the 4:25 backup option.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
 - [x] Lineup Wk2 (verified Sep 16): Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **Sutton (flex)** / Dicker / Steelers. Bench: Henry, A. Jones, Golden, K. Murray (Q), Vele. IR empty.
