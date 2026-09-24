@@ -93,6 +93,8 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
       If declined → resend for Stefon Diggs, then Jameson Williams.
 - [x] ~~Trade to phukumean: Aaron Jones for A.J. Brown~~ **Withdrawn Sep 23** at Sean's call (no response in 2 days, and Jones's knee made it moot). Jones stays; no open offers in either league.
 - [x] **Waiver (Sep 23): LOST Tre Tucker.** OnlyBags won him at **$20**. Our $9 (and even the original $14) was never close. Henry stays; FAAB still $94.
+- [ ] **Waiver (Sat Sep 26): $14 Michael Wilson (Ari WR), drop Devaughn Vele.** Wilson ROS 161 vs Vele 97; both Wilson (83% ros) and Chris Godwin (85%) were dumped this week after the Tucker/A.Mitchell claims. Fallback if lost: Godwin or Brenton Strange (TE, FA).
+- [ ] **Trade proposed (Sep 24) to Hit Em Wit Da Flex:** Kyler Murray + Hunter Henry for **Jaylen Waddle**. Their QB Jayden Daniels is OUT and their TE is Pitts 144; they are last in lineup strength. For us: Waddle (199 ROS) fills the FLEX hole (Golden 150, -26 vs median), and both pieces we send are bench-only. **Cost if accepted: Stafford has no backup QB** — stream during the LAR bye (Week 11); wire QBs are Brissett/Lock/Rodgers.
 - [ ] **Flex plan (2MD):** hold Jones; do NOT start Golden Thu (he locks 8:15pm Thu). If Jones is OUT Friday → Sutton (plays SNF, so swappable Sunday afternoon); Vele is the 4:25 backup option.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
@@ -114,6 +116,13 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Log
+
+### 2026-09-24 — 2MinuteDrill: Wilson claim + Waddle offer
+- Wire scan: Michael Wilson (161 ROS, 83% ros) and Chris Godwin (153, 85%) hit waivers after other teams' Tucker/Mitchell adds. Claimed Wilson at $14, dropping Vele (97). Processes Sat Sep 26.
+- Trade sent: Murray + Henry → Hit Em Wit Da Flex for Jaylen Waddle. Rationale: our only sub-median slot is FLEX (-26); Hit Em's QB is out and their TE is Pitts; both pieces we give are bench-only.
+- Roster map (ROS proj vs 12-team median): RB1 Taylor +25, TE Warren +17, RB2 Hall +12, WR2 G.Wilson -6, WR1 Olave -10, QB Stafford -16, FLEX Golden -26.
+- FD checked, no action: we are within ±10 of median at all 8 slots; wire has only Wan'Dale Robinson (148, FA) who matches our bench. Waiver priority #1 still held.
+- Budgets after Wed waivers (2MD): 619ers 71, OnlyBags 75, $KB 75, RocGPT 77, Hit Em 93, us 94, others 100.
 
 ### 2026-09-23 — Brown offer withdrawn
 - phukumean never responded in ~2 days; Sean pulled it. Jones (knee, DNP Wed) stays on the roster and remains the Week 3 flex question.
@@ -198,7 +207,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). **$94 left.** Lost Tucker at $9 (went for $20).
+- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). **$94 left.** Lost Tucker at $9 (went for $20). Pending: $14 Michael Wilson (Sat Sep 26).
 
 ### 2MinuteDrill FAAB market (all winning bids, 2026)
 **Week 3 market jumped sharply** (Sep 23): Shough $25 ($KB), Tre Tucker $20 (OnlyBags), Adonai Mitchell $14 (SHAWN), Jonah Coleman $8 (SHAWN), Kyle Pitts $7 (Hit Em), Wicks $6 (SHAWN), Chiefs DEF $5 (OnlyBags). Teams that had never bid (OnlyBags, Hit Em) are now spending. Recalibrate: Week 1-2 comps ($6-12) are stale; breakout skill players now cost $20+.
