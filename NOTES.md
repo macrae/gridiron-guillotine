@@ -46,7 +46,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Sun Sep 27 | FD | Flex Sutton vs Tuten is a tie (10.9 each); default Sutton. | default set |
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
-| Any day | 2MD | Trade offer to phukumean: A. Jones for A.J. Brown. If accepted, move Brown to IR and put Sutton in the flex. Commissioner review applies; 1-day reject window. | pending |
+| ~~Any day~~ | 2MD | Brown offer withdrawn Sep 23. No open trade offers in either league. | done |
 | Fri Sep 25 | 2MD | **Aaron Jones (knee) did not practice Wed; status Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
@@ -91,7 +91,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 - [x] **Waiver 2 (Sep 16):** Shakir claim skipped, as designed (same drop as claim 1).
 - [x] ~~**Trade proposed (Sep 15) to CaliBayBoi510:** Tee Higgins for Aaron Jones + Hunter Henry.~~ **Closed by Sep 20**: no longer pending when Sean asked to withdraw it; not in the league trade log, so Bjohn most likely rejected it (Yahoo doesn't log rejections).
       If declined → resend for Stefon Diggs, then Jameson Williams.
-- [ ] **Trade proposed (Sep 21) to phukumean:** Aaron Jones for A.J. Brown (IR, high-ankle sprain, ~Week 6–7 return). If accepted: move Brown to the empty IR slot; Sutton takes the flex. Note sent: Mason on IR, Brown clogging their bench, Jones starts right away.
+- [x] ~~Trade to phukumean: Aaron Jones for A.J. Brown~~ **Withdrawn Sep 23** at Sean's call (no response in 2 days, and Jones's knee made it moot). Jones stays; no open offers in either league.
 - [x] **Waiver (Sep 23): LOST Tre Tucker.** OnlyBags won him at **$20**. Our $9 (and even the original $14) was never close. Henry stays; FAAB still $94.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
 - [ ] Only if the Cali trade fails entirely: Breece Hall → phukumean for Nico Collins (optional; skip if bullish on Hall).
@@ -113,6 +113,10 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Log
+
+### 2026-09-23 — Brown offer withdrawn
+- phukumean never responded in ~2 days; Sean pulled it. Jones (knee, DNP Wed) stays on the roster and remains the Week 3 flex question.
+- Standing: no open trade offers in either league.
 
 ### 2026-09-23 — Waivers: lost Tucker, market repriced
 - Tucker went to OnlyBags for **$20**; our bid was $9. Even the original $14 loses. No regret at $9, but the league's price level moved: $25 for Shough, $20 Tucker, $14 A. Mitchell.
@@ -213,5 +217,5 @@ Budgets Sep 21: TD 100, SHAWN 96, phukumean 100, Duffel 100, Hit Em 100, $KB 100
 Tendencies: RocGPT = aggressive on WR/RB breakouts ($11–12); 619ers = pays for names ($27 Kittle); Sacala/$KB = $0 bidders; SHAWN = FA streamer, small bids; TD, phukumean, Duffel, OnlyBags have never bid.
 No prior-season data reachable (no history link on Yahoo; API is 403).
 - Waiver priority (FD): #1, intact (stray Henry claim cancelled Sep 15).
-- Trades proposed: 3. Accepted: 0. Sep 15 offers closed Sep 20. Open: 2MD A. Jones → phukumean for A.J. Brown (Sep 21).
+- Trades proposed: 3. Accepted: 0. Sep 15 offers closed Sep 20. All three closed with no acceptances (Higgins gone/likely rejected, Hampton and Brown withdrawn).
 - Yahoo API scope fix: not done.
