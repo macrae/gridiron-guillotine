@@ -34,54 +34,36 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 3 punchlist (Sep 22–28)
 
-**Status as of Mon Sep 21, after MNF:** both teams 1-1 after a 2-0 week. Open: 1 waiver claim (2MD Tucker $9), 1 trade offer (2MD Jones for A.J. Brown). First Down has nothing pending; waiver priority #1.
+**Status as of Sat Sep 26.** Both teams 1-1. Lineups are final in both leagues. FAAB $80 (2MD), waiver priority #1 (FD). One trade offer still out (Waddle). Nothing else requires action before Sunday.
 
 | When | League | Item | Status |
 |---|---|---|---|
-| ~~Wed Sep 23~~ | 2MD | Tucker lost at $9; OnlyBags paid $20. Henry stays, $94 intact. | done |
-| Thu Sep 24, before 8:15 pm | FD | Decide WR3: McLaurin (9.9) vs Golden (10.0) vs Boston (10.1). **Golden locks at Thursday kickoff (GB vs ATL).** Boston/McLaurin can wait to Sunday. | open |
-| Fri Sep 25 | 2MD | QB: Stafford (@DEN, 19.8) vs Kyler Murray (@TB, 20.4, cleared concussion protocol). Decide after Friday practice reports. | open |
-| Fri Sep 25 | FD | J.K. Dobbins (Q) status. RB4, so depth only; Jonah Coleman is his backup if he sits long-term. | watch |
-| Sun Sep 27 AM | both | Check inactives. Swap-ins: 2MD Sutton/Golden/Vele; FD Boston/Golden/Tuten. | open |
-| Sun Sep 27 | FD | Flex Sutton vs Tuten is a tie (10.9 each); default Sutton. | default set |
-| Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
-| Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
-| ~~Any day~~ | 2MD | Brown offer withdrawn Sep 23. No open trade offers in either league. | done |
-| ~~Fri Sep 25~~ | 2MD | **RESOLVED: Aaron Jones has NO game status** — full practice Friday, off the injury report. Start him in the flex. | done |
-| ~~Fri Sep 25~~ | 2MD | Reminder fired: cloud routine `trig_01GRCa48ajh7TJi7uUbw4cxe` fires Fri 1pm PT / 4pm ET and reports Jones's designation + flex call. https://claude.ai/code/routines/trig_01GRCa48ajh7TJi7uUbw4cxe <br> **Aaron Jones (knee): DNP Wed, LIMITED Thu; designation Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
+| Wed Sep 23 | 2MD | Tucker claim lost at $9 (OnlyBags paid $20). Henry kept. | done |
+| Thu Sep 24 | FD | WR3 call: held McLaurin, left Golden on the bench. **Golden scored 21–26; cost ~11 pts.** | done, misplayed |
+| Fri Sep 25 | 2MD | Aaron Jones: **no game status**, full practice Friday. Stays in the flex. | done |
+| Fri Sep 25 | FD | J.K. Dobbins: Q tag cleared, healthy, still RB4. | done |
+| Sat Sep 26 | 2MD | **Won Michael Wilson at $14**, dropped Vele. FAAB $94 → $80. | done |
+| Sat Sep 26 | 2MD | QB: kept Stafford (19.7) over Murray (21.0) — Murray's 1st game back from concussion, and he's in the pending trade. | done |
+| Sat Sep 26 | FD | TE: **Andrews in for Kittle** (12.2 vs 11.7) to stack BAL@DAL with Lamb + Aubrey. Chasing, so variance is the point. | done |
+| Sun Sep 27 AM | both | Check inactives before 1pm. Swap-ins: 2MD Sutton / M. Wilson; FD Boston / Tuten / Kittle. | open |
+| Sun Sep 27 4:05 | 2MD | A. Jones (flex) plays. Last chance to swap to Sutton if he's a surprise scratch. | open |
+| Sun Sep 27 8:20 | both | Stafford (2MD QB) and Sutton (FD flex) in the SNF game. | open |
+| Mon Sep 28 | FD | Hurts closes the week — our late lever if the matchup is close. | open |
+| Any day | 2MD | Waddle offer to Hit Em Wit Da Flex (Murray + Henry). They have not set a lineup in 3 weeks; expect silence. Fallback: A. Jones + Henry → phukumean for DK Metcalf. | pending |
+| Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. | standing |
+| Standing | 2MD | **Thursday rule:** judge a Thursday-game player on merit before kickoff; never hold him as a contingency for a Friday injury call. | standing |
+| Standing | 2MD | Breakout skill players now cost $20+ (market repriced Week 3). Contingent/backup-dependent roles: $6–9. | standing |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
-### Week 3 lineups (as set Sep 21)
-**2MinuteDrill: S Dot Sack vs RocGPT (Yahoo 50/50, 117.7 vs 118.0)**
-| Slot | Player | Game | Proj |
-|---|---|---|---|
-| QB | Matthew Stafford | @ DEN, Sun 8:20 pm | 19.8 |
-| RB | Jonathan Taylor | vs HOU | 17.4 |
-| RB | Breece Hall | @ DET | 15.4 |
-| WR | Chris Olave | vs LV | 16.6 |
-| WR | Garrett Wilson | @ DET | 12.8 |
-| TE | Tyler Warren | vs HOU | 10.7 |
-| FLEX | Aaron Jones | @ TB | 11.4 |
-| K | Cameron Dicker | @ BUF | 7.9 |
-| DEF | Steelers | vs CIN | 5.7 |
-Bench: Kyler Murray 20.4, Courtland Sutton 10.9, Matthew Golden 10.0 (Thu), Hunter Henry 10.0 (pending drop), Devaughn Vele 9.4. IR empty.
+### Week 3 final lineups (locked Sep 26)
+**2MinuteDrill vs RocGPT (1-1) — Yahoo coin flip, ~124 vs ~125**
+QB Stafford (@DEN, SNF) · RB Jonathan Taylor (vs HOU) · RB Breece Hall (@DET) · WR Chris Olave (vs LV) · WR Garrett Wilson (@DET) · TE Tyler Warren (vs HOU) · FLEX Aaron Jones (@TB, 4:05) · K Dicker · DEF Steelers
+Bench: Murray, Sutton, Henry, Michael Wilson, Golden (played Thu). IR empty.
 
-**First Down: MacRazy vs House of Tweez (Yahoo 50/50, 127.2 vs 126.9)**
-| Slot | Player | Game | Proj |
-|---|---|---|---|
-| QB | Jalen Hurts | @ CHI, Mon 8:15 pm | 18.9 |
-| RB | De'Von Achane | vs KC | 15.9 |
-| RB | Jeremiyah Love | @ SF | 15.3 |
-| WR | CeeDee Lamb | vs BAL | 17.8 |
-| WR | Rashee Rice | @ MIA | 12.4 |
-| WR | Terry McLaurin | vs SEA | 9.9 |
-| TE | George Kittle | vs ARI | 11.2 |
-| FLEX | Courtland Sutton | vs LAR, Sun 8:20 pm | 10.9 |
-| K | Brandon Aubrey | vs BAL | 9.2 |
-| DEF | Steelers | vs CIN | 5.7 |
-Bench: Tyler Shough 17.6, Bhayshul Tuten 10.9, Mark Andrews 10.8, Denzel Boston 10.1, Matthew Golden 10.0 (Thu), J.K. Dobbins (Q) 7.5. IR empty.
-Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
+**First Down vs House of Tweez (1-1) — trailing; they have 57.90 from Bijan 35.3 + Watson 22.6, ~152 projected vs our ~130**
+QB Hurts (@CHI, MNF) · RB Achane (vs KC) · RB Jeremiyah Love (@SF) · WR CeeDee Lamb (vs BAL) · WR Rashee Rice (@MIA) · WR Terry McLaurin (vs SEA) · TE Mark Andrews (@DAL) · FLEX Courtland Sutton (vs LAR, SNF) · K Aubrey (vs BAL) · DEF Steelers
+Bench: Kittle, Tuten, Dobbins, Boston, Shough, Golden (played Thu). IR empty.
 
 ---
 
