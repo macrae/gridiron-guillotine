@@ -47,7 +47,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. No claims unless that happens. | standing |
 | Standing | 2MD | Price contingent-role (backup-dependent) pickups off the ~$6–9 Vele comp. | standing |
 | ~~Any day~~ | 2MD | Brown offer withdrawn Sep 23. No open trade offers in either league. | done |
-| Fri Sep 25 | 2MD | **Reminder scheduled:** cloud routine `trig_01GRCa48ajh7TJi7uUbw4cxe` fires Fri 1pm PT / 4pm ET and reports Jones's designation + flex call. https://claude.ai/code/routines/trig_01GRCa48ajh7TJi7uUbw4cxe <br> **Aaron Jones (knee): DNP Wed, LIMITED Thu; designation Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
+| ~~Fri Sep 25~~ | 2MD | **RESOLVED: Aaron Jones has NO game status** — full practice Friday, off the injury report. Start him in the flex. | done |
+| ~~Fri Sep 25~~ | 2MD | Reminder fired: cloud routine `trig_01GRCa48ajh7TJi7uUbw4cxe` fires Fri 1pm PT / 4pm ET and reports Jones's designation + flex call. https://claude.ai/code/routines/trig_01GRCa48ajh7TJi7uUbw4cxe <br> **Aaron Jones (knee): DNP Wed, LIMITED Thu; designation Friday.** He is our flex AND the piece in the Brown offer. If he is ruled out: flex becomes Sutton/Golden/Vele, and phukumean may lose interest in the trade. | watch |
 
 Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
 
@@ -93,7 +94,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
       If declined → resend for Stefon Diggs, then Jameson Williams.
 - [x] ~~Trade to phukumean: Aaron Jones for A.J. Brown~~ **Withdrawn Sep 23** at Sean's call (no response in 2 days, and Jones's knee made it moot). Jones stays; no open offers in either league.
 - [x] **Waiver (Sep 23): LOST Tre Tucker.** OnlyBags won him at **$20**. Our $9 (and even the original $14) was never close. Henry stays; FAAB still $94.
-- [ ] **Waiver (Sat Sep 26): $14 Michael Wilson (Ari WR), drop Devaughn Vele.** Wilson ROS 161 vs Vele 97; both Wilson (83% ros) and Chris Godwin (85%) were dumped this week after the Tucker/A.Mitchell claims. Fallback if lost: Godwin or Brenton Strange (TE, FA).
+- [x] **WON (Sat Sep 26): $14 Michael Wilson (Ari WR), dropped Devaughn Vele.** FAAB now **$80**. Original note:  Wilson ROS 161 vs Vele 97; both Wilson (83% ros) and Chris Godwin (85%) were dumped this week after the Tucker/A.Mitchell claims. Fallback if lost: Godwin or Brenton Strange (TE, FA).
 - [ ] **Trade proposed (Sep 24) to Hit Em Wit Da Flex:** Kyler Murray + Hunter Henry for **Jaylen Waddle**. Their QB Jayden Daniels is OUT and their TE is Pitts 144; they are last in lineup strength. For us: Waddle (199 ROS) fills the FLEX hole (Golden 150, -26 vs median), and both pieces we send are bench-only. **Cost if accepted: Stafford has no backup QB** — stream during the LAR bye (Week 11); wire QBs are Brissett/Lock/Rodgers.
 - [ ] **Flex plan (2MD):** hold Jones; do NOT start Golden Thu (he locks 8:15pm Thu). If Jones is OUT Friday → Sutton (plays SNF, so swappable Sunday afternoon); Vele is the 4:25 backup option.
 - [ ] **Kyler Murray (Q):** check Wed/Fri. IR slot if designated; if out but not IR-eligible, cut for Tyler Shough (~$8 bid).
@@ -116,6 +117,12 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Log
+
+### 2026-09-26 — Wilson claim won; Jones cleared; Golden burn
+- **Won Michael Wilson at $14**, dropped Vele. FAAB $80. Bench now: Sutton, Henry, Golden, Murray, M. Wilson.
+- **Aaron Jones: no game status.** Full practice Friday, off the final injury report. He stays in the 2MD flex.
+- **Thursday lesson (cost ~11 pts in FD):** Matthew Golden scored 21+ on our bench vs ATL. We held him because the Jones designation came Friday. RULE GOING FORWARD: judge a Thursday-game player on his own merit before kickoff; do not treat him as a contingency for a Friday decision. If he'd start on merit, start him.
+- Waddle offer to Hit Em Wit Da Flex still unanswered (they have not set a lineup in 3 weeks).
 
 ### 2026-09-24 — 2MinuteDrill: Wilson claim + Waddle offer
 - Wire scan: Michael Wilson (161 ROS, 83% ros) and Chris Godwin (153, 85%) hit waivers after other teams' Tucker/Mitchell adds. Claimed Wilson at $14, dropping Vele (97). Processes Sat Sep 26.
@@ -207,7 +214,7 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $6 of $100 (Vele, Sep 16). **$94 left.** Lost Tucker at $9 (went for $20). Pending: $14 Michael Wilson (Sat Sep 26).
+- FAAB spent (2MD): $20 of $100 — Vele $6 (Sep 16), Michael Wilson $14 (Sep 26). **$80 left.** Lost Tucker at $9 (went for $20).
 
 ### 2MinuteDrill FAAB market (all winning bids, 2026)
 **Week 3 market jumped sharply** (Sep 23): Shough $25 ($KB), Tre Tucker $20 (OnlyBags), Adonai Mitchell $14 (SHAWN), Jonah Coleman $8 (SHAWN), Kyle Pitts $7 (Hit Em), Wicks $6 (SHAWN), Chiefs DEF $5 (OnlyBags). Teams that had never bid (OnlyBags, Hit Em) are now spending. Recalibrate: Week 1-2 comps ($6-12) are stale; breakout skill players now cost $20+.
