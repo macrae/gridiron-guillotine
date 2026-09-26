@@ -118,6 +118,11 @@ Opponent notes: Nico Collins OUT, DJ Moore Q, Jadarian Price Q (in their flex).
 
 ## Log
 
+### 2026-09-26 — Week 3 lineups locked
+- **2MD (vs RocGPT, coin flip):** Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **A. Jones (flex, cleared)** / Dicker / Steelers. Kept Stafford over Murray (proj 19.7 vs 21.0) — Murray's first game back from a Week 1 concussion, and he's in the pending Waddle offer. Bench: Sutton, Henry, Murray, M. Wilson, Golden (played Thu).
+- **FD (vs House of Tweez, trailing):** swapped **Andrews in at TE for Kittle** (12.2 vs 11.7) to stack the BAL@DAL game with Lamb and Aubrey — deliberate variance play while chasing. Kept Hurts (MNF leverage) over Shough, McLaurin over Boston, Sutton in the flex (SNF lever).
+- Opponent math (FD): Tweez at 57.90 with Bijan 35.3 and Watson 22.6 done; their remaining 8 project ~94, so ~152 total vs our ~130.
+
 ### 2026-09-26 — Wilson claim won; Jones cleared; Golden burn
 - **Won Michael Wilson at $14**, dropped Vele. FAAB $80. Bench now: Sutton, Henry, Golden, Murray, M. Wilson.
 - **Aaron Jones: no game status.** Full practice Friday, off the final injury report. He stays in the 2MD flex.
