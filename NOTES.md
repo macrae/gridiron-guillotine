@@ -34,7 +34,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 3 punchlist (Sep 22–28)
 
-**Status as of Sat Sep 26.** Both teams 1-1. Lineups are final in both leagues. FAAB $80 (2MD), waiver priority #1 (FD). One trade offer still out (Waddle). Nothing else requires action before Sunday.
+**Status as of Sun Sep 27 night.** 2MD **won** (2-1). FD trailing 108.30–139.14 with only Hurts (MNF) left; he needs 30.85, Yahoo 9%. FAAB $80 (2MD), waiver priority #1 (FD). Waddle offer still unanswered.
 
 | When | League | Item | Status |
 |---|---|---|---|
@@ -45,10 +45,10 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | Sat Sep 26 | 2MD | **Won Michael Wilson at $14**, dropped Vele. FAAB $94 → $80. | done |
 | Sat Sep 26 | 2MD | QB: kept Stafford (19.7) over Murray (21.0) — Murray's 1st game back from concussion, and he's in the pending trade. | done |
 | Sat Sep 26 | FD | TE: **Andrews in for Kittle** (12.2 vs 11.7) to stack BAL@DAL with Lamb + Aubrey. Chasing, so variance is the point. | done |
-| Sun Sep 27 AM | both | Check inactives before 1pm. Swap-ins: 2MD Sutton / M. Wilson; FD Boston / Tuten / Kittle. | open |
-| Sun Sep 27 4:05 | 2MD | A. Jones (flex) plays. Last chance to swap to Sutton if he's a surprise scratch. | open |
-| Sun Sep 27 8:20 | both | Stafford (2MD QB) and Sutton (FD flex) in the SNF game. | open |
-| Mon Sep 28 | FD | Hurts closes the week — our late lever if the matchup is close. | open |
+| Sun Sep 27 | 2MD | **WON 146.90–140.34 vs RocGPT.** Stafford 28.9, G. Wilson 31.7, Olave 24.7, Warren 14.7, Jones 14.2. Now 2-1. | done |
+| Sun Sep 27 | FD | **Trailing 108.30–139.14**, Hurts left. Achane 1.7 (dud), Andrews 5.4, Sutton 7.6. | open |
+| Sun Sep 27 | 2MD | QB call vindicated: Stafford 28.9 vs Murray 13.4 (+15.5). | done |
+| Mon Sep 28 | FD | Hurts needs 30.85 to win. Nothing to set; just watch. | open |
 | Any day | 2MD | Waddle offer to Hit Em Wit Da Flex (Murray + Henry). They have not set a lineup in 3 weeks; expect silence. Fallback: A. Jones + Henry → phukumean for DK Metcalf. | pending |
 | Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. | standing |
 | Standing | 2MD | **Thursday rule:** judge a Thursday-game player on merit before kickoff; never hold him as a contingency for a Friday injury call. | standing |
@@ -99,6 +99,14 @@ Bench: Kittle, Tuten, Dobbins, Boston, Shough, Golden (played Thu). IR empty.
 ---
 
 ## Log
+
+### 2026-09-27 — Week 3 results: 2MD W, FD almost certainly L
+- **2MinuteDrill W 146.90–140.34 over RocGPT (now 2-1).** Stafford 28.90, G. Wilson 31.70, Olave 24.70, Warren 14.70, A. Jones 14.20 (knee held up), Dicker 10.00. Bench: Michael Wilson 25.90 (!), Golden 26.00, Murray 13.42, Sutton 7.60, Henry 1.50.
+- **First Down 108.30–139.14 with Hurts (MNF) left; needs 30.85, Yahoo 9%.** J. Love 21.90, Lamb 20.20, McLaurin 19.70, Rice 15.80, Aubrey 11.00; Achane 1.70 (D tag, dud), Andrews 5.40, Sutton 7.60.
+- **Bench points left in FD:** Kittle 26.20 (vs Andrews 5.40 = **-20.8**), Tuten 17.00 (vs Sutton 7.60 = -9.4), Golden 21.00 (vs McLaurin 19.70 = -1.3), Shough 24.80 (vs Hurts TBD).
+- **My bad call:** the Andrews-for-Kittle stack (BAL@DAL with Lamb + Aubrey) was mine and cost ~21. Lamb and Aubrey hit; Andrews didn't. Even a perfect Sunday lineup (~138.5) still trailed their 139.14 before Hurts, so the week was near-unwinnable after Bijan's 35 on Thursday — but the swap turned a live game into a blowout.
+- **Lessons recorded:** (1) don't bench a stable high-floor starter (Kittle) to stack a game when the stack adds ~0.5 proj; correlation is worth chasing only when the projection cost is ~0 AND the teammate share is high. (2) The Thursday rule (Golden) cost ~11 the week before — both losses this week came from over-managing the margins.
+- 2MD flex note: Michael Wilson (25.90) outscored the flex (Jones 14.20) in his first week on the roster. Worth remembering for Week 4.
 
 ### 2026-09-26 — Week 3 lineups locked
 - **2MD (vs RocGPT, coin flip):** Stafford / Taylor / Hall / Olave / G. Wilson / Warren / **A. Jones (flex, cleared)** / Dicker / Steelers. Kept Stafford over Murray (proj 19.7 vs 21.0) — Murray's first game back from a Week 1 concussion, and he's in the pending Waddle offer. Bench: Sutton, Henry, Murray, M. Wilson, Golden (played Thu).
