@@ -34,6 +34,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 4 punchlist (Sep 29 – Oct 5)
 
+**HOLD — nothing executed yet.** Sean's call (Sep 28): wait until Week 3 closes after tonight's MNF, then do a final league assessment and act. Timing is fine: MNF ends tonight, waivers process **Wed Sep 30**, so claims go in **Tuesday Sep 29**. Nothing below has been placed.
+
 **Status Mon Sep 28.** 2MD **2-1** (4th, 3rd-most PF). FD **1-2** (6th). **De'Von Achane tore his ACL — season over**, and he was the FD RB1. Breece Hall (2MD RB2) is questionable with a thigh injury, no update until Wednesday. Waivers in BOTH leagues process **Wed Sep 30**. FAAB $80 (2MD); waiver priority **#1** (FD).
 
 | When | League | Item | Status |
@@ -107,6 +109,13 @@ Bench: Andrews 10.1, Boston 10.4 (Thu), Sutton 9.9, Dobbins 7.2 (drop candidate)
 ---
 
 ## Log
+
+### 2026-09-28 — Week 4 plan built; execution on hold
+- Refreshed the repo's 3-week-stale data (`espn`/`news`/`injuries` builders). That is how Achane's ACL (Out, return 2027-02-15, 20 weeks) and Hall's thigh surfaced with return dates attached.
+- Deep research on Weeks 1-3 usage for every starter, plus the full RB waiver market. Findings and sources are in the Week 4 section above.
+- Built the Week 4 punchlist, proposed lineups, and a rebuilt ROS-vs-median trade board for both leagues.
+- Added an in-season weekly runbook to `RUNBOOK.md` (Mon post-mortem → Tue claims → Wed pressers → Thursday rule → Fri designations → Sun inactives).
+- **Nothing executed.** Sean wants a final assessment after tonight's MNF closes Week 3. Claims are due Tuesday night for Wednesday processing.
 
 ### 2026-09-27 — Week 3 results: 2MD W, FD almost certainly L
 - **2MinuteDrill W 146.90–140.34 over RocGPT (now 2-1).** Stafford 28.90, G. Wilson 31.70, Olave 24.70, Warren 14.70, A. Jones 14.20 (knee held up), Dicker 10.00. Bench: Michael Wilson 25.90 (!), Golden 26.00, Murray 13.42, Sutton 7.60, Henry 1.50.
