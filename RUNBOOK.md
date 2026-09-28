@@ -223,3 +223,55 @@ two ports with no cross-contamination.
   fight over the clock.
 - Trust a blind `Enter` on an ambiguous name — the box tells you what it will
   commit. `brown` and `smith` deliberately refuse until you pick with `↓`.
+
+---
+
+# In-season weekly runbook
+
+The draft-day sections below are historical. This is the loop the season actually runs on.
+`NOTES.md` is the source of truth for rosters, FAAB, waiver priority and pending moves.
+
+## Monday — post-mortem and damage report
+
+```bash
+.venv/bin/python -m gridiron.live.espn --season 2026 --out data/2026   # pool + raw_stats + news + injuries
+```
+
+Then: read the box scores for both leagues, record **bench points left behind** (the metric that graded
+the Golden and Andrews mistakes), and check every rostered player's injury record. The fetch above
+rewrites `news.json` and `injuries.json`; `injuries.weeks_out()` gives return dates, which is how
+Achane's season-ending ACL surfaced within minutes of the refresh.
+
+## Tuesday — wire scan and claims
+
+Waivers process **Wednesday** in both leagues, so claims go in Tuesday night.
+Pull available players by Week N projection AND by rest-of-season, per position, for both leagues.
+Bid sizing: breakout skill players cost $20+; contingent/backup-dependent roles $6–9. We lose every
+FAAB tie in 2MinuteDrill (12th of 12 on the rolling list), so never bid a round number.
+In First Down, waiver priority #1 is spent only on a starter's permanent replacement.
+
+## Wednesday — claims land, injury pressers
+
+Most coaches give their first real practice report Wednesday. If a claim hinged on someone else's
+status, that news usually arrives *after* waivers run — so do not spend a claim on a coin flip.
+
+## Thursday — the Thursday rule
+
+Anyone playing Thursday night locks at kickoff. **Judge him on merit before then. Never hold a
+Thursday player as a contingency for a Friday injury decision.** This rule exists because Golden
+scored 21–26 on the bench in Week 3 while we waited on a Friday designation.
+
+## Friday — designations
+
+Official game statuses post Friday. Resolve every questionable starter, then set both lineups.
+
+## Sunday — inactives
+
+Inactives post ~90 minutes before each kickoff. Check before the 1pm window, and remember late-window
+and Sunday-night players are still swappable after the early games.
+
+## Standing lineup rules
+
+- Do not bench a stable high-floor starter to chase a game stack worth ~0.5 projected points.
+- Projections are a mean. Argue from role, target share, snap share and scoring rules.
+- Defense is not an optimization we spend on; the Steelers stay.

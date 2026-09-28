@@ -32,38 +32,46 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ---
 
-## Week 3 punchlist (Sep 22–28)
+## Week 4 punchlist (Sep 29 – Oct 5)
 
-**Status as of Sun Sep 27 night.** 2MD **won** (2-1). FD trailing 108.30–139.14 with only Hurts (MNF) left; he needs 30.85, Yahoo 9%. FAAB $80 (2MD), waiver priority #1 (FD). Waddle offer still unanswered.
+**Status Mon Sep 28.** 2MD **2-1** (4th, 3rd-most PF). FD **1-2** (6th). **De'Von Achane tore his ACL — season over**, and he was the FD RB1. Breece Hall (2MD RB2) is questionable with a thigh injury, no update until Wednesday. Waivers in BOTH leagues process **Wed Sep 30**. FAAB $80 (2MD); waiver priority **#1** (FD).
 
 | When | League | Item | Status |
 |---|---|---|---|
-| Wed Sep 23 | 2MD | Tucker claim lost at $9 (OnlyBags paid $20). Henry kept. | done |
-| Thu Sep 24 | FD | WR3 call: held McLaurin, left Golden on the bench. **Golden scored 21–26; cost ~11 pts.** | done, misplayed |
-| Fri Sep 25 | 2MD | Aaron Jones: **no game status**, full practice Friday. Stays in the flex. | done |
-| Fri Sep 25 | FD | J.K. Dobbins: Q tag cleared, healthy, still RB4. | done |
-| Sat Sep 26 | 2MD | **Won Michael Wilson at $14**, dropped Vele. FAAB $94 → $80. | done |
-| Sat Sep 26 | 2MD | QB: kept Stafford (19.7) over Murray (21.0) — Murray's 1st game back from concussion, and he's in the pending trade. | done |
-| Sat Sep 26 | FD | TE: **Andrews in for Kittle** (12.2 vs 11.7) to stack BAL@DAL with Lamb + Aubrey. Chasing, so variance is the point. | done |
-| Sun Sep 27 | 2MD | **WON 146.90–140.34 vs RocGPT.** Stafford 28.9, G. Wilson 31.7, Olave 24.7, Warren 14.7, Jones 14.2. Now 2-1. | done |
-| Sun Sep 27 | FD | **Trailing 108.30–139.14**, Hurts left. Achane 1.7 (dud), Andrews 5.4, Sutton 7.6. | open |
-| Sun Sep 27 | 2MD | QB call vindicated: Stafford 28.9 vs Murray 13.4 (+15.5). | done |
-| Mon Sep 28 | FD | Hurts needs 30.85 to win. Nothing to set; just watch. | open |
-| Any day | 2MD | Waddle offer to Hit Em Wit Da Flex (Murray + Henry). They have not set a lineup in 3 weeks; expect silence. Fallback: A. Jones + Henry → phukumean for DK Metcalf. | pending |
-| Standing | FD | Hold waiver priority #1 for an injured starter's backup RB. | standing |
-| Standing | 2MD | **Thursday rule:** judge a Thursday-game player on merit before kickoff; never hold him as a contingency for a Friday injury call. | standing |
-| Standing | 2MD | Breakout skill players now cost $20+ (market repriced Week 3). Contingent/backup-dependent roles: $6–9. | standing |
+| Now | FD | **Move Achane to IR** (slot confirmed eligible). Frees a bench spot so the claim needs no drop. | open |
+| Before Wed Sep 30 | FD | **Claim #1: Ollie Gordon II (MIA).** Took 83.6% of snaps and 100% of RB touches after Achane left; 1–3% rostered. Only target whose opportunity is *certain*. | open |
+| Wed Sep 30 (after wire clears) | FD | **Add Jaylen Wright (MIA)** as a free agent if unclaimed — 1–4% rostered, listed AHEAD of Gordon on Miami's depth chart, back from a stinger/foot. Owning both = own the backfield. Drop Dobbins. | open |
+| Before Wed Sep 30 | 2MD | **Claim Braelon Allen (NYJ) ~$18** — the Hall contingency; Isaiah Davis has 0 offensive snaps, so if Hall sits it's Allen alone. Contested (14–22% rostered, consensus 25–40% FAAB). Drop Sutton. | open |
+| Before Wed Sep 30 | 2MD | **Second claim: Ollie Gordon ~$7** (5% rostered here). Drop Murray if Allen also lands. | open |
+| Thu Oct 1, before 8:15pm | FD | Thursday rule: Denzel Boston (CLE, 10.41) and Steelers DEF both play Thu @ CLE. Boston does NOT beat Golden (11.16) on merit — leave him benched. | open |
+| Wed Oct 1 | 2MD | Hall's MRI/designation from Aaron Glenn's Wednesday presser. If OUT: Jones to RB2, M. Wilson to flex. | open |
+| Fri Oct 2 | both | Friday designations: Hall (thigh), Aaron Jones (knee), Mark Andrews (hand), Jaylen Wright (practice), Ashton Jeanty (ankle). | open |
+| Sun Oct 4 | both | Inactives. Note J. Taylor + Warren play 9:30am London; McLaurin 9:30am too (FD). | open |
+| Standing | FD | Priority #1 is being spent on Gordon — the exact case it was reserved for (starter's replacement, permanent opening). | resolved |
+| Standing | 2MD | Breakouts cost $20+, contingent roles $6–9. We lose all ties (12th of 12), so no round numbers. | standing |
 
-Decisions already made: keep Tyler Warren (2MD); no defense streaming, Steelers stay (both); skip Dalton Schultz (FD); Shough stays as FD QB2.
+### Week 4 lineups (proposed)
+**2MinuteDrill vs CaliBayBoi510 (1-1) — Yahoo 60% us, 128.5 vs 115.3.** Note: they also rostered Achane and still have him in their RB slot at 7.90.
+QB Stafford (@PHI, 20.7) · RB J. Taylor (@WAS London, 20.1) · RB Breece Hall (@CHI, 15.0, *pending Wed*) · WR Olave (vs ATL Mon, 17.3) · WR G. Wilson (@CHI, 14.6) · TE Warren (@WAS, 13.1) · **FLEX Michael Wilson (@NYG, 12.3)** · K Dicker · DEF Steelers
+Bench: A. Jones 11.8, Golden 11.2, Sutton 9.9 (drop candidate), Henry 9.7, Murray (drop candidate)
+If Hall is OUT: Jones to RB2, flex stays M. Wilson, Golden is the next man up.
 
-### Week 3 final lineups (locked Sep 26)
-**2MinuteDrill vs RocGPT (1-1) — Yahoo coin flip, ~124 vs ~125**
-QB Stafford (@DEN, SNF) · RB Jonathan Taylor (vs HOU) · RB Breece Hall (@DET) · WR Chris Olave (vs LV) · WR Garrett Wilson (@DET) · TE Tyler Warren (vs HOU) · FLEX Aaron Jones (@TB, 4:05) · K Dicker · DEF Steelers
-Bench: Murray, Sutton, Henry, Michael Wilson, Golden (played Thu). IR empty.
+**First Down vs —HA HA— (2-0) — Yahoo 46% us, 122.1 vs 126.5.**
+QB Hurts (vs LAR, 17.3) · RB Jeremiyah Love (@NYG, 16.4) · RB Bhayshul Tuten (@CIN, 12.0) · WR Lamb (@HOU, 17.1) · WR Rice (@LV, 13.6) · WR McLaurin (vs IND London, 12.6) · **TE Kittle (vs DEN, 10.4)** · **FLEX Golden (@TB, 11.2)** · K Aubrey · DEF Steelers (Thu @CLE)
+Bench: Andrews 10.1, Boston 10.4 (Thu), Sutton 9.9, Dobbins 7.2 (drop candidate), Shough (trade chip). **Achane → IR.**
 
-**First Down vs House of Tweez (1-1) — trailing; they have 57.90 from Bijan 35.3 + Watson 22.6, ~152 projected vs our ~130**
-QB Hurts (@CHI, MNF) · RB Achane (vs KC) · RB Jeremiyah Love (@SF) · WR CeeDee Lamb (vs BAL) · WR Rashee Rice (@MIA) · WR Terry McLaurin (vs SEA) · TE Mark Andrews (@DAL) · FLEX Courtland Sutton (vs LAR, SNF) · K Aubrey (vs BAL) · DEF Steelers
-Bench: Kittle, Tuten, Dobbins, Boston, Shough, Golden (played Thu). IR empty.
+### Usage findings that drove these calls (Weeks 1–3)
+- **Michael Wilson (ARI)** — real role, inflated week. 85% snaps, 67 routes and 14 targets vs Marvin Harrison Jr.'s 4 targets/1 catch. But W3's 17 targets came trailing 36-30. Project ~9–11 targets, not 17.
+- **Start Kittle over Andrews.** Andrews has the better target share (23.2% vs 16.1%) and no TE competition, but 1 RZ target in two games, a 3-24 dud and a hand injury. Kittle's arrow is up everywhere: team-leading snaps, 30% TPRR, all 7 inside-the-10 snaps in W2, 2 TDs in W3. Andrews is the better ROS hold.
+- **Jeremiyah Love is the ARI lead back** — 43% → 64% snaps, 81.3% backfield opportunity share, 26 of 32 RB touches in W3. Conner on IR (out through at least Wk4), Benson waived. Conner's Wk5+ return is the only threat.
+- **Tuten has the JAX job but is capped** at ~50% snaps in Coen's committee. 15 carries back-to-back, goal-line TDs in W2 and W3. RB2/flex floor, limited ceiling.
+- **Three fades, all role-driven:** Sutton (Waddle is Denver's WR1; 82 yards in three games), Kyler Murray (168 pass yds, 2 carries — no rushing floor, can't reach the 350 bonus), Breece Hall (107 → 29 → 21 rush yards *before* the injury).
+- **Three underpriced holds:** Golden (10% → 25.4% target share, 89% route rate, 2nd-most RZ targets in the NFL with zero RZ TDs, and Jayden Reed is likely done for the year), Olave (**37 targets = most in the NFL**, three near-TDs in W3), Rice (2 → 6 → 9 targets).
+- **Stafford** attempts escalating 25 → 31 → 55; 55-attempt games clear the 350/450 bonuses and 6-pt TDs amplify. Chronic back is the standing risk.
+
+### Trade board (rebuilt ROS vs league median, Sep 28)
+**2MD — S Dot Sack 1577, 4th of 12. No slot more than 13 below median.** Surplus: Murray 294 (QB2), Golden 150, Sutton 147, Jones 143, Henry 142. Verdict: **stand pat**, work the wire. Murray's trade value is low precisely because the research says he's a fade.
+**FD — MacRazy 1615, now LAST in lineup strength.** RB1 -39, RB2 -33, FLEX -21 after losing Achane. Surplus is **Shough (261 ROS)** behind Hurts. Targets: House of Tweez (needs QB1, has RB Jadarian Price 165), [Placeholder name] (needs QB1 — Caleb Williams is out — has Croskey-Merritt 139/Gainwell 138), Literally the Worst (needs QB1). **Primary offer: Shough → House of Tweez for Jadarian Price.**
 
 ---
 
