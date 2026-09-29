@@ -40,6 +40,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 | When | League | Item | Status |
 |---|---|---|---|
+| — | FD | **See the [First Down game plan](#first-down-game-plan-from-week-4-on) section below** for the full strategy, sequencing and contingencies. | doc |
 | Now | FD | **Move Achane to IR** (slot confirmed eligible). Frees a bench spot so the claim needs no drop. | open |
 | Before Wed Sep 30 | FD | **Claim #1: Ollie Gordon II (MIA).** Took 83.6% of snaps and 100% of RB touches after Achane left; 1–3% rostered. Only target whose opportunity is *certain*. | open |
 | Wed Sep 30 (after wire clears) | FD | **Add Jaylen Wright (MIA)** as a free agent if unclaimed — 1–4% rostered, listed AHEAD of Gordon on Miami's depth chart, back from a stinger/foot. Owning both = own the backfield. Drop Dobbins. | open |
