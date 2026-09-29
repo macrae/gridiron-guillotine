@@ -34,7 +34,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 4 punchlist (Sep 29 – Oct 5)
 
-**EXECUTED Tue Sep 29 (First Down).** Achane → IR; waiver claim #1 on Ollie Gordon II filed (processes Wed Sep 30, no drop needed); Shough → [Placeholder name] trade offer sent asking Jacory Croskey-Merritt; Week 4 lineup set (Tuten to RB2, Kittle to TE, Golden to FLEX). 2MinuteDrill moves are NOT yet placed.
+**EXECUTED Tue Sep 29 (BOTH LEAGUES).** Achane → IR; waiver claim #1 on Ollie Gordon II filed (processes Wed Sep 30, no drop needed); Shough → [Placeholder name] trade offer sent asking Jacory Croskey-Merritt; Week 4 lineup set (Tuten to RB2, Kittle to TE, Golden to FLEX). 2MD: claims filed for **Braelon Allen $19 (drop Sutton)** and **Ollie Gordon $7 (drop Henry)**; lineup reshuffled — **Hall benched** (proj fell to 8.05), Jones to RB2, Michael Wilson to FLEX.
 
 **Status Mon Sep 28.** 2MD **2-1** (4th, 3rd-most PF). FD **1-2** (6th). **De'Von Achane tore his ACL — season over**, and he was the FD RB1. Breece Hall (2MD RB2) is questionable with a thigh injury, no update until Wednesday. Waivers in BOTH leagues process **Wed Sep 30**. FAAB $80 (2MD); waiver priority **#1** (FD).
 
@@ -44,8 +44,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 | ~~Now~~ | FD | ~~Move Achane to IR~~ **DONE Sep 29** — IR 1 of 1 used, bench spot freed. (slot confirmed eligible). Frees a bench spot so the claim needs no drop. | open |
 | ~~Before Wed Sep 30~~ | FD | **FILED Sep 29 — Claim #1: Ollie Gordon II (MIA), no drop.** Took 83.6% of snaps and 100% of RB touches after Achane left; 1–3% rostered. Only target whose opportunity is *certain*. | open |
 | Wed Sep 30 (after wire clears) | FD | **Add Jaylen Wright (MIA)** as a free agent if unclaimed — 1–4% rostered, listed AHEAD of Gordon on Miami's depth chart, back from a stinger/foot. Owning both = own the backfield. Drop Dobbins. | open |
-| Before Wed Sep 30 | 2MD | **Claim Braelon Allen (NYJ) ~$18** — the Hall contingency; Isaiah Davis has 0 offensive snaps, so if Hall sits it's Allen alone. Contested (14–22% rostered, consensus 25–40% FAAB). Drop Sutton. | open |
-| Before Wed Sep 30 | 2MD | **Second claim: Ollie Gordon ~$7** (5% rostered here). Drop Murray if Allen also lands. | open |
+| ~~Before Wed Sep 30~~ | 2MD | **FILED Sep 29: Braelon Allen $19, drop Sutton.** — the Hall contingency; Isaiah Davis has 0 offensive snaps, so if Hall sits it's Allen alone. Contested (14–22% rostered, consensus 25–40% FAAB). Drop Sutton. | open |
+| ~~Before Wed Sep 30~~ | 2MD | **FILED Sep 29: Ollie Gordon $7, drop Hunter Henry** (not Murray — Stafford's chronic back makes a QB2 worth more than a TE2, and the TE wire is deep: Strange, Freiermuth, Hockenson). | done |
 | Thu Oct 1, before 8:15pm | FD | Thursday rule: Denzel Boston (CLE, 10.41) and Steelers DEF both play Thu @ CLE. Boston does NOT beat Golden (11.16) on merit — leave him benched. | open |
 | Wed Oct 1 | 2MD | Hall's MRI/designation from Aaron Glenn's Wednesday presser. If OUT: Jones to RB2, M. Wilson to flex. | open |
 | Fri Oct 2 | both | Friday designations: Hall (thigh), Aaron Jones (knee), Mark Andrews (hand), Jaylen Wright (practice), Ashton Jeanty (ankle). | open |
@@ -163,13 +163,16 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 
 ## Log
 
-### 2026-09-29 — First Down plan executed
+### 2026-09-29 — Week 4 plans executed, both leagues
 - **Post-Week-3 standings (computed from final scoreboards; Yahoo's page lags a day):** 2MD **2-1, 1st of 12** on 448.48 PF, a 12.78-point lead over TD with six teams at 2-1. FD **1-2, 7th of 10**, one spot out of the six playoff places; our 421.26 points against is 3rd-worst in the league.
 - **Achane → IR.** Confirmed season-ending ACL (torn on a non-contact cut, Week 3 vs KC). Freed a bench spot.
 - **Waiver claim #1: Ollie Gordon II**, no drop, processes Wed Sep 30. Hafley on the backfield: "They're all going to have their roles" — Gordon is still the Week 4 favorite with Wright working back from a foot injury.
 - **Trade offer sent: Tyler Shough → [Placeholder name] for Jacory Croskey-Merritt.** Pitch leaned on Caleb Williams being out with Keenum starting in Chicago.
 - **Week 4 lineup set:** Tuten to RB2, Kittle to TE (over Andrews), Golden to FLEX (over Sutton). Hurts / Love / Tuten / Lamb / Rice / McLaurin / Kittle / Golden / Aubrey / Steelers.
-- Still to do Wednesday: add Jaylen Wright as a free agent once the wire clears, dropping Dobbins.
+- **2MinuteDrill claims:** Braelon Allen **$19** (drop Sutton) and Ollie Gordon **$7** (drop Henry). Both process Wed Sep 30; $80 budget, $26 committed. Chose Henry over Murray as the second drop because Stafford's chronic back makes QB2 insurance worth more than TE2, and the TE wire is deep.
+- **2MD lineup reshuffle:** Yahoo cut Hall's Week 4 projection from 14.99 to **8.05** on the thigh injury, so he is benched now rather than waiting on Wednesday. Aaron Jones to RB2, Michael Wilson to FLEX. Worth about +4.4 over leaving Hall in.
+- 2MD Week 4 lineup: Stafford / Taylor / A. Jones / Olave / G. Wilson / Warren / M. Wilson (FLEX) / Dicker / Steelers.
+- Still to do Wednesday: add Jaylen Wright as an FD free agent once the wire clears (drop Dobbins); recheck Hall if he practices and the projection recovers.
 
 ### 2026-09-28 — Week 4 plan built; execution on hold
 - Refreshed the repo's 3-week-stale data (`espn`/`news`/`injuries` builders). That is how Achane's ACL (Out, return 2027-02-15, 20 weeks) and Hall's thigh surfaced with return dates attached.
