@@ -77,6 +77,58 @@ Bench: Andrews 10.1, Boston 10.4 (Thu), Sutton 9.9, Dobbins 7.2 (drop candidate)
 
 ---
 
+## First Down game plan (from Week 4 on)
+
+**Situation.** 1-2 after the Week 3 loss, 6th of 10. **Six of ten make the playoffs** (Weeks 15-17, reseeded), so 1-2 is not a hole — it is a bad month, not a lost season. Trade deadline **Nov 28**. Waivers are a **continual rolling priority list** (no FAAB) and we hold **#1**, processing Wednesdays. Roster limit 10 starters + 6 bench + 1 IR.
+
+**Diagnosis.** Losing Achane made us **last in the league in rest-of-season lineup strength (1615)**. The damage is concentrated:
+
+| Slot | Us | vs median |
+|---|---|---|
+| RB1 Jeremiyah Love | 210 | **-39** |
+| RB2 Bhayshul Tuten | 174 | **-33** |
+| FLEX Golden | 150 | **-21** |
+| QB Hurts | 266 | -14 |
+| WR1 Lamb / WR2 Rice / WR3 McLaurin | 262 / 213 / 178 | 0 / +13 / -1 |
+| TE Kittle | 161 | -1 |
+
+Receivers and tight end are fine. **Every point of the deficit is running back.** Meanwhile QB is a surplus: Shough (261 ROS) sits behind Hurts and three teams in this league need a starting QB.
+
+**Strategy: convert surplus into running back volume, and spend priority #1 on the one permanent opening.**
+Gordon is the only available back whose opportunity cannot evaporate — Achane's season is over. Everyone else on the wire is a handcuff whose value depends on someone else's health. Pairing Gordon with Wright (1-4% rostered) means we own the Miami backfield no matter how Hafley splits it, for one claim plus one bench spot.
+
+### Sequenced actions
+
+| When | Action | Why / drop |
+|---|---|---|
+| Tue Sep 29 | **Achane → IR slot** (confirmed eligible) | Frees a bench spot so the claim costs nothing |
+| Tue Sep 29 night | **Claim #1: Ollie Gordon II (MIA)** | 83.6% of snaps and 100% of RB touches after Achane left; 1-3% rostered. No drop needed. |
+| Tue Sep 29 night | **Trade offer: Shough → [Placeholder name]**, ask Jacory Croskey-Merritt (139) | Their QB Caleb Williams is OUT; they are the most desperate QB buyer in the league. Fallback ask: Kenny Gainwell. |
+| Tue Sep 29 night | **Backup offer: Shough → House of Tweez**, ask Jadarian Price (165) | They need QB1 (Bryce Young) and have Price on the bench. Send only if [Placeholder] declines — never two offers of the same player at once. |
+| Wed Sep 30, after wire clears | **Add Jaylen Wright (MIA)** as a free agent, drop **J.K. Dobbins** | Wright is listed ahead of Gordon on Miami's depth chart and Yahoo's FAAB column ranks him higher. Dobbins is in a 3-way Denver committee with no receiving role — PPR-dead. |
+| Thu Oct 1, pre-8:15pm | Thursday rule check: Boston and Steelers DEF both play Thu @ CLE | Boston (10.4) does not beat Golden (11.2) on merit — leave benched |
+| Fri Oct 2 | Designations: Andrews (hand), Wright (practice), Love | |
+| Sun Oct 4 | Inactives; McLaurin plays 9:30am London | |
+
+### Week 4 lineup vs —HA HA— (2-0)
+QB Hurts · RB **Jeremiyah Love** · RB **Bhayshul Tuten** · WR Lamb · WR Rice · WR McLaurin · TE **Kittle** · FLEX **Golden** · K Aubrey · DEF Steelers
+Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gordon if claimed. Achane on IR.
+
+### Contingency tree
+- **Priority #1 cannot lose** — it is the top of the rolling list. The only risk is spending it on the wrong man, which is why it goes to the permanent opening (Gordon), not the coin flip (Braelon Allen, whose case resolves at Wednesday's Jets practice, i.e. after waivers run).
+- **After using #1 we drop to last in the order.** Every later claim is effectively a free-agent race, so speed matters more than timing from here.
+- **If someone else claims Wright**, we still hold Gordon and Miami's job is a 60/40 at worst. Do not panic-add a third Miami back.
+- **If James Conner returns (Week 5+)**, Love's 81% opportunity share shrinks. That is the single biggest threat to our RB1 — recheck it every Friday.
+- **If the Shough trades both fail**, hold him. QB-needy teams get more desperate, not less, and Hurts has a Week 10 bye we would otherwise have to stream.
+
+### Do not
+- Do not chase Case Keenum or any streaming QB. We start one QB and have two.
+- Do not drop Andrews. He is the better rest-of-season TE hold even though Kittle is the better Week 4 start.
+- Do not trade Lamb or Rice. They are the only reason the receiving corps is at median.
+- Do not spend the claim on a handcuff whose situation resolves after waivers process.
+
+---
+
 ## Open items / pending
 
 ### 2MinuteDrill
