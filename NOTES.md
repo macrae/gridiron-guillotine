@@ -52,8 +52,8 @@ Budget check: 2MD $80 with $26 committed. FD priority #1 spent on Gordon, which 
 ### Week 4 lineups (verified Sep 29)
 
 **2MinuteDrill vs CaliBayBoi510 — projected 123.74 to 106.37, us favoured**
-QB Stafford 20.0 · RB J. Taylor 19.1 · RB **Aaron Jones 12.8** · WR Olave 18.5 · WR G. Wilson 13.3 · TE Warren 12.3 · FLEX **Michael Wilson 12.6** · K Dicker 7.3 · DEF Steelers 7.8
-Bench: Golden 12.5, Murray 21.7 (QB2), Sutton 10.9 and Henry 8.4 (both pending drops), **Hall 7.9 benched** — Yahoo cut him from 14.99 to 7.94 on the thigh injury.
+QB Stafford 19.9 · RB J. Taylor 19.7 · RB **Aaron Jones 14.3** · WR Olave 18.6 · WR G. Wilson 15.0 · TE Warren 12.9 · FLEX **Matthew Golden 13.0** · K Dicker 7.0 · DEF Steelers 7.8 — *locked Sep 30*
+Bench: Michael Wilson 12.7, Braelon Allen 11.1, Murray 22.4 (QB2), Henry 9.4, **Hall 8.0 benched** — Yahoo cut him from 14.99 on the thigh injury. Sutton dropped in the Allen claim.
 
 **First Down vs —HA HA— — projected ~125.6**
 QB Hurts 16.4 · RB **Jeremiyah Love 15.5** · RB **Bhayshul Tuten 11.6** · WR Lamb 17.2 · WR Rice 13.6 · WR McLaurin 11.8 · TE **Kittle 10.9** · FLEX **Golden 12.5** · K Aubrey 8.4 · DEF Steelers 7.8
@@ -157,12 +157,13 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 
 ## Log
 
-### 2026-09-30 — Waivers processed
+### 2026-09-30 — Waivers processed; 2MD lineup locked
 - **2MD: won Braelon Allen at $19**, the highest bid in the league this week; Sutton dropped; budget $80 → $61.
 - **2MD: lost Ollie Gordon at $7.** CaliBayBoi510 — our Week 4 opponent, who also lost Achane — bought **both** Miami backs (Gordon $10, Wright $15). Hunter Henry stays on our bench as a result.
 - Other notable 2MD bids: Kalif Raymond $16 ($KB), Michael Penix $10 (Hit Em), Kenyon Sadiq $7 and Devaughn Vele $7 (TD).
 - **FD: won Gordon on priority #1**, then added **Jaylen Wright** as a free agent (dropping Dobbins) once the wire cleared. We now own the entire Miami backfield in First Down. Waiver priority reset to **7th of 10**, better than the expected last.
 - Roster note: Braelon Allen (11.08) now projects above Breece Hall (8.04) for Week 4, so the Jets backfield is covered either way in 2MD.
+- **2MD lineup locked:** Golden (12.99) into the FLEX over Michael Wilson (12.67) at Sean's call. The two are inside half a point; Golden has the stronger underlying case — 25.4% target share, 89% route rate, 2nd-most RZ targets in the NFL with zero RZ TDs, and Jayden Reed likely out for the year.
 - FD trade offer to [Placeholder name] (Shough → Croskey-Merritt) still unanswered.
 
 ### 2026-09-29 — Week 4 plans executed, both leagues
