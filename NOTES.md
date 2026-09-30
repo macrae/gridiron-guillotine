@@ -66,7 +66,7 @@ Bench: Sutton 10.9, Boston 10.4, Andrews 9.5, Dobbins 8.1, Shough 19.9 (trade ch
 | ~~Wed Sep 30~~ ✅ | FD | **DONE — added Jaylen Wright (FA), dropped Dobbins.** Priority unaffected (stayed 7th). |
 | Wed Sep 30 | 2MD | Aaron Glenn's presser on **Breece Hall**. If he practices and the projection recovers, he returns over Michael Wilson. |
 | Thu Oct 1, 8:15pm | FD | Thursday rule: Boston (10.4) and Steelers DEF play Thu @ CLE. Boston does not beat Golden (12.5) on merit — stays benched. |
-| Fri Oct 2 | both | Designations: Hall (thigh), A. Jones (knee), Andrews (hand), Wright (practice). |
+| Fri Oct 2, 1pm PT | both | **Reminder scheduled:** cloud routine `trig_016SEkuqYQWFpP1Jvo7g1an4` reports designations for Hall (thigh), A. Jones (knee), Andrews (hand), Wright (foot) plus lineup calls for both leagues. https://claude.ai/code/routines/trig_016SEkuqYQWFpP1Jvo7g1an4 |
 | Sun Oct 4 | both | Inactives. J. Taylor, Warren (2MD) and McLaurin (FD) all play 9:30am London. |
 | Standing | 2MD | Breakouts cost $20+, contingent roles $6-9. We lose every tie (12th of 12), so never bid a round number. |
 | Standing | FD | Priority resets to last after Gordon; from here every claim is a speed race. |
