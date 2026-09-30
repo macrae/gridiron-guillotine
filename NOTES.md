@@ -159,6 +159,16 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 
 ## Log
 
+### 2026-09-30 — Week 4 deep research; strategy doc built
+- Standings confirmed by Yahoo (page caught up): **2MD 1st of 12** (2-1, 448.48 PF, six teams at 2-1 so it's the points tiebreaker, +12.78 over TD). **FD 7th of 10** (1-2), one place out of six playoff spots.
+- Built **`WEEK4-STRATEGY.md`**: standings, both matchup projections with opponent lineups, defense-vs-position research for all 16 starters, opponent scouting, bench cases, and season posture per league.
+- **2MD read: ~70/30 in our favour.** CaliBayBoi510 has three dead slots (RJ Harvey at RB2, the Eagles DST with 0 INT / 0 FR / 0 TD all season, and a flex hanging on Jalen Coker's quad) where we have none.
+- **FD read: a coin flip Puka Nacua decides.** He's questionable (hip/groin), has played one game all year, market prices him WR53. Out or limited → we're ~55/45; real snap count → they are.
+- **Corrections:** Jayden Daniels will NOT play (Mariota starts — neutral-to-good for McLaurin); Breece Hall is **week-to-week** (ECR RB66, treat as out); Jonathan Taylor's matchup is NOT soft (Washington is stingy specifically against the run); Garrett Wilson had no head injury.
+- **Flex call:** the two research passes disagreed (matchup favoured Michael Wilson, usage favoured Golden). **Left Golden in** — inside the margin of error, and Golden has the steadier floor.
+- **Repo bug found:** `data/2026/injuries.json` lists Kyren Williams as questionable/neck/carted off. He is not on the Rams' report at all — looks like `injuries.build()` joins on last name alone and merged Trent Williams (SF, neck) with Mike Evans (carted off). Not yet fixed.
+- Research constraint: this session exhausted its web-search budget, so both agents worked from direct page fetches. Snap-share data was unobtainable everywhere (403/404).
+
 ### 2026-09-30 — Waivers processed; 2MD lineup locked
 - **2MD: won Braelon Allen at $19**, the highest bid in the league this week; Sutton dropped; budget $80 → $61.
 - **2MD: lost Ollie Gordon at $7.** CaliBayBoi510 — our Week 4 opponent, who also lost Achane — bought **both** Miami backs (Gordon $10, Wright $15). Hunter Henry stays on our bench as a result.
