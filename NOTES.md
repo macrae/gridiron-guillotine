@@ -34,7 +34,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 4 punchlist (Sep 29 – Oct 5)
 
-**LOCKED as of Tue Sep 29.** Both leagues verified: claims filed, lineups set, trade offer out. Nothing else to do before Wednesday's waiver run.
+**WAIVERS PROCESSED Wed Sep 30.** 2MD: **won Braelon Allen $19** (the week's top bid in the league), Sutton dropped, budget $80 → **$61**; **lost Ollie Gordon** — CaliBayBoi510 (our Week 4 opponent, who also lost Achane) took **Gordon $10 AND Wright $15**, so Henry stays on our roster. FD: **won Gordon on priority #1**, then **added Jaylen Wright as a free agent, dropped Dobbins** — we own the whole Miami backfield there. FD priority reset to **7th**, not last.
 
 **Records after Week 3** (computed from final scoreboards; Yahoo's standings page lags a day): **2MD 2-1, 1st of 12** on 448.48 PF — six teams are 2-1, so the lead is the points tiebreaker, 12.78 ahead of TD. **FD 1-2, 7th of 10**, one place outside the six playoff spots; our 421.26 points against is 3rd-worst in the league.
 
@@ -42,9 +42,9 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 | League | Transaction | Notes |
 |---|---|---|
-| 2MD | **Waiver 1: $19 Braelon Allen, drop Sutton** | The whole Jets backfield if Hall sits — Isaiah Davis has 0 offensive snaps. Contested (14-22% rostered, consensus 25-40% FAAB). |
-| 2MD | **Waiver 2: $7 Ollie Gordon II, drop Hunter Henry** | Permanent opening (Achane's ACL). Henry over Murray as the drop: Stafford's chronic back makes QB2 insurance worth more than TE2, and the TE wire is deep (Strange, Freiermuth, Hockenson). |
-| FD | **Waiver 1 (priority #1): Add Ollie Gordon II, no drop** | Priority #1 cannot be outbid. IR slot freed the roster spot. |
+| 2MD ✅ | **WON $19 Braelon Allen, dropped Sutton** | The whole Jets backfield if Hall sits — Isaiah Davis has 0 offensive snaps. Contested (14-22% rostered, consensus 25-40% FAAB). |
+| 2MD ❌ | **LOST Gordon at $7** (CaliBayBoi510 bid $10). Henry stays. | Permanent opening (Achane's ACL). Henry over Murray as the drop: Stafford's chronic back makes QB2 insurance worth more than TE2, and the TE wire is deep (Strange, Freiermuth, Hockenson). |
+| FD ✅ | **WON Gordon on priority #1, no drop** | Priority #1 cannot be outbid. IR slot freed the roster spot. |
 | FD | **Trade offer to [Placeholder name]: Shough → Jacory Croskey-Merritt** | They lost Caleb Williams; Keenum is starting in Chicago. Fallback partner: House of Tweez (Jadarian Price). |
 
 Budget check: 2MD $80 with $26 committed. FD priority #1 spent on Gordon, which drops us to last in the order afterwards.
@@ -63,7 +63,7 @@ Bench: Sutton 10.9, Boston 10.4, Andrews 9.5, Dobbins 8.1, Shough 19.9 (trade ch
 
 | When | League | Item |
 |---|---|---|
-| Wed Sep 30 | FD | After the wire clears, add **Jaylen Wright** as a free agent, drop **Dobbins**. Owning both Miami backs removes the split risk. |
+| ~~Wed Sep 30~~ ✅ | FD | **DONE — added Jaylen Wright (FA), dropped Dobbins.** Priority unaffected (stayed 7th). |
 | Wed Sep 30 | 2MD | Aaron Glenn's presser on **Breece Hall**. If he practices and the projection recovers, he returns over Michael Wilson. |
 | Thu Oct 1, 8:15pm | FD | Thursday rule: Boston (10.4) and Steelers DEF play Thu @ CLE. Boston does not beat Golden (12.5) on merit — stays benched. |
 | Fri Oct 2 | both | Designations: Hall (thigh), A. Jones (knee), Andrews (hand), Wright (practice). |
@@ -156,6 +156,14 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 ---
 
 ## Log
+
+### 2026-09-30 — Waivers processed
+- **2MD: won Braelon Allen at $19**, the highest bid in the league this week; Sutton dropped; budget $80 → $61.
+- **2MD: lost Ollie Gordon at $7.** CaliBayBoi510 — our Week 4 opponent, who also lost Achane — bought **both** Miami backs (Gordon $10, Wright $15). Hunter Henry stays on our bench as a result.
+- Other notable 2MD bids: Kalif Raymond $16 ($KB), Michael Penix $10 (Hit Em), Kenyon Sadiq $7 and Devaughn Vele $7 (TD).
+- **FD: won Gordon on priority #1**, then added **Jaylen Wright** as a free agent (dropping Dobbins) once the wire cleared. We now own the entire Miami backfield in First Down. Waiver priority reset to **7th of 10**, better than the expected last.
+- Roster note: Braelon Allen (11.08) now projects above Breece Hall (8.04) for Week 4, so the Jets backfield is covered either way in 2MD.
+- FD trade offer to [Placeholder name] (Shough → Croskey-Merritt) still unanswered.
 
 ### 2026-09-29 — Week 4 plans executed, both leagues
 - **Post-Week-3 standings (computed from final scoreboards; Yahoo's page lags a day):** 2MD **2-1, 1st of 12** on 448.48 PF, a 12.78-point lead over TD with six teams at 2-1. FD **1-2, 7th of 10**, one spot out of the six playoff places; our 421.26 points against is 3rd-worst in the league.
