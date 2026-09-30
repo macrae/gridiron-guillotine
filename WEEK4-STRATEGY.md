@@ -80,7 +80,8 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 | FD TE: Kittle 12.1 vs Andrews 9.5 (hand) | Kittle starting | Friday designations |
 | FD: is either Miami back startable over Tuten (11.2)? | Gordon 6.0, Wright 5.1 — no, for now | Friday |
 | FD trade: Shough → [Placeholder name] for Croskey-Merritt | Sent Sep 29, unanswered | Any time |
-| 2MD flex: Golden 13.0 vs Michael Wilson 12.7 | Golden locked | Locked |
+| **2MD flex: Golden 13.0 vs Michael Wilson 12.7** | **Locked on Golden — but the matchup research argues the other way. See §7.** | Needs a call |
+| FD flex/WR: Denzel Boston plays **Thu Oct 1** | Benched behind Golden (13.0 vs 10.6) | **Locks Thursday 8:15pm** |
 
 ---
 
@@ -125,9 +126,41 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 ### Not verified
 Coverage scheme data (man/zone, blitz, pressure rates) and slot-versus-perimeter funnels for every team — sources returned 403. Kicker points-allowed rankings and red-zone touchdown rate allowed, so the Aubrey case rests on field-goal attempts instead. Tight-end-specific data for Denver.
 
-## 5b. Opponent analysis and bench cases
+## 5b. Weekly splits and late additions
 
-- pending.
+From a follow-up cross-check (all confirmed against ESPN's injury table; none of Taylor, Warren, Olave, Love, Tuten or Andrews carries a designation as of Sep 29):
+
+- **Tyler Warren's targets are trending straight up: 5 → 7 → 10.** Strengthens the start.
+- **Jonathan Taylor: 22-26 touches every week, zero committee.** But Washington ranks 3rd in fewest rushing yards allowed, so he's a volume-and-TD play, downgraded to a mid-to-low RB1.
+- **Chris Olave is tied for the league lead in targets** (13, 10, 13) and 2nd in receiving yards. The Saints offense is described as "pass-first, second and third."
+- **Jeremiyah Love's Week 3 was a career-high 26 touches**, and Allgeier's carries have collapsed 17 → 5 → 2. One unexamined bear signal: Love appears in a FantasyPros "players to sell" piece dated Sep 30.
+- **Tuten is capped, confirmed.** He was held to 15 carries even in a 35-6 blowout win and gets 1-2 targets a game. Clear lead back, limited ceiling.
+- **Mark Andrews: 6, 7, 5 targets and zero TDs**, with his team receiving rank sliding 1st → 2nd → 3rd. When Zay Flowers missed Week 2, the expected Andrews boost never materialized.
+- Opponent notes: **Chuba Hubbard has 3 total TDs, not 1**, and his carries are trending up 10 → 12 → 19. **Kyle Pitts has 1, 3 and 2 targets** — worse than his season line suggests.
+
+**Still unverified after two passes:** snap-share data (every source 403'd), and no Wednesday Sep 30 practice report existed anywhere at research time, so Andrews' hand and Nico Collins' hamstring are still open.
+
+## 5c. Opponent analysis and bench cases
+
+- pending (second research agent still running).
+
+---
+
+## 7. The flex call that needs revisiting (2MinuteDrill)
+
+The lineup is locked with **Golden** in the flex at 12.99 projected, over **Michael Wilson** at 12.67. The matchup research inverts that:
+
+| | Matthew Golden, GB at TB | Michael Wilson, ARI at NYG |
+|---|---|---|
+| Opponent secondary | **Fully healthy** (only a CB on IR-R) | **Five CBs on IR/IR-R**; CB Deonte Banks and S Tyler Nubin questionable |
+| Opponent pass rush | Stout, 27th vs WR | **One sack all season, fewest in the NFL**; Brian Burns just went on IR |
+| Game total | **39.5, second-lowest of the week** | 44.5 |
+| Script | GB favored by 3.5 over a Bucs team starting an undrafted rookie — run-lean | Arizona likely trailing or neutral, pass-leaning |
+| Red-zone role | Christian Watson owns it, 4 TDs to Golden's 1 | 17 targets in Week 3; leads the team with Harrison Jr. at 4 targets total |
+
+Golden's case was always the underlying profile: 25.4% target share, 89% route rate, second-most red-zone targets in the NFL with zero red-zone TDs. That remains true and is why he is the better rest-of-season asset. But **for this specific week, Wilson has the better spot on every axis except projection, and the projection gap is 0.3 points.**
+
+Recommendation: **flip the 2MinuteDrill flex back to Michael Wilson.** Golden stays the flex in First Down, where the alternatives (Sutton 11.0, Boston 10.6) are worse.
 
 ---
 
