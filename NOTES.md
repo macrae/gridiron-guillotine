@@ -34,6 +34,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 4 punchlist (Sep 29 – Oct 5)
 
+*Strategy doc: [`WEEK4-STRATEGY.md`](WEEK4-STRATEGY.md) — standings, matchup math, opponent reads, research and season posture. This section stays the transaction log.*
+
 **WAIVERS PROCESSED Wed Sep 30.** 2MD: **won Braelon Allen $19** (the week's top bid in the league), Sutton dropped, budget $80 → **$61**; **lost Ollie Gordon** — CaliBayBoi510 (our Week 4 opponent, who also lost Achane) took **Gordon $10 AND Wright $15**, so Henry stays on our roster. FD: **won Gordon on priority #1**, then **added Jaylen Wright as a free agent, dropped Dobbins** — we own the whole Miami backfield there. FD priority reset to **7th**, not last.
 
 **Records after Week 3** (computed from final scoreboards; Yahoo's standings page lags a day): **2MD 2-1, 1st of 12** on 448.48 PF — six teams are 2-1, so the lead is the points tiebreaker, 12.78 ahead of TD. **FD 1-2, 7th of 10**, one place outside the six playoff spots; our 421.26 points against is 3rd-worst in the league.
