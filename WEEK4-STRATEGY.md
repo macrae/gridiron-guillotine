@@ -140,9 +140,51 @@ From a follow-up cross-check (all confirmed against ESPN's injury table; none of
 
 **Still unverified after two passes:** snap-share data (every source 403'd), and no Wednesday Sep 30 practice report existed anywhere at research time, so Andrews' hand and Nico Collins' hamstring are still open.
 
-## 5c. Opponent analysis and bench cases
+## 5c. Opponent analysis
 
-- pending (second research agent still running).
+### 2MinuteDrill — CaliBayBoi510 (1-2)
+
+**Their three dangerous pieces.** **Jaylen Warren** (PIT, Thursday) is the most locked-in usage they own — Rico Dowdle was DNP Monday *and* Tuesday on a short week, so Warren gets the backfield. He had 17-127 plus 3-49 in Week 3 without Dowdle. The brake: Cleveland is a top-5 defense against running backs, so think 12-18, not 25. **Lamar Jackson** is their biggest positional edge, worth ~4-5 more than Stafford, at home against an 0-3 Tennessee team averaging 12.3 points. **CeeDee Lamb** has 25 targets and back-to-back 100-yard games. Travis Kelce is *not* the weakness he looks like either — Las Vegas is the 3rd-easiest TE matchup in the league.
+
+**Where they bleed — three dead slots to our zero:**
+- **RB2 is a hole they paid $25 and failed to fix.** RJ Harvey had *2 carries for 6 yards* in Week 3; J.K. Dobbins is Denver's lead runner. Their alternative, Ollie Gordon, draws Minnesota's 13.7-points-allowed defense with a Miami offense that has scored 36 points all season.
+- **Eagles DST is the worst startable defense in football right now:** 3 sacks, **zero interceptions, zero fumble recoveries, zero defensive TDs** in three games, ranked 28th on the season, now facing a Rams offense scoring 29.3 a game. Expect 2-6.
+- **Their flex hinges on a quad strain.** Jalen Coker is questionable; he's their only good flex option. If he sits, they fall back to Diggs (who just lost his quarterback), Jameson Williams (targets collapsed 9 → 4 → 4) or Bateman (a low-end flex now that Zay Flowers is healthy).
+
+**Verdict: clear edge to us, roughly 70/30.** Not because of stars — Lamar beats Stafford — but because they have three dead slots worth ~18-22 combined where our equivalents should produce 33-38.
+
+### First Down — —HA HA— (2-1)
+
+**Their strength is the backfield, not the receivers.** Chuba Hubbard is an undisputed workhorse with a 100% catch rate on 9 targets. Kyren Williams is **completely healthy** (see the data-bug note below). D'Andre Swift holds a 69% snap share. Their RB room out-classes ours.
+
+**Their receiving corps is the story.** They must start three, and every option is hurt or volatile: **Waddle** questionable, seen in a walking boot, targets 1 → 8 → 2. **Mike Evans** questionable with a rib strain after being carted off, ECR collapsed to WR73. **Deebo** has receptions of 6 → 3 → **0**, with his Week 3 points coming entirely off an 80-yard lateral. **Diggs** just lost his quarterback. Their tight end is gated on Nico Collins' hamstring: Schultz's 12-catch Week 2 happened *because* Collins was out, and DeMeco Ryans is "hopeful" to have him back.
+
+**Verdict: a coin flip that Puka Nacua decides.** He's questionable with a hip/groin, has played one game all year, and the Rams reportedly don't believe surgery is needed "though it remains a possibility." The market prices him at WR53, ~11.5 — the injury-discounted number. If he sits or is limited, we're ~55/45 favorites. If he plays a real snap count, they are.
+
+### Our three leverage points in First Down
+1. **Kittle.** San Francisco's receiver room is destroyed — Pearsall out for the season, Robinson and Stribling on IR, Kirk on IR-R, Aiyuk not an option. If Evans also sits, Kittle *is* the San Francisco passing game.
+2. **Olave**, Monday night in a dome, 36 targets in three games, against a defense allowing the 4th-most passing yards.
+3. **Steelers DST is the #1 projected defense of Week 4**, facing an 18-20 point Cleveland offense on a short week.
+
+## 5d. Bench cases — who has an argument
+
+| Player | League | Verdict |
+|---|---|---|
+| **Braelon Allen** | 2MD | **Strongest bench asset, and the $19 was well spent.** Hall is "week-to-week" per Rapoport, priced at ECR RB66. Allen is RB22 with nobody behind him — Isaiah Davis has zero statistics all season. Honest caution: when Hall left in Week 3, Allen managed 1.7 points. His projected volume is inferred, not observed. **Don't bench Aaron Jones for him**, but he's RB2 the moment Jones is downgraded. |
+| **Michael Wilson** | 2MD | **The closest call on the roster.** WR1 on Arizona's depth chart ahead of Marvin Harrison Jr., 31 targets in three games. See §7 — the two research passes disagree. |
+| **Kyler Murray** | 2MD | Projects 22.4 to Stafford's 19.9, but 2MD's scoring rewards passing *volume*: Stafford threw 55 times for 390 yards last week against a defense with 3 sacks and no takeaways. **Start Stafford.** Murray is the emergency option if the back flares. |
+| **Ollie Gordon** | FD | **Rest-of-season hold, not a Week 4 start.** Hafley committed to a committee out loud: "one guy might get eight touches, one guy might get 10." Tuten is RB17 to Gordon's RB34. |
+| **Mark Andrews** | FD | Hand is a non-issue — he's not on Baltimore's injury report. But zero TDs and declining yardage (49 → 49 → 24). **Kittle comfortably**, and don't drop Andrews. |
+| **Denzel Boston** | FD | Highest variance on the bench, but his game is Thursday against the week's #1 projected defense. **Thursday rule holds — stays benched.** |
+| **Courtland Sutton** | FD | 1.1 → 2.5 → 4.6 points, no TD. **The obvious drop if we need a roster spot.** |
+
+## 5e. Corrections to earlier reads
+
+- **Jayden Daniels will not play; Mariota starts for Washington.** This is neutral-to-good for McLaurin — his only productive game of the season came in Mariota's first full start, and Mariota went 19/30 for 184 and 3 TDs in Week 3.
+- **Breece Hall is "week-to-week"** after Monday's MRI, priced at ECR RB66. Treat him as out for Week 4 regardless of Friday's label.
+- **Jonathan Taylor's matchup is not soft.** Washington is 2nd-worst in points allowed overall but among the stingiest against the run. Still a start on 25 touches a game, just not a smash spot.
+- **Garrett Wilson had no head injury** — he's on no injury report. Earlier reporting of a concussion evaluation was wrong.
+- **⚠️ Data bug in `data/2026/injuries.json`:** Kyren Williams is recorded as "Questionable, neck, carted off vs Cardinals." He is not on the Rams' injury report at all. The record appears to be a bad surname join merging **Trent Williams** (SF, neck) with **Mike Evans** (carted off). Worth checking whether `injuries.build()` joins on last name alone.
 
 ---
 
@@ -160,7 +202,9 @@ The lineup is locked with **Golden** in the flex at 12.99 projected, over **Mich
 
 Golden's case was always the underlying profile: 25.4% target share, 89% route rate, second-most red-zone targets in the NFL with zero red-zone TDs. That remains true and is why he is the better rest-of-season asset. But **for this specific week, Wilson has the better spot on every axis except projection, and the projection gap is 0.3 points.**
 
-Recommendation: **flip the 2MinuteDrill flex back to Michael Wilson.** Golden stays the flex in First Down, where the alternatives (Sutton 11.0, Boston 10.6) are worse.
+**The two research passes disagree.** The matchup pass says Wilson, on defensive injuries, game total and script. The usage pass says hold Golden, on rank and consistency: Golden is ECR WR18 with 12+ targets in two of three weeks (9.5 / 5.8 / 16.0), while Wilson is WR26 with a high-volume, low-efficiency profile — 8.1 yards a catch, and the 17-target game came while Arizona trailed all afternoon. His other two weeks scored 5.6 and 1.8.
+
+**Recommendation: leave Golden in.** The edge is inside the margin of error either way, and Golden has the steadier floor. Wilson is the play if you specifically want ceiling over floor. Golden also stays in the First Down flex, where the alternatives (Sutton 11.0, Boston 10.6) are clearly worse.
 
 ---
 
