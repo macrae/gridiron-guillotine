@@ -84,10 +84,50 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 
 ---
 
-## 5. Research (filling in)
+## 5. Matchup research (Weeks 1-3 defense-vs-position, Vegas lines, defensive injuries)
 
-- **Matchups and defense-vs-position** — pending.
-- **Opponent analysis and bench cases** — pending.
+*Source: kofsports DvP (full-PPR baseline, rank 1 = most generous), ESPN/NFL.com team stats and injury pages, VegasInsider/Covers lines. Scheme data (man/zone, blitz, pressure rates) was unobtainable — every source 403'd — so none of this rests on coverage tendencies.*
+
+### 2MinuteDrill — best to worst spot
+
+| Player | Opponent D vs position | Line / total | Read |
+|---|---|---|---|
+| **Aaron Jones** vs MIA | **3rd most generous vs RB** (29.3/g) | MIN **-10.5**, 38.5 | **Best matchup we own.** Miami has **zero sacks in three games**, its nose tackle and three linebackers are on IR, and it has allowed 4 rushing TDs. Jones has 52 of 73 RB carries. A 10.5-point spread is a bludgeoning script. |
+| **Chris Olave** at ATL (MNF) | 6th vs WR (38.5/g) | NO -3, **48.5** | **Smash.** Atlanta's CB1 A.J. Terrell is on IR until late October. Their run defense funnels passing — most pass attempts faced in the NFL — and Olave has 36 targets with only 1 TD. |
+| **Tyler Warren** vs WAS | **3rd vs TE** (21.4/g) | IND -3.5, 47.5 | **Start.** Washington has allowed 11 passing TDs in three games, is 31st in points allowed, and has **both starting safeties out or questionable** under a first-year coordinator. Caveat: Warren averages 4.9 yards a catch, so his ceiling is touchdown-shaped, not yardage-bonus-shaped. |
+| **Steelers DEF** at CLE | PIT allows the 28th-most to QBs | PIT -2.5, **38.5** | **Start.** Lowest total of the week, favored, and **three of five Browns offensive line starters are questionable** on a short week. Ceiling is capped: Cleveland has turned it over once all season. |
+| **Stafford** at PHI | 8th vs QB (20.7/g) | LAR -3, 43.5 | **Ceiling is live.** Philadelphia has **zero interceptions, zero fumble recoveries and three sacks** in three games. Stafford is at 290.7 yards a game, so the 350-yard bonus is genuinely in play. |
+| **Jonathan Taylor** vs WAS | 31st vs RB (12.9/g) | IND -3.5, 47.5 | **Start on volume, not matchup.** The rank is stale against the injuries: Washington lost a defensive tackle and two linebackers to IR. Taylor has 22 carries a game and 4 TDs. |
+| **Garrett Wilson** at CHI | 25th vs WR (27.5/g) | NYJ +3.5, 43.5 | **Volume play.** Chicago is 7th in points allowed and just held Philadelphia to 7. But their slot corner is questionable and three defensive backs are on IR, and Wilson holds a 29% target share. |
+| **Matthew Golden** at TB | 27th vs WR (25.4/g) | GB -3.5, **39.5** | **Worst spot in the league-A lineup.** Tampa's secondary is fully healthy, it's the week's second-lowest total, and Green Bay is favored over a Bucs team starting an undrafted rookie — a run-lean script. Christian Watson owns the red zone, 4 TDs to Golden's 1. |
+
+### First Down — best to worst spot
+
+| Player | Opponent D vs position | Line / total | Read |
+|---|---|---|---|
+| **CeeDee Lamb** at HOU | **2nd most generous vs WR** (40.0/g) | HOU -2.5, **48.5** | **Best spot on either roster.** Houston stops the run (3.5 ypc) but bleeds explosives (8.1 yds/att, 13 completions of 20+), which forces Dallas to throw. Only obstacle is a healthy Derek Stingley. |
+| **Brandon Aubrey** at HOU | Kicker DvP unavailable | HOU -2.5, **48.5** | **Excellent.** Houston's opponents are **9-for-9 on field goals, 3.0 attempts a game against a ~1.86 league baseline**, while allowing only 7 offensive touchdowns. Drives stall rather than stop. Correlated double-up with Lamb. |
+| **Terry McLaurin** vs IND | 12th vs WR (35.0/g) | WAS +3.5, 47.5 | **Best matchup, biggest non-matchup risk.** Indianapolis is the worst defense in the entire study: +0.14 EPA/play, **zero interceptions**, 8.8 yards an attempt. But **Jayden Daniels is questionable with an elbow he'll brace all season**, and Mariota out-threw him through three weeks. Verify the QB Sunday morning. |
+| **George Kittle** vs DEN | 12th vs TE (15.0/g) | SF -3, 47.5 | **Start on environment, not matchup.** Denver's coverage is the best in the study and fully healthy. San Francisco at **32.7 points a game** is the highest-scoring offense among all sixteen players here, and Kittle already has 3 TDs on 16 targets. |
+| **Jeremiyah Love** at NYG | 11th vs RB (22.5/g) | NYG -2.5, 44.5 | **Start.** The Giants have **one sack all season, fewest in the NFL**, and just put Brian Burns on IR. Love has 41 of 78 team carries with Conner and Benson both on IR. Soft spot: New York has allowed one rushing TD. |
+| **Bhayshul Tuten** at CIN | 19th vs RB (19.5/g) | CIN -2.5, **51.5 — highest of the week** | **Start, but temper it.** Cincinnati has faced **the fewest rushing attempts in the NFL (61)** because opponents throw on them instead. Tuten owns 50% of carries but has **5 targets in three games**, so his PPR upside is thin if Jacksonville trails. |
+| **Rashee Rice** at LV | **30th vs WR** (23.4/g) | KC -4.5, 47.5 | **Weakest WR matchup here.** Las Vegas is the best defense in the study: -0.17 EPA/play, 8th in points allowed, coverage group intact, and they're 3-0. Rice has 16 targets in three games. Floor play. |
+| **Jalen Hurts** vs LAR | 22nd vs QB (14.9/g) | PHI +3 (home dog), 43.5 | **Worst of the sixteen, still a start.** The Rams allow 5.2 yards an attempt, lowest in the study. Hurts has 620 passing yards on an offense scoring 18.3 a game. He plays because his rushing floor and a 10-team replacement QB are both worse. |
+
+### The five things that matter most
+
+1. **Aaron Jones is the most exploitable matchup on either roster.** Zero sacks, a gutted front seven, and a 10.5-point spread. The 38.5 total looks like a red flag but is exactly what a blowout script produces.
+2. **The Colts stack splits in opposite directions.** Washington is 31st against running backs but 3rd against tight ends. Start both, but Warren has the matchup and Taylor has the volume.
+3. **Houston is simultaneously the best receiver matchup and the best kicker matchup.** Lamb and Aubrey are a genuine correlated pairing in a 48.5 game.
+4. **Two great matchups carry non-matchup risk.** McLaurin's quarterback is questionable with an elbow brace, and Tuten is in the week's highest-total game against a defense nobody runs on.
+5. **Golden and Rice are the two concerns, for the same reason:** healthy opposing coverage plus a bad positional rank. Both are startable on volume, neither is a ceiling play.
+
+### Not verified
+Coverage scheme data (man/zone, blitz, pressure rates) and slot-versus-perimeter funnels for every team — sources returned 403. Kicker points-allowed rankings and red-zone touchdown rate allowed, so the Aubrey case rests on field-goal attempts instead. Tight-end-specific data for Denver.
+
+## 5b. Opponent analysis and bench cases
+
+- pending.
 
 ---
 
