@@ -164,6 +164,9 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 - **Breece Hall downgraded to Doubtful** (proj 4.80). Braelon Allen up to 12.37. No lineup change needed — Aaron Jones is the 2MD RB2 at 14.15 — but it confirms the $19 Allen claim.
 - **TNF (PIT @ CLE):** Steelers DEF already at **10.00** in both leagues with Pittsburgh up 7-0 in Q1. Denzel Boston 1.50 on the FD bench — Thursday rule holding so far.
 - Garrett Wilson's 2MD projection climbed to 17.38.
+- **New trade offer sent (FD): Tyler Shough → House of Tweez for Jadarian Price.** They are starting Bryce Young at QB and Price (165 ROS) is on their bench. This is the last live Shough destination after [Placeholder name] passed.
+- **Wire swept, both leagues: nothing beats our bench.** Best available: Brenton Strange TE 9.01 (2MD, under Henry's 9.35) and Kenyon Sadiq TE 10.02 (FD, but we already carry Kittle + Andrews). No adds made.
+- **2MD matchup update:** projected 133.2 to 115.2 in our favour. Their RB1 Jaylen Warren fell to 7.50 in the Thursday game while our Steelers DEF banked 10.00 from the same game. **We also hold the last word — Olave plays Monday night and CaliBayBoi510 has no Monday players.** Their flex (Jalen Coker, Q) is the other swing.
 
 ### 2026-09-30 — Week 4 deep research; strategy doc built
 - Standings confirmed by Yahoo (page caught up): **2MD 1st of 12** (2-1, 448.48 PF, six teams at 2-1 so it's the points tiebreaker, +12.78 over TD). **FD 7th of 10** (1-2), one place out of six playoff spots.
