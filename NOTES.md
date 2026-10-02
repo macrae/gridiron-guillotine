@@ -159,6 +159,12 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 
 ## Log
 
+### 2026-10-01 — Trade rejected; Hall doubtful; TNF underway
+- **[Placeholder name] rejected the Shough offer** ("completely fine starting Jordan Love until Caleb is back") and **counter-offered Kenny Gainwell for Matthew Golden. Rejected.** Gainwell is RB63 (10.30 season pts, Bucky Irving's backup); Golden is WR18 (46.30) and our flex starter in BOTH leagues. No open trade offers in either league now.
+- **Breece Hall downgraded to Doubtful** (proj 4.80). Braelon Allen up to 12.37. No lineup change needed — Aaron Jones is the 2MD RB2 at 14.15 — but it confirms the $19 Allen claim.
+- **TNF (PIT @ CLE):** Steelers DEF already at **10.00** in both leagues with Pittsburgh up 7-0 in Q1. Denzel Boston 1.50 on the FD bench — Thursday rule holding so far.
+- Garrett Wilson's 2MD projection climbed to 17.38.
+
 ### 2026-09-30 — Week 4 deep research; strategy doc built
 - Standings confirmed by Yahoo (page caught up): **2MD 1st of 12** (2-1, 448.48 PF, six teams at 2-1 so it's the points tiebreaker, +12.78 over TD). **FD 7th of 10** (1-2), one place out of six playoff spots.
 - Built **`WEEK4-STRATEGY.md`**: standings, both matchup projections with opponent lineups, defense-vs-position research for all 16 starters, opponent scouting, bench cases, and season posture per league.
