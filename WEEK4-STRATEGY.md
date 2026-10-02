@@ -60,7 +60,7 @@ Theirs: Josh Allen 22.8 · Kyren Williams 13.4 · D'Andre Swift 14.3 · Waddle 1
 
 ---
 
-## 3. What just happened on waivers (Wed Sep 30)
+## 3. What happened on waivers (Wed Sep 30)
 
 | League | Result |
 |---|---|
@@ -72,7 +72,19 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 
 ---
 
-## 4. Open decisions
+## 4. Thursday Oct 1 update
+
+**2MinuteDrill now projects 133.2 to 115.2 in our favour**, and two things moved our way in the Thursday game alone: the Steelers defense banked **10.00**, while CaliBayBoi510's RB1 Jaylen Warren fell to **7.50**. Their flex (Jalen Coker) is questionable with a quad.
+
+**We also hold the last word.** Olave plays Monday night and they have no Monday players. In a close game that is a real structural edge.
+
+**Wire swept in both leagues — nothing beats our bench.** Closest calls were Brenton Strange (TE 9.01 in 2MD, under Henry's 9.35) and Kenyon Sadiq (TE 10.02 in FD, but we already carry Kittle and Andrews). No adds made. FAAB stays at $61 in 2MD; FD priority stays 7th.
+
+**Trade activity:** [Placeholder name] rejected Shough ("completely fine starting Jordan Love until Caleb is back") and countered **Kenny Gainwell for Matthew Golden** — RB63 for our WR18 flex starter. Rejected. Shough was then offered to **House of Tweez for Jadarian Price**, which is the last team that both needs a QB and has a back worth asking for.
+
+---
+
+## 5. Open decisions
 
 | Decision | Status | Resolves |
 |---|---|---|
@@ -86,19 +98,7 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 
 ---
 
-## 3b. Thursday Oct 1 update
-
-**2MinuteDrill now projects 133.2 to 115.2 in our favour**, and two things moved our way in the Thursday game alone: the Steelers defense banked **10.00**, while CaliBayBoi510's RB1 Jaylen Warren fell to **7.50**. Their flex (Jalen Coker) is questionable with a quad.
-
-**We also hold the last word.** Olave plays Monday night and they have no Monday players. In a close game that is a real structural edge.
-
-**Wire swept in both leagues — nothing beats our bench.** Closest calls were Brenton Strange (TE 9.01 in 2MD, under Henry's 9.35) and Kenyon Sadiq (TE 10.02 in FD, but we already carry Kittle and Andrews). No adds made. FAAB stays at $61 in 2MD; FD priority stays 7th.
-
-**Trade activity:** [Placeholder name] rejected Shough ("completely fine starting Jordan Love until Caleb is back") and countered **Kenny Gainwell for Matthew Golden** — RB63 for our WR18 flex starter. Rejected. Shough was then offered to **House of Tweez for Jadarian Price**, which is the last team that both needs a QB and has a back worth asking for.
-
----
-
-## 5. Matchup research (Weeks 1-3 defense-vs-position, Vegas lines, defensive injuries)
+## 6. Matchup research (defense-vs-position, Vegas lines, defensive injuries)
 
 *Source: kofsports DvP (full-PPR baseline, rank 1 = most generous), ESPN/NFL.com team stats and injury pages, VegasInsider/Covers lines. Scheme data (man/zone, blitz, pressure rates) was unobtainable — every source 403'd — so none of this rests on coverage tendencies.*
 
@@ -139,7 +139,7 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 ### Not verified
 Coverage scheme data (man/zone, blitz, pressure rates) and slot-versus-perimeter funnels for every team — sources returned 403. Kicker points-allowed rankings and red-zone touchdown rate allowed, so the Aubrey case rests on field-goal attempts instead. Tight-end-specific data for Denver.
 
-## 5b. Weekly splits and late additions
+### 6b. Weekly splits and late additions
 
 From a follow-up cross-check (all confirmed against ESPN's injury table; none of Taylor, Warren, Olave, Love, Tuten or Andrews carries a designation as of Sep 29):
 
@@ -153,7 +153,7 @@ From a follow-up cross-check (all confirmed against ESPN's injury table; none of
 
 **Still unverified after two passes:** snap-share data (every source 403'd), and no Wednesday Sep 30 practice report existed anywhere at research time, so Andrews' hand and Nico Collins' hamstring are still open.
 
-## 5c. Opponent analysis
+### 6c. Opponent analysis
 
 ### 2MinuteDrill — CaliBayBoi510 (1-2)
 
@@ -179,7 +179,7 @@ From a follow-up cross-check (all confirmed against ESPN's injury table; none of
 2. **Olave**, Monday night in a dome, 36 targets in three games, against a defense allowing the 4th-most passing yards.
 3. **Steelers DST is the #1 projected defense of Week 4**, facing an 18-20 point Cleveland offense on a short week.
 
-## 5d. Bench cases — who has an argument
+### 6d. Bench cases — who has an argument
 
 | Player | League | Verdict |
 |---|---|---|
@@ -191,7 +191,7 @@ From a follow-up cross-check (all confirmed against ESPN's injury table; none of
 | **Denzel Boston** | FD | Highest variance on the bench, but his game is Thursday against the week's #1 projected defense. **Thursday rule holds — stays benched.** |
 | **Courtland Sutton** | FD | 1.1 → 2.5 → 4.6 points, no TD. **The obvious drop if we need a roster spot.** |
 
-## 5e. Corrections to earlier reads
+### 6e. Corrections to earlier reads
 
 - **Jayden Daniels will not play; Mariota starts for Washington.** This is neutral-to-good for McLaurin — his only productive game of the season came in Mariota's first full start, and Mariota went 19/30 for 184 and 3 TDs in Week 3.
 - **Breece Hall is "week-to-week"** after Monday's MRI, priced at ECR RB66. Treat him as out for Week 4 regardless of Friday's label.
@@ -201,7 +201,7 @@ From a follow-up cross-check (all confirmed against ESPN's injury table; none of
 
 ---
 
-## 7. The flex call that needs revisiting (2MinuteDrill)
+## 7. The flex call (2MinuteDrill)
 
 The lineup is locked with **Golden** in the flex at 12.99 projected, over **Michael Wilson** at 12.67. The matchup research inverts that:
 
@@ -221,7 +221,7 @@ Golden's case was always the underlying profile: 25.4% target share, 89% route r
 
 ---
 
-## 6. Season posture
+## 8. Season posture
 
 **2MinuteDrill: protect.** We are 1st on a points tiebreaker with the league's hardest schedule behind us. Braelon Allen covers the only real injury exposure (the Jets backfield). Do not spend the remaining $61 on speculation; hold it for a genuine starter-level opening.
 
