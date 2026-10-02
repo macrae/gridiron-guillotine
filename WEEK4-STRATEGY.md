@@ -1,6 +1,6 @@
 # Week 4 strategy — 2026 season
 
-*Drafted Wed Sep 30. Research sections fill in as reports land. Companion to `NOTES.md`, which stays the transaction log and source of truth.*
+*Drafted Wed Sep 30, updated Thu Oct 1. Companion to `NOTES.md`, which stays the transaction log and source of truth.*
 
 ---
 
@@ -76,12 +76,25 @@ We now own the whole Miami backfield in First Down; our Week 4 opponent owns it 
 
 | Decision | Status | Resolves |
 |---|---|---|
-| 2MD RB2 if Aaron Jones (knee) sits | Braelon Allen 11.1 vs Breece Hall 8.0 | Friday designations |
-| FD TE: Kittle 12.1 vs Andrews 9.5 (hand) | Kittle starting | Friday designations |
-| FD: is either Miami back startable over Tuten (11.2)? | Gordon 6.0, Wright 5.1 — no, for now | Friday |
-| FD trade: Shough → [Placeholder name] for Croskey-Merritt | Sent Sep 29, unanswered | Any time |
+| 2MD RB2 if Aaron Jones (knee) sits | **Hall now DOUBTFUL (4.8). Braelon Allen 12.4 is the answer.** | Friday designations |
+| FD TE: Kittle 12.1 vs Andrews 10.0 | Kittle starting; Andrews is not on Baltimore's injury report | Settled |
+| FD: is either Miami back startable over Tuten (11.2)? | Gordon 6.6, Wright 5.1 — no. Hafley committed to a committee out loud. | Settled |
+| ~~FD trade: Shough → [Placeholder name]~~ | **Rejected Oct 1.** They countered Gainwell (RB63) for Golden (WR18); **we rejected that too.** | Closed |
+| **FD trade: Shough → House of Tweez for Jadarian Price** | **Sent Oct 1.** They start Bryce Young; Price is 165 ROS on their bench. Last live Shough destination. | Pending |
 | **2MD flex: Golden 13.0 vs Michael Wilson 12.7** | **Locked on Golden — but the matchup research argues the other way. See §7.** | Needs a call |
-| FD flex/WR: Denzel Boston plays **Thu Oct 1** | Benched behind Golden (13.0 vs 10.6) | **Locks Thursday 8:15pm** |
+| ~~FD: Denzel Boston, Thursday game~~ | **Stayed benched. He finished with 1.50** while the Steelers DEF banked 10.00 from the same game. Thursday rule held. | Settled |
+
+---
+
+## 3b. Thursday Oct 1 update
+
+**2MinuteDrill now projects 133.2 to 115.2 in our favour**, and two things moved our way in the Thursday game alone: the Steelers defense banked **10.00**, while CaliBayBoi510's RB1 Jaylen Warren fell to **7.50**. Their flex (Jalen Coker) is questionable with a quad.
+
+**We also hold the last word.** Olave plays Monday night and they have no Monday players. In a close game that is a real structural edge.
+
+**Wire swept in both leagues — nothing beats our bench.** Closest calls were Brenton Strange (TE 9.01 in 2MD, under Henry's 9.35) and Kenyon Sadiq (TE 10.02 in FD, but we already carry Kittle and Andrews). No adds made. FAAB stays at $61 in 2MD; FD priority stays 7th.
+
+**Trade activity:** [Placeholder name] rejected Shough ("completely fine starting Jordan Love until Caleb is back") and countered **Kenny Gainwell for Matthew Golden** — RB63 for our WR18 flex starter. Rejected. Shough was then offered to **House of Tweez for Jadarian Price**, which is the last team that both needs a QB and has a back worth asking for.
 
 ---
 
