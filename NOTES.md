@@ -32,6 +32,58 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ---
 
+## Week 5 punchlist (Oct 6 – Oct 12)
+
+*Strategy doc: [`WEEK5-STRATEGY.md`](WEEK5-STRATEGY.md) covers player-by-player research, both opponents, waivers and trade ideas. This section is the status board.*
+
+**Records after Week 4:** 2MD **2-2, 3rd** (568.76 PF, 2nd in league). FD **1-3, 8th of 10** (2 spots out of the playoffs).
+
+### Status as of Wed Oct 7 evening: both lineups locked and verified on Yahoo
+
+| League | Opponent | Projection | Lineup |
+|---|---|---|---|
+| **2MD** | 619ers (2-2) | **129.69 – 133.97**, Yahoo 47% us | Stafford / J. Taylor / A. Jones / Olave / G. Wilson / Warren / **M. Wilson (FLEX)** / Dicker / Steelers. Bench: Golden, Hall (D), Henry, Murray, B. Allen. **No Thursday players.** |
+| **FD** | Billy Ba Ba Ba (2-2) | **128.53 – 115.67**, Yahoo 60% us | **Shough** / Tuten / **Gordon** / Lamb / McLaurin / **Golden** / Kittle / **Love (FLEX)** / Aubrey / Steelers. Bench: Hurts, Boston, **Tre' Harris**, Andrews, Rice (bye), J. Wright. IR: Achane. **Thursday: Lamb + Aubrey.** |
+
+### Moves made this week (all at Sean's explicit request)
+
+| Date | League | Move |
+|---|---|---|
+| Oct 6 | FD | Rice (KC bye) → BN, Boston → WR |
+| Oct 6 | 2MD | Michael Wilson → FLEX, Golden → BN |
+| Oct 6 | 2MD | **Waiver claim $0: Broncos DEF, drop Steelers** (pending; processes Oct 7) |
+| Oct 7 | FD | **Added Tre' Harris (FA), dropped Courtland Sutton** |
+| Oct 7 | FD | Shough → QB (Hurts BN); Love → FLEX; Gordon → RB; Golden → WR; Boston → BN |
+| Oct 7 | FD | ❌ **Stevenson claim (drop J. Wright) blocked**: Yahoo Error #585, another manager's claim already pending. Waivers were mid-run. Recheck after processing; add him instantly if he clears to FA. |
+
+### Pending / watch
+
+| When | League | Item |
+|---|---|---|
+| Wed Oct 7 | 2MD | Broncos claim result. At $0 we lose any tie; if it fails, the Steelers stay (slot filled either way). |
+| Wed Oct 7 | FD | Stevenson: did the other claim go through? If he clears to FA, add him, drop J. Wright. |
+| Thu Oct 8 | both | Practice reports: **Olave** (left the end of Wk4 with an unnamed ailment), G. Wilson, A. Jones, Hall · **Love** (ankle, 47% to play), **McLaurin** (hamstring), Stevenson (knee), Daniels (WAS QB) · opponents: McLaughlin (DNP Tue), Chase (concussion protocol). |
+| Thu 8:15 | both | TB @ DAL. FD: Lamb + Aubrey play. 2MD: opponent's Irving + McLaughlin. |
+| Fri Oct 9 | 2MD | If Olave or G. Wilson is limited/Q → Golden in. If Jones is tagged → B. Allen. If M. Wilson is Q → Golden to FLEX (bench options all play at 1pm, his game is 4:25). |
+| Fri Oct 9 | FD | If Love is ruled OUT → Boston into FLEX. If Love is Q → leave him in FLEX; Harris (4:05) is the late swap. |
+| Sun 11:30 ET | FD | McLaurin inactive? → Boston in. (1pm game, so we can wait for the inactives list.) |
+| Sun ~2:55 ET | FD | Love inactive? → Tre' Harris into FLEX. |
+| Mon | 2MD | Stafford vs BUF (MNF), our last word. |
+
+### Decisions and reasoning (from the Oct 7 research)
+- **FD QB: Shough over Hurts.** Hurts averages ~5 rushes a game, Barkley/D. Smith/Goedert are out, and he threw for 93 yds in Wk4. Shough has 42+ attempts in each of the last two games and Yahoo ROS ranks him QB9 to Hurts' QB12. Risk: MIN allows the fewest QB points in the NFL.
+- **FD: Sutton out, Tre' Harris in.** Sutton is WR98 in ppg (0.69 yds/route); Harris has led LAC in receiving two weeks running, and McConkey is hurt.
+- **2MD QB: Stafford over Murray.** CBS QB1; BUF allows 274 yds/2.5 TD per game. Murray has 10 rushes all season. Risk: Stafford's 6 INTs.
+- **2MD: no waiver claim.** Nothing on the wire would start for us. Shipley is a Barkley rental; we're RB-strong.
+
+### Trade ideas logged (none sent)
+- **FD: Hurts → —HA HA— for Chuba Hubbard** (they have only Allen at QB with a Wk7 bye, and five RBs). FantasyPros value: Hurts 9.2 vs Shough 5.6. Revisit after Week 5.
+- **2MD: Murray + Breece Hall → CaliBayBoi510 for Jameson Williams** (their only QB, Lamar, is likely out). Trade charts: Murray 1.0, Hall 36.6. Counter: Hall is hurt (selling low), and Cali declined our last offer. Backup QB buyer: Hit Em Wit Da Flex.
+
+### Lessons this week
+- **File Wednesday waiver claims by Tuesday night.** Stevenson showed up on Monday's scan but wasn't flagged until Wednesday, after another manager had already claimed him.
+- Yahoo lineup editor: after a swap the page stays in "selected" mode, and the next click on a slot swaps again. **Reload the roster page between swaps** (one mis-click briefly undid the Shough swap).
+
 ## Week 4 punchlist (Sep 29 – Oct 5)
 
 *Strategy doc: [`WEEK4-STRATEGY.md`](WEEK4-STRATEGY.md) — standings, matchup math, opponent reads, research and season posture. This section stays the transaction log.*
@@ -126,6 +178,20 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 
 ---
 
+## Bye-mageddon plan (built Oct 6)
+
+Both leagues: playoffs Weeks 15-17 (6 teams, reseeded), **trade deadline Sat Nov 28 (mid-Week 12)**. The two crunch weeks (2MD Week 13, FD Week 14) come AFTER the deadline, so the fix has to be traded for by Nov 28.
+
+**2MD byes:** Wk6 A.Jones, Murray · Wk7 Dicker · Wk8 Olave · Wk9 Steelers · Wk11 Stafford, Golden, Henry · **Wk13 Taylor, G.Wilson, Warren, Hall, Allen** · Wk14 M.Wilson.
+- Week 13 leaves only one RB (A. Jones), so RB2 is empty, and RB1, WR2 and TE1 all sit out. Henry (bye 11) is the TE cover.
+- Fix: trade Murray + one Jets back (Hall or Allen, both bye 13) for a WR/RB with a different bye. Murray only needs to cover Stafford in Week 11.
+- Keep Henry until Week 13 is covered.
+
+**FD byes:** Wk5 Rice (now) · Wk6 Gordon, Wright, Achane · Wk7 Tuten, McLaurin · Wk8 Kittle, Shough · Wk9 Steelers · Wk10 Hurts, Sutton · Wk11 Golden, Boston · Wk13 Andrews · **Wk14 Love, Lamb, Aubrey**.
+- Week 14 is the last regular-season week and the likely playoff decider; RB1, WR1 and K are all out.
+- Fix: Shough is free to trade once he covers Hurts in Week 10 (Nov 10-16), which is still before the deadline. Trade him for a RB/WR whose bye is not Week 14. Stream a K in Week 14.
+- Stream a DEF in Week 9 (Steelers bye) in both leagues.
+
 ## Open items / pending
 
 ### 2MinuteDrill
@@ -158,6 +224,53 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 ---
 
 ## Log
+
+### 2026-10-07 — Week 5 2MD research added to WEEK5-STRATEGY.md
+- Opponent is **619ers**. Lineup holds: Stafford (CBS QB1 vs BUF, which allows 274 yds/2.5 TD per game) over Murray (10 rushes all year); A. Jones over Allen (24 touches, Mason on IR); M. Wilson FLEX (30 targets in 2 weeks). Broncos claim still pending.
+- **Flags:** Olave left the end of Week 4 with an unnamed ailment, so watch practice. G. Wilson is the weakest WR (4 targets in Week 4, CLE pass D); Golden is the Friday swap if either is tagged.
+- 619ers: McLaughlin DNP Tuesday (groin/hip); Irving is a likely dud (TB +9.5, rookie QB).
+- No waiver claim recommended. Trade idea logged: Murray + Hall → CaliBayBoi510 (only QB is Lamar, likely out) for Jameson Williams. Trade charts: Murray 1.0, Hall 36.6.
+
+### 2026-10-07 — Week 5 FD research; strategy doc
+- Built **`WEEK5-STRATEGY.md`** (First Down section; 2MD to follow) from three research passes (ESPN, NBC, Yahoo, FantasyPros, Fantasy Life, Rotowire, CBS, Globe, Inquirer; Oct 2-7).
+- Recommended: claim **Stevenson** (66% snaps Wk4 + TD; knee watch) dropping Wright; add **Tre' Harris** (FA) dropping Sutton (WR98 ppg); **start Shough over Hurts** (Yahoo ROS Shough 233 > Hurts 222; Hurts ~5 rushes/g, no healthy weapons); Love to FLEX so Harris (4:05) is the late escape hatch.
+- Trade idea logged: sell **Hurts** (FantasyPros 9.2 vs Shough 5.6) to —HA HA— (Allen only, bye Wk7, five RBs) for Hubbard. Not sent.
+- Opponent: Chase in concussion protocol; McMillan on bye in their lineup.
+- **Stevenson claim could NOT be filed.** Sean approved it, but Yahoo blocked it: "You cannot submit a new waiver claim for this player until outstanding claims by other managers have been processed (Error #585)". Waivers were processing at the time and at least one other manager had a claim in, so he is most likely gone. Shipley was locked the same way. Lesson: file Wednesday claims Tuesday night.
+- **DONE (FD, at Sean's request): added Tre' Harris (FA), dropped Courtland Sutton.** Yahoo confirmed it. Harris is on the bench as the 4:05 fallback; Boston stays at WR.
+- **DONE (FD, at Sean's request): Shough → QB (Hurts benched); Love → FLEX.** Since Stevenson didn't arrive, Gordon fills RB2, Golden moves to WR and Boston goes to the bench. Verified on the matchup page: Shough / Tuten / Gordon / Lamb / McLaurin / Golden / Kittle / Love (FLEX) / Aubrey / Steelers = **128.50 vs 115.67, Yahoo 60%**. Sunday swaps: if McLaurin is inactive (11:30 ET), Boston in. If Love is inactive (~2:55 ET), Harris (4:05) goes into the FLEX. (A mis-click briefly reverted the QB swap; it was redone and re-verified.)
+
+### 2026-10-06 — Week 4 final (0-2 week); Week 5 recon
+- **2MD: L 120.28 – 195.78** to CaliBayBoi510 (Lamb 51.3, Higgins 36.7, Tate 26.5). Now **2-2, 3rd**. Olave 24.6 on MNF; Stafford 11.68.
+- **FD: L 119.12 – 151.02** to —HA HA— (Kyren Williams 36.7, Puka 27.7). Now **1-3, 8th of 10**, two spots out of the playoffs. McLaurin locked 0, Rice 0 (hamstring), Love 6.5.
+- **Week 5, 2MD vs 619ers (2-2):** proj 126.43 – 133.87, Yahoo 45% us. Their stack: Darnold + JSN (27.85) + Kittle, Bucky Irving and McLaughlin on Thursday. **Michael Wilson (16.90) is on our bench behind Golden (13.65) in the flex.**
+- **Week 5, FD vs Billy Ba Ba Ba (2-2):** proj 116.12 – 115.59, coin flip. **Rice is in the lineup on a KC bye (0.00)** — swap for Boston (11.49) or Sutton (10.73). McLaurin Q again (11.55, 1pm); Love Q again. Shough 18.05 > Hurts 16.20 on projection (Hurts plays 9:30am London @ JAX).
+- **DONE (FD, at Sean's request): Boston → WR, Rice → BN.** Yahoo confirmed "Moved Denzel Boston to WR - Benched Rashee Rice". Lineup now projects ~127.6.
+- **DONE (2MD, at Sean's request): Michael Wilson → W/R/T, Golden → BN.** Yahoo confirmed. Lineup now projects ~129.7 vs 133.87. Wilson plays 4:25 vs DET, so Golden/Allen remain Sunday swap options.
+- **CLAIM FILED (2MD, at Sean's request): Broncos DEF $0, drop Steelers DEF.** Processes Wed Oct 7. Broncos 7.69 @LAC vs Steelers 6.21 vs IND (which plays against our Taylor/Warren). At $0 we lose any tie (12th on the tiebreak list), so another team bidding $0 or more takes them; if it fails, the Steelers stay. Flex (M. Wilson) verified still set after filing.
+- **Wires:** FD WR wire is empty (best Tre' Harris 8.72), so Rice's replacement comes from our bench. 2MD best adds Romeo Doubs 11.80, KC Concepcion 11.39 — none beats our bench. FD waiver priority 7th.
+
+### 2026-10-05 — Rice hamstring: "several weeks"
+- Rice finished Week 4 with **0.00** (left early @ LV, KC won 30-27). Reid said post-game he "tweaked" the hamstring; Mike Silver (The Athletic, Sun 7:14pm) reports he **could be out several weeks**.
+- FD WR room now: Lamb, McLaurin (hamstring, OUT Week 4), Golden, Sutton, Boston. FD IR slot is taken by Achane (season-ending), so Rice can't go to IR without moving Achane off.
+- Final-ish FD: Kittle 17.00, Sutton 1.40 on the bench (the McLaurin swap would have gained 1.4).
+- To do before Tue-night claims: WR wire scan in FD; decide Achane drop vs Rice to IR.
+
+### 2026-10-04 — Week 4, late Sunday (4:25 games at halftime): likely 0-2 week
+- **2MD: 77.58 – 186.08, Yahoo 1%.** Cali's whole lineup hit: Lamb 51.30 (17-189-1), Higgins 36.70, Cam Tate 26.50 (flex swap over Coker), Lamar 22.88, Fairbairn 16.00. Their ~198 projected finish would beat every team in the league this week; nothing we could have started changes it. Ours: Taylor 22.70, Stafford 11.68 (2 INT), G. Wilson 5.70, Warren 9.10, Golden 11.70. Bench M. Wilson 16.50. Olave (MNF) and A. Jones still to finish. Probably 2-2 now, and the points-for cushion took a hit.
+- **FD: 104.82 – 132.12, Yahoo 8%.** Lamb 41.30 and Aubrey 12.00 for us; Hurts 13.52 and Love 6.50 let us down. Their Kyren Williams 36.70 and Puka 27.70 did the damage. **Rice now tagged Q with 0.00 at halftime @ LV.** Bench: Andrews 13.70 (Kittle 2.70 at half), Boston 12.90.
+- **The McLaurin 0 didn't decide FD:** Sutton had only 1.40 at halftime and the gap is ~27. The Saturday-night swap rule still stands.
+
+### 2026-10-04 — Sunday, early afternoon (1pm ET games in Q1)
+- **2MD: 38.68 – 29.16, proj 126.91 – 119.57, Yahoo 56% us.** J. Taylor 22.70 and Warren 9.10 final from London (IND 30-13 @ WAS). Cali filled DEF with the Bengals and swapped Cam Tate (TEN) into the flex over Coker (Q). Hall OUT, already benched. Olave on MNF still our last word.
+- **FD: 11.58 – 13.44, proj 116.09 – 132.95, Yahoo 36% us.** **McLaurin was ruled OUT and stayed in the lineup: a locked 0.00** (his slot can no longer be edited). Sutton (11.01, 4:25 ET @ SF) sat on the bench. Boston scored 12.90 on the bench Thursday.
+- **Lesson:** a Questionable player in an early-window game (London 9:30am ET) with a similar-projection backup in a later game should be swapped **Saturday night**, not left for the inactives check. Nobody is awake for a 9:30 ET (6:30 PT) inactives call. Rule: if Q + early kickoff + backup within ~1 pt plays later, bench the Q player in advance.
+
+### 2026-10-03 — Saturday check: Sunday outlook
+- **2MD vs CaliBayBoi510: 6.00 – 15.60, live proj 129.23 – 117.70, Yahoo 59% us.** Steelers DEF finished only 6.00 (PIT lost 24-27 @ CLE); their Jaylen Warren recovered to 15.60. **Cali's DEF slot is EMPTY** (free ~8 for us unless they fill it). Their lineup: Lamar, J. Warren, RJ Harvey, Lamb, Higgins, Kelce, Coker (Q, SNF flex), Fairbairn. We still have Olave on MNF as the last word.
+- **FD vs —HA HA—: 6.00 – 0.00, live proj 127.71 – 141.01, Yahoo 40% us.** Puka is projected 18.41 (looks like he plays), so the Week 4 swing broke their way. Their lineup: J. Allen, A. Jones, Swift, Waddle, Puka, Evans (Q), Schultz, Hubbard (flex), McPherson, Seahawks.
+- **New: McLaurin (hamstring) Questionable**, added to Friday's report. Plays 9:30am London. Sutton (11.07, plays 4:25 @ SF) is the swap-in, vs McLaurin's 11.89. Check inactives ~8:00am.
+- **Shough → House of Tweez for Jadarian Price: CANCELLED by Sean** (Sean: "they don't deserve my trade offers"). No open trade offers in either league. Shough stays as QB2 and covers the Hurts Week 10 bye.
 
 ### 2026-10-01 — Trade rejected; Hall doubtful; TNF underway
 - **[Placeholder name] rejected the Shough offer** ("completely fine starting Jordan Love until Caleb is back") and **counter-offered Kenny Gainwell for Matthew Golden. Rejected.** Gainwell is RB63 (10.30 season pts, Bucky Irving's backup); Golden is WR18 (46.30) and our flex starter in BOTH leagues. No open trade offers in either league now.
@@ -314,7 +427,7 @@ Bench: Andrews, Boston, Sutton, Dobbins→(dropped), Shough→(trade chip), Gord
 ---
 
 ## Things to keep track of
-- FAAB spent (2MD): $20 of $100 — Vele $6 (Sep 16), Michael Wilson $14 (Sep 26). **$80 left.** Lost Tucker at $9 (went for $20).
+- FAAB spent (2MD): $39 of $100 — Vele $6 (Sep 16), Michael Wilson $14 (Sep 26), Braelon Allen $19 (Sep 30). **$61 left.** Broncos DEF claim at $0 pending (Oct 7). Lost Tucker at $9 (went for $20) and Gordon at $7.
 
 ### 2MinuteDrill FAAB market (all winning bids, 2026)
 **Week 3 market jumped sharply** (Sep 23): Shough $25 ($KB), Tre Tucker $20 (OnlyBags), Adonai Mitchell $14 (SHAWN), Jonah Coleman $8 (SHAWN), Kyle Pitts $7 (Hit Em), Wicks $6 (SHAWN), Chiefs DEF $5 (OnlyBags). Teams that had never bid (OnlyBags, Hit Em) are now spending. Recalibrate: Week 1-2 comps ($6-12) are stale; breakout skill players now cost $20+.
@@ -333,6 +446,6 @@ Rules: FAB, $100 budget, 2-day waivers, **continual rolling-list tiebreak** (we 
 Budgets Sep 21: TD 100, SHAWN 96, phukumean 100, Duffel 100, Hit Em 100, $KB 100, RocGPT 77, 619ers 71, us 94, OnlyBags 100, Cali 100, Sacala 100.
 Tendencies: RocGPT = aggressive on WR/RB breakouts ($11–12); 619ers = pays for names ($27 Kittle); Sacala/$KB = $0 bidders; SHAWN = FA streamer, small bids; TD, phukumean, Duffel, OnlyBags have never bid.
 No prior-season data reachable (no history link on Yahoo; API is 403).
-- Waiver priority (FD): #1, intact (stray Henry claim cancelled Sep 15).
+- Waiver priority (FD): **7th of 10** (used #1 on Gordon Sep 30). Stevenson claim blocked Oct 7, so priority is unchanged.
 - Trades proposed: 3. Accepted: 0. Sep 15 offers closed Sep 20. All three closed with no acceptances (Higgins gone/likely rejected, Hampton and Brown withdrawn).
 - Yahoo API scope fix: not done.
