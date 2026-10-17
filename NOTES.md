@@ -11,7 +11,7 @@ pending. Newest entries at the top of each section. Referenced from
 | League | ID | Team | Format | Waivers |
 |---|---|---|---|---|
 | 2MinuteDrill | 814693 | S Dot Sack | 12-team, QB/RB/RB/WR/WR/TE/FLEX/K/DEF + 5 BN + 1 IR. 6-pt pass TD, +5 at 100/150 rush & rec yds, +5 at 350/450 pass yds | FAAB, $100 |
-| First Down | 174617 | MacRazy | 10-team, QB/RB/RB/WR/WR/WR/TE/FLEX/K/DEF + 6 BN + 1 IR. Standard 4-pt pass TD, PPR. $100 buy-in | Priority (rolling) |
+| First Down | 174617 | MacRazy | 10-team, QB/RB/RB/WR/WR/WR/TE/FLEX/K/DEF + 6 BN + 1 IR. Standard 4-pt pass TD, **half-PPR (0.5/rec)**. Redraft (no keepers, verified in settings Oct 17). Trade deadline Nov 28, league-vote review. $100 buy-in | Priority (rolling) |
 
 URLs: `https://football.fantasysports.yahoo.com/f1/<id>` (home/standings),
 `/matchup?week=N`, `/transactions`, `/players?status=A&pos=RB&stat1=S_PW_2&sort=PTS&sdir=1`
@@ -32,6 +32,43 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ---
 
+## Week 6 punchlist (Oct 13 – Oct 19)
+
+*Strategy doc: [`WEEK6-STRATEGY.md`](WEEK6-STRATEGY.md) has the full punch lists, slate research and rationale. Sean was away Oct 8–16: no claims or lineup changes were made, and TNF (SEA @ DEN) had none of our players.*
+
+**Records after Week 5:** 2MD **2-3, 7th** (L 145.90–153.90 vs 619ers; 2nd in PF 714.66, most PA 794.42). FD **1-4, 9th** (L 79.24–108.90 vs Billy Ba Ba Ba).
+
+### Status Sat Oct 17: all moves executed and verified in both leagues
+
+| League | Opponent | Proj now → after moves |
+|---|---|---|
+| 2MD | Sacala (3-2) | 116.81 vs 117.57 → ≈136.8 vs 117.6 |
+| FD | Literally the Worst (2-3) | 108.24 vs 135.48 → ≈127.4 vs 135.5 |
+
+**2MD moves: ✅ ALL DONE Sat Oct 17 at Sean's request, each confirmed by Yahoo and re-verified after reloading:**
+1. Hall → IR (1 of 1 used)
+2. Added Caleb Williams (FA, $0, no drop) → BN
+3. Added Panthers DEF, dropped Cowboys DEF
+4. Added Eddy Pineiro, dropped Cameron Dicker
+5. Lineup: Allen → RB (Jones → BN); Golden → FLEX (M. Wilson → BN); Pineiro → K; Panthers → DEF (Yahoo had left the K and DEF slots empty after the adds)
+- **Verified on the matchup page: 136.76 vs 117.57, Yahoo 64% us** (was 116.81, 49%).
+- Lineup: Stafford / Taylor / Allen / Olave / G. Wilson / Warren / Golden (FLEX) / Pineiro / Panthers. BN: M. Wilson, A. Jones, Henry, Murray, C. Williams. IR: Hall. FAAB $61 unchanged.
+- **Sun 11:30 ET:** Warren inactive → Henry to TE. Olave inactive → M. Wilson to WR.
+**FD moves: ✅ ALL DONE Sat Oct 17 at Sean's request, each confirmed by Yahoo and re-verified after reloading:**
+1. Dropped De'Von Achane (IR → 0 of 1 used). Redraft league, so no keeper value.
+2. Love → IR
+3. Added Kendre Miller (FA, no drop, waiver priority unaffected at 4th)
+4. Lineup: K. Miller → RB (Gordon → BN); Boston → FLEX
+- **Verified on the matchup page: 127.36 vs 135.48, Yahoo 44% us** (was 108.24, 29%). McLaurin's Q tag was gone from the matchup page Saturday evening.
+- Lineup: Shough / Tuten / K. Miller / Lamb / McLaurin / Golden / Kittle / Boston (FLEX) / Aubrey / Steelers. BN: Gordon, Hurts, Rice, Andrews, Wright, Harris. IR: Love.
+- **Sun 11:30 ET:** if Olave is inactive, consider Harris → Kirk Cousins (LV vs BUF 4:25) at QB. Otherwise no moves.
+- **Tue Oct 20:** build a QB-surplus trade (Hurts or Shough → RB) once Hurts' timeline is known. Love's return needs a bench spot: Harris or Wright goes.
+
+### Things learned this week
+- Missing waivers cost nothing in either league: FAAB is intact at $61, and FD's rolling priority is unchanged (4th).
+- **Lesson: before a planned absence, set the lineups for every week you'll be gone and check the bye-week grid.** Yahoo carries a lineup forward, including players on bye.
+- News: Hurts blood clot (not IR, week-to-week); Josh Jacobs eligible from Wk7; James Conner designated for return (threat to Love); MHJ traded from ARI (Michael Wilson is ARI's WR1); A.J. Brown back for NE.
+
 ## Week 5 punchlist (Oct 6 – Oct 12)
 
 *Strategy doc: [`WEEK5-STRATEGY.md`](WEEK5-STRATEGY.md) covers player-by-player research, both opponents, waivers and trade ideas. This section is the status board.*
@@ -42,7 +79,7 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 | League | Opponent | Projection | Lineup |
 |---|---|---|---|
-| **2MD** | 619ers (2-2) | **129.69 – 133.97**, Yahoo 47% us | Stafford / J. Taylor / A. Jones / Olave / G. Wilson / Warren / **M. Wilson (FLEX)** / Dicker / Steelers. Bench: Golden, Hall (D), Henry, Murray, B. Allen. **No Thursday players.** |
+| **2MD** | 619ers (2-2) | **129.69 – 133.97**, Yahoo 47% us | Stafford / J. Taylor / A. Jones / Olave / G. Wilson / Warren / **M. Wilson (FLEX)** / Dicker / **Cowboys DEF (Thu)**. Bench: Golden, Hall (D), Henry, Murray, B. Allen. Now 130.79 – 135.28. |
 | **FD** | Billy Ba Ba Ba (2-2) | **128.53 – 115.67**, Yahoo 60% us | **Shough** / Tuten / **Gordon** / Lamb / McLaurin / **Golden** / Kittle / **Love (FLEX)** / Aubrey / Steelers. Bench: Hurts, Boston, **Tre' Harris**, Andrews, Rice (bye), J. Wright. IR: Achane. **Thursday: Lamb + Aubrey.** |
 
 ### Moves made this week (all at Sean's explicit request)
@@ -60,8 +97,8 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 | When | League | Item |
 |---|---|---|
-| Wed Oct 7 | 2MD | Broncos claim result. At $0 we lose any tie; if it fails, the Steelers stay (slot filled either way). |
-| Wed Oct 7 | FD | Stevenson: did the other claim go through? If he clears to FA, add him, drop J. Wright. |
+| ~~Wed Oct 7~~ | 2MD | ❌ **Broncos claim lost** (TD $15). Steelers stay. |
+| ~~Wed Oct 7~~ | FD | ❌ **Stevenson cleared to FA and Call Me MAYE-be added him at 7:22am.** |
 | Thu Oct 8 | both | Practice reports: **Olave** (left the end of Wk4 with an unnamed ailment), G. Wilson, A. Jones, Hall · **Love** (ankle, 47% to play), **McLaurin** (hamstring), Stevenson (knee), Daniels (WAS QB) · opponents: McLaughlin (DNP Tue), Chase (concussion protocol). |
 | Thu 8:15 | both | TB @ DAL. FD: Lamb + Aubrey play. 2MD: opponent's Irving + McLaughlin. |
 | Fri Oct 9 | 2MD | If Olave or G. Wilson is limited/Q → Golden in. If Jones is tagged → B. Allen. If M. Wilson is Q → Golden to FLEX (bench options all play at 1pm, his game is 4:25). |
@@ -224,6 +261,37 @@ Both leagues: playoffs Weeks 15-17 (6 teams, reseeded), **trade deadline Sat Nov
 ---
 
 ## Log
+
+### 2026-10-08 — Full double-check before TNF (both rosters slot by slot)
+- **2MD:** all 9 slots filled, no bye starters, Cowboys DEF in, IR empty, no pending transactions. Bench: Golden, Hall (D, proj 0.91), Henry, Murray, B. Allen. **Allen now projects 14.58 vs A. Jones 14.47.** Hall is expected to miss again (Glenn: week-to-week), so Allen gets the featured role. Keeping Jones: 24 touches last week, and NO allows 4.7 ypc; Allen did only ~9 PPR as the lone back in Wk4. Coin flip on projection.
+- **FD:** all 10 slots filled, Rice (bye) benched, Achane on IR, no pending transactions. Thursday: Lamb + Aubrey. Bench: Boston, Hurts, Rice, Andrews, J. Wright (Q, foot), Harris.
+- **McLaurin DNP Wednesday AND Thursday** (Rotowire/CBS, Oct 8). Diggs is also out, so WAS is down to Antonio Williams/Burks/Dyami Brown. Recommended: swap Boston in now. Both play at 1pm and project the same (11.42), so it costs nothing and removes the zero risk.
+
+### 2026-10-08 — Pre-TNF check
+- **2MD 131.40 – 134.84 (Yahoo 48%).** Olave is now tagged **Q**: Wednesday was a rest day per Moore, and he was seen practicing Thursday (one report says limited, foot). McLaughlin's Q tag is gone (he's playing). Our only TNF piece is the Cowboys DEF; theirs are Irving + McLaughlin.
+- **FD 128.59 – 124.40 (Yahoo 53%).** Billy Ba Ba Ba fixed the McMillan bye hole with Tre Tucker. **McLaurin DNP Wednesday** (hamstring), trending toward OUT. **Love limited Wednesday, practicing Thursday**, trending to play, so he stays in FLEX. TNF: Lamb + Aubrey.
+- Plan: if McLaurin is DNP/Out on Friday's report, Boston goes in Friday (no need to wait for Sunday). If Olave is Out on Friday, Golden goes in for 2MD.
+- Sources: Yahoo/Audacy Saints report (Olave rest day), Rotowire (Love practicing Thu; Olave), commanders.com / Yahoo (McLaurin DNP).
+
+### 2026-10-07 — 2MD: Cowboys DEF in, Steelers out
+- **DONE (at Sean's request): added Cowboys DEF (free agent), dropped Steelers.** Yahoo put the Cowboys on the bench and left DEF empty, so they were moved into DEF and checked on the matchup page.
+- 2MD now projects **130.79 vs 135.28** (Yahoo 47%). The 619ers' total rose because they swapped Packers DEF for Jaguars DEF (6.98).
+- The Cowboys play **Thursday vs TB** (rookie QB Jalon Daniels), the same game as the 619ers' Irving + McLaughlin.
+- Lesson: after a free-agent add that replaces a starter, check that the slot was filled. Yahoo puts the added player on the bench.
+
+### 2026-10-07 — Full wire scan, both leagues (all positions, Wk5 + rest-of-season)
+- **FD:** nothing beats our starters. Best available: Jayden Daniels QB (FA, Q, ROS 222 = Hurts; not needed), Hunter Henry/Strange TE (~120 ROS), Spears RB (FA, 107; Yahoo suggests Spears for J. Wright), Blake Corum RB (waivers to Oct 10; Kyren handcuff), MHJ (waivers to Oct 10). **Tyler Allgeier (FA) is the Love insurance; add him if Love misses Thursday practice.**
+- **2MD DEF:** Jets 7.31 (vs CLE), **Cowboys 7.24 (Thu vs TB rookie QB Jalon Daniels, who threw 2 INT last week)**, Commanders 7.01; Steelers are 6.19 and face our Taylor/Warren. These are free-agent adds now (instant).
+- **2MD other:** Malik Washington (11.05 Wk5, ROS 120), Shakir, Concepcion (ROS 129), Lloyd. None would start for us. **Alec Pierce (IND WR, IR, FA, ROS 131)** is an IR stash option: we have an empty IR slot, but 2MD doesn't allow adding straight to IR, so he'd need a bench spot first. His bye is Week 13 (same as our cluster).
+- Process fix: wire scans now cover every position in both leagues, Monday night or Tuesday.
+
+### 2026-10-07 — Wednesday waivers processed
+- **2MD: LOST the Broncos DEF.** TD won at **$15** (we bid $0). Steelers stay at DEF; FAAB still $61.
+- 2MD market this run: Keon Coleman $16 ($KB, dropped Herbert), Shrader K $15 (SHAWN), Broncos DEF $15 (TD), **Shipley $12 (Hit Em, dropped Penix)**, Colts DEF $1; $0 adds Godwin (Cali, dropped J. Wright), Doubs and Roman Wilson (Sacala), and **Jaguars DEF (619ers, our opponent, dropped Packers)**.
+- **2MD trade angle:** Hit Em Wit Da Flex now has only Jayden Daniels (Q) at QB after dropping Penix, so they join Cali (Lamar likely out) as Murray buyers.
+- **FD: Stevenson is gone.** The blocking claim did not award him, so he cleared to free agent and **Call Me MAYE-be added him at 7:22am** (dropping Blake Corum). We were not watching when he cleared.
+- FD other: Billy Ba Ba Ba (our opponent) claimed Tre Tucker; House of Tweez claimed Hockenson and **dropped Marvin Harrison Jr.** (now on waivers; 3/1/5/4 targets, so not a priority).
+- No pending transactions or trade offers in either league. Tags: McLaurin Q (FD), Hall D (2MD).
 
 ### 2026-10-07 — Week 5 2MD research added to WEEK5-STRATEGY.md
 - Opponent is **619ers**. Lineup holds: Stafford (CBS QB1 vs BUF, which allows 274 yds/2.5 TD per game) over Murray (10 rushes all year); A. Jones over Allen (24 touches, Mason on IR); M. Wilson FLEX (30 targets in 2 weeks). Broncos claim still pending.
@@ -449,3 +517,12 @@ No prior-season data reachable (no history link on Yahoo; API is 403).
 - Waiver priority (FD): **7th of 10** (used #1 on Gordon Sep 30). Stevenson claim blocked Oct 7, so priority is unchanged.
 - Trades proposed: 3. Accepted: 0. Sep 15 offers closed Sep 20. All three closed with no acceptances (Higgins gone/likely rejected, Hampton and Brown withdrawn).
 - Yahoo API scope fix: not done.
+
+### Oct 10 (Sat) — Week 5 progress check
+- **FD vs Billy Ba Ba Ba: 7.90–0.00.** Yahoo live projection 107.69–125.93 (35% to win). TNF went badly: Lamb 2.90 (2 catches, 9 yds), Aubrey 5.00. Tuten plays Sunday 9:30am ET (London, vs PHI).
+- **2MD vs 619ers: 1.00–48.50.** Live projection 127.47–162.08 (27%). Bucky Irving scored 41.50 (165 rush yds, 2 TDs), McLaughlin 7, Cowboys DEF 1. Stafford plays MNF.
+- Friday reports:
+  - McLaurin: **questionable** after a limited Friday practice; game-time decision (Diggs OUT).
+  - Olave: full practice Friday, no designation.
+  - Love: practiced Wed and Thu; coach says the ankle won't affect him.
+- Sunday plan: check the 11:30am inactives. FD: if McLaurin is out → Boston. Love is a 4:25 game; if he's inactive → Harris. 2MD: no changes needed.
