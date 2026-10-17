@@ -62,7 +62,9 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 - **Verified on the matchup page: 127.36 vs 135.48, Yahoo 44% us** (was 108.24, 29%). McLaurin's Q tag was gone from the matchup page Saturday evening.
 - Lineup: Shough / Tuten / K. Miller / Lamb / McLaurin / Golden / Kittle / Boston (FLEX) / Aubrey / Steelers. BN: Gordon, Hurts, Rice, Andrews, Wright, Harris. IR: Love.
 - **Sun 11:30 ET:** if Olave is inactive, consider Harris → Kirk Cousins (LV vs BUF 4:25) at QB. Otherwise no moves.
-- **Tue Oct 20:** build a QB-surplus trade (Hurts or Shough → RB) once Hurts' timeline is known. Love's return needs a bench spot: Harris or Wright goes.
+- **Sat evening final check:** both lineups intact (2MD 136.76–117.57, 64%; FD 127.39–135.47, 44%), no pending trades or claims. McLaurin "on track to play" (Yahoo, Sat). Caleb Williams expected to start Sunday. Nothing new on Warren, so still a game-time decision.
+- **⚠️ Eagles are placing Hurts on IR (Sat Oct 17): out at least 4 more weeks.** The QB-surplus trade idea is dead for now: Shough is our only QB until mid-November, so do NOT trade him. Hurts is IR-eligible, but FD has only 1 IR slot (Love). When Love is activated, Hurts goes to IR.
+- **Tue Oct 20:** rethink the RB fix without the QB chip. Options: WR depth (Rice/Harris returning) for an RB, or a Kendre Miller/Allgeier-type waiver play. Love's return needs a bench spot: Harris or Wright goes, or Hurts → IR as Love comes off.
 
 ### Things learned this week
 - Missing waivers cost nothing in either league: FAAB is intact at $61, and FD's rolling priority is unchanged (4th).
