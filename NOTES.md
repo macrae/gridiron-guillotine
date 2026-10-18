@@ -38,6 +38,12 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 **Records after Week 5:** 2MD **2-3, 7th** (L 145.90–153.90 vs 619ers; 2nd in PF 714.66, most PA 794.42). FD **1-4, 9th** (L 79.24–108.90 vs Billy Ba Ba Ba).
 
+### Sun Oct 18 9:10 PT inactives check (done before 1pm ET lock)
+- **Warren OUT (inactive, groin)** → 2MD: Henry BN→TE, Warren→BN. Verified on reload.
+- **Olave ACTIVE** → no change in 2MD; FD Cousins contingency not needed.
+- Kamara active (caps K. Miller), Caleb Williams starting, McLaurin no tag on Yahoo. FD: no changes. Tuten 22.90 in the London game (Q4).
+- The cloud routine couldn't fetch the inactives (DNS errors on espn/yahoo), so it only reported pregame news. Don't rely on it alone next time.
+
 ### Status Sat Oct 17: all moves executed and verified in both leagues
 
 | League | Opponent | Proj now → after moves |
