@@ -1,0 +1,18 @@
+{"op": "reset", "ts": 1788404700.4377742}
+{"op": "append", "ts": 1788404756.260412, "overall": 1, "player_id": 4432665, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404760.272987, "overall": 2, "player_id": 4426515, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404761.005661, "overall": 3, "player_id": 4429795, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404761.95521, "overall": 4, "player_id": 4362628, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404763.6593301, "overall": 5, "player_id": 4430807, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404765.6750872, "overall": 6, "player_id": 4430878, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404771.14355, "overall": 7, "player_id": 3117251, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404775.176341, "overall": 8, "player_id": 4242335, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404781.82528, "overall": 9, "player_id": 4374302, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788404782.875762, "overall": 10, "player_id": 3918298, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405154.511498, "overall": 11, "player_id": 4262921, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405167.8113222, "overall": 12, "player_id": 4241389, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405615.259865, "overall": 13, "player_id": 4429160, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405664.0940092, "overall": 14, "player_id": 4361307, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405712.477927, "overall": 15, "player_id": 4379399, "source": "manual", "observed_name": null, "mine": true}
+{"op": "append", "ts": 1788405717.198445, "overall": 16, "player_id": 4426502, "source": "manual", "observed_name": null, "mine": false}
+{"op": "append", "ts": 1788405720.201188, "overall": 17, "player_id": 3043078, "source": "manual", "observed_name": null, "mine": true}
