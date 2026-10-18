@@ -19,7 +19,7 @@ class YahooFantasyClient(BaseAPIClient):
     
     def __init__(self, config: Optional[Config] = None):
         self.config = config or get_config()
-        super().__init__()
+        # Don't call super().__init__() to avoid BaseAPIClient overriding our config
         self.game = None
         self.oauth = None
         self.league = None
@@ -105,27 +105,80 @@ class YahooFantasyClient(BaseAPIClient):
             rosters = {}
             teams = self.league.teams()
             
-            for team in teams:
-                team_name = team.get('name', f"Team_{team.get('team_id', 'Unknown')}")
-                roster = team.get('roster', [])
+            # Debug: Check what teams() actually returns
+            logger.debug(f"Teams type: {type(teams)}")
+            logger.debug(f"Teams content: {teams}")
+            
+            # Handle different return types from Yahoo API
+            if isinstance(teams, dict):
+                # Teams returned as dictionary (team_key -> team_data)
+                logger.info("Teams returned as dictionary - processing team data")
+                for team_key, team_data in teams.items():
+                    if isinstance(team_data, dict):
+                        team_name = team_data.get('name', f"Team_{team_data.get('team_id', 'Unknown')}")
+                        
+                        # Try to get roster data - this might not work for mock drafts
+                        try:
+                            roster = team_data.get('roster', [])
+                            if not roster:
+                                # Try alternative method to get roster
+                                roster = getattr(self.league, 'roster', lambda x: [])(team_key)
+                        except:
+                            roster = []
+                        
+                        # Extract player information
+                        players = []
+                        for player in roster:
+                            if isinstance(player, dict):
+                                player_info = {
+                                    'name': self._extract_player_name(player),
+                                    'position': player.get('position', 'Unknown'),
+                                    'team': player.get('editorial_team_abbr', ''),
+                                }
+                                players.append(player_info)
+                        
+                        rosters[team_name] = players
+                        logger.debug(f"Team {team_name}: {len(players)} players")
+                    else:
+                        logger.warning(f"Team data is not a dict: {type(team_data)} = {team_data}")
+            
+            elif isinstance(teams, list):
+                # Teams returned as list
+                if teams and isinstance(teams[0], str):
+                    logger.warning("Yahoo API returned team names as strings (mock draft limitation)")
+                    return {}
                 
-                # Extract player information
-                players = []
-                for player in roster:
-                    player_info = {
-                        'name': self._extract_player_name(player),
-                        'position': player.get('position', 'Unknown'),
-                        'team': player.get('editorial_team_abbr', ''),
-                    }
-                    players.append(player_info)
-                
-                rosters[team_name] = players
+                for team in teams:
+                    if isinstance(team, dict):
+                        team_name = team.get('name', f"Team_{team.get('team_id', 'Unknown')}")
+                        roster = team.get('roster', [])
+                        
+                        # Extract player information
+                        players = []
+                        for player in roster:
+                            if isinstance(player, dict):
+                                player_info = {
+                                    'name': self._extract_player_name(player),
+                                    'position': player.get('position', 'Unknown'),
+                                    'team': player.get('editorial_team_abbr', ''),
+                                }
+                                players.append(player_info)
+                        
+                        rosters[team_name] = players
+                    else:
+                        logger.warning(f"Team is not a dict: {type(team)} = {team}")
+                        continue
+            
+            else:
+                logger.warning(f"Unexpected teams data type: {type(teams)}")
+                return {}
             
             logger.debug(f"Retrieved rosters for {len(rosters)} teams")
             return rosters
             
         except Exception as e:
             self.handle_api_error(e, "Getting current rosters")
+            logger.debug(f"Full error details: {str(e)}")
             return {}
     
     def _extract_player_name(self, player_data: Dict[str, Any]) -> str:

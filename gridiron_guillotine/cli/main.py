@@ -115,31 +115,9 @@ def strategy(ctx, position: int, teams: int, rounds: int, ppr: bool):
             traceback.print_exc()
 
 
-@main.command()
-@click.option('--position', '-p', type=int, required=True, help='Your draft position (1-12)')
-@click.option('--port', type=int, default=8501, help='Streamlit port (default: 8501)')
-@click.pass_context
-def dashboard(ctx, position: int, port: int):
-    """Launch interactive draft dashboard"""
-    import subprocess
-    import sys
-    
-    click.echo(f"🚀 Launching draft dashboard for position {position}...")
-    click.echo(f"   Dashboard will open at http://localhost:{port}")
-    
-    # Set environment variable for position
-    import os
-    os.environ['GRIDIRON_DRAFT_POSITION'] = str(position)
-    
-    try:
-        # Launch streamlit app
-        subprocess.run([
-            sys.executable, "-m", "streamlit", "run",
-            "gridiron_guillotine/web/streamlit_app.py",
-            "--server.port", str(port)
-        ])
-    except KeyboardInterrupt:
-        click.echo("\\n🛑 Dashboard stopped")
+# Streamlit dashboard removed - use terminal interface with Yahoo integration instead
+# For live draft monitoring: gridiron draft yahoo-live
+# For strategy analysis: gridiron strategy
 
 
 @main.command()
@@ -147,12 +125,14 @@ def dashboard(ctx, position: int, port: int):
 @click.option('--polling-interval', type=int, default=20, help='Polling interval in seconds')
 @click.pass_context
 def live(ctx, position: int, polling_interval: int):
-    """Start live draft monitoring"""
+    """Start generic live draft monitoring (use 'draft yahoo-live' for Yahoo drafts)"""
     from ..live.monitor import LiveDraftMonitor
     from ..core.models import LeagueSettings
     
     click.echo(f"🔴 STARTING LIVE DRAFT MONITORING")
     click.echo(f"Position: {position}, Polling: every {polling_interval}s")
+    click.echo("=" * 50)
+    click.echo("💡 For Yahoo mock drafts, use: gridiron draft yahoo-live")
     click.echo("=" * 50)
     
     try:

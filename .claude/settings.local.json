@@ -14,7 +14,9 @@
       "Bash(gridiron db:*)",
       "Bash(timeout 10s gridiron draft mock:*)",
       "Bash(gridiron draft mock:*)",
-      "Bash(pytest:*)"
+      "Bash(pytest:*)",
+      "Bash(gridiron:*)",
+      "Bash(pip install:*)"
     ],
     "deny": []
   }

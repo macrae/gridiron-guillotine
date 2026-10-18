@@ -248,3 +248,175 @@ def mock_draft(ctx, position: int, teams: int, rounds: int):
         if ctx.obj and ctx.obj.get('verbose'):
             import traceback
             traceback.print_exc()
+
+
+@draft_cli.command('yahoo-live')
+@click.option('--position', '-p', type=int, required=True, help='Your draft position (1-12)')
+@click.option('--draft-url', '-u', required=True, help='Yahoo mock draft URL or draft ID')
+@click.option('--polling-interval', type=int, default=10, help='Polling interval in seconds (default: 10)')
+@click.option('--headless', is_flag=True, default=True, help='Run web scraper in headless mode')
+@click.pass_context
+def yahoo_live_mock(ctx, position: int, draft_url: str, polling_interval: int, headless: bool):
+    """Monitor live Yahoo Fantasy Football mock draft
+    
+    Connect to a Yahoo mock draft room and get real-time Hero-RB strategy recommendations
+    as picks are made by other teams.
+    
+    Examples:
+    
+    \\b
+    # Connect using full Yahoo mock draft URL
+    gridiron draft yahoo-live -p 6 -u "https://football.fantasysports.yahoo.com/f1/draftroom/12345"
+    
+    \\b
+    # Connect using just the draft ID
+    gridiron draft yahoo-live -p 6 -u "12345"
+    
+    \\b
+    # Custom polling interval (faster updates)
+    gridiron draft yahoo-live -p 6 -u "12345" --polling-interval 5
+    """
+    from ..live.yahoo_mock_monitor import YahooMockDraftMonitor, YahooMockDraftConsole
+    from ..core.config import Config, get_config
+    
+    # Validate position (support up to 16-team leagues)
+    if not (1 <= position <= 16):
+        click.echo(f"❌ Invalid position. Must be between 1 and 16")
+        return
+    
+    # Validate polling interval
+    if not (5 <= polling_interval <= 60):
+        click.echo(f"❌ Invalid polling interval. Must be between 5 and 60 seconds")
+        return
+    
+    try:
+        # Create a fresh Config object to avoid context issues
+        config = Config()
+            
+        monitor = YahooMockDraftMonitor(config)
+        console = YahooMockDraftConsole(monitor)
+        
+        click.echo(f"🚀 CONNECTING TO YAHOO MOCK DRAFT")
+        click.echo(f"Position: {position}")
+        click.echo(f"Draft URL/ID: {draft_url}")
+        click.echo(f"Polling: every {polling_interval}s")
+        click.echo(f"Web scraping: {'headless' if headless else 'visible browser'}")
+        click.echo("=" * 60)
+        
+        # Connect to the mock draft
+        if not monitor.connect_to_mock_draft(draft_url, position):
+            click.echo("❌ Failed to connect to Yahoo mock draft")
+            click.echo("\\nTroubleshooting:")
+            click.echo("1. Ensure the draft URL/ID is correct")
+            click.echo("2. Check your Yahoo Fantasy API credentials (oauth2.json)")
+            click.echo("3. Make sure Chrome/Chromium is installed for web scraping")
+            click.echo("4. Verify the mock draft is currently active")
+            return
+        
+        click.echo("✅ Connected successfully!")
+        click.echo("\\nStarting live monitoring... (Press Ctrl+C to stop)")
+        click.echo("=" * 60)
+        
+        # Start monitoring
+        monitor.start_monitoring(polling_interval)
+        
+    except KeyboardInterrupt:
+        click.echo(f"\\n\\n⏹️  Yahoo mock draft monitoring stopped")
+        
+    except Exception as e:
+        click.echo(f"❌ Error: {e}")
+        if ctx.obj and ctx.obj.get('verbose'):
+            import traceback
+            traceback.print_exc()
+        
+        click.echo(f"\\n💡 Troubleshooting tips:")
+        click.echo(f"   • Ensure 'gridiron db precompute' has been run")
+        click.echo(f"   • Check Yahoo API credentials in nbs/oauth2.json")
+        click.echo(f"   • Install Selenium ChromeDriver for web scraping")
+        click.echo(f"   • Verify the draft is active and accessible")
+
+
+@draft_cli.command('yahoo-test')
+@click.option('--draft-url', '-u', help='Yahoo mock draft URL to test (optional)')
+@click.pass_context
+def yahoo_test_connection(ctx, draft_url: str):
+    """Test Yahoo Fantasy API and web scraping connection
+    
+    Test your Yahoo Fantasy API credentials and web scraping setup
+    without connecting to a specific draft.
+    """
+    from ..live.yahoo_mock_monitor import YahooMockDraftMonitor
+    from ..api.yahoo import YahooFantasyClient
+    from ..core.config import Config, get_config
+    
+    # Create a fresh Config object to avoid context issues
+    config = Config()
+    
+    click.echo("🧪 TESTING YAHOO INTEGRATION")
+    click.echo("=" * 40)
+    
+    # Test Yahoo API
+    click.echo("1. Testing Yahoo Fantasy API...")
+    try:
+        yahoo_client = YahooFantasyClient(config)
+        if yahoo_client.authenticate():
+            click.echo("   ✅ Yahoo API authentication successful")
+            
+            league_info = yahoo_client.get_league_info()
+            if league_info:
+                click.echo(f"   ✅ Connected to league: {league_info.get('name', 'Unknown')}")
+            else:
+                click.echo("   ⚠️  No league info available (normal for mock drafts)")
+        else:
+            click.echo("   ❌ Yahoo API authentication failed")
+            click.echo("   💡 Check your oauth2.json credentials")
+    except Exception as e:
+        click.echo(f"   ❌ Yahoo API error: {e}")
+    
+    # Test web scraping setup
+    click.echo("\\n2. Testing web scraping setup...")
+    try:
+        from selenium import webdriver
+        from selenium.webdriver.chrome.options import Options
+        
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        
+        driver = webdriver.Chrome(options=chrome_options)
+        driver.quit()
+        click.echo("   ✅ Web driver (Chrome) initialized successfully")
+    except Exception as e:
+        click.echo(f"   ❌ Web scraping error: {e}")
+        click.echo("   💡 Install ChromeDriver: brew install chromedriver")
+    
+    # Test database connection
+    click.echo("\\n3. Testing player database...")
+    try:
+        from ..data.database import PlayerDatabase
+        db = PlayerDatabase()
+        stats = db.get_stats()
+        if stats['total_players'] > 0:
+            click.echo(f"   ✅ Database ready with {stats['total_players']} players")
+        else:
+            click.echo("   ⚠️  Database empty - run 'gridiron db precompute'")
+    except Exception as e:
+        click.echo(f"   ❌ Database error: {e}")
+    
+    # Test specific draft URL if provided
+    if draft_url:
+        click.echo(f"\\n4. Testing draft URL: {draft_url}")
+        try:
+            monitor = YahooMockDraftMonitor(config)
+            draft_id = monitor._extract_draft_id(draft_url)
+            if draft_id:
+                click.echo(f"   ✅ Draft ID extracted: {draft_id}")
+            else:
+                click.echo("   ❌ Could not extract draft ID from URL")
+        except Exception as e:
+            click.echo(f"   ❌ Draft URL test error: {e}")
+    
+    click.echo(f"\\n🎯 INTEGRATION TEST COMPLETE")
+    click.echo(f"Ready to monitor Yahoo mock drafts? Use:")
+    click.echo(f"   gridiron draft yahoo-live -p <position> -u <draft_url>")

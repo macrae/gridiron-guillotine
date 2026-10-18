@@ -500,3 +500,122 @@ class PlayerDatabase:
             created_date=datetime.fromisoformat(row['created_date']),
             last_updated=datetime.fromisoformat(row['last_updated'])
         )
+    
+    def get_top_players(self, limit: int = 50, position: Optional[Position] = None, 
+                       draft_position: Optional[int] = None) -> List[EnhancedPlayer]:
+        """Get top available players with Hero-RB scores"""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            
+            # Build query based on filters - exclude DEF/K for main recommendations
+            where_clauses = ["draft_status = 'available'"]
+            params = []
+            
+            if position:
+                where_clauses.append("position = ?")
+                params.append(position.value)
+            else:
+                # For general recommendations, focus on skill positions
+                where_clauses.append("position IN ('QB', 'RB', 'WR', 'TE')")
+            
+            where_clause = " AND ".join(where_clauses)
+            
+            # Order by hero_rb_score from pre_computed_scores if available, otherwise by VBD
+            # Use COALESCE to handle NULL scores
+            query = f"""
+                SELECT *, 
+                    COALESCE(
+                        CAST(json_extract(pre_computed_scores, '$.hero_rb_score') AS REAL),
+                        vbd,
+                        0
+                    ) as computed_score
+                FROM players 
+                WHERE {where_clause}
+                ORDER BY computed_score DESC, vbd DESC, adjusted_value DESC
+                LIMIT ?
+            """
+            params.append(limit)
+            
+            rows = conn.execute(query, params).fetchall()
+            players = [self._row_to_player(row) for row in rows]
+            
+            # Add hero_rb_score attribute for compatibility and debug info
+            for player in players:
+                if player.pre_computed_scores and 'hero_rb_score' in player.pre_computed_scores:
+                    player.hero_rb_score = player.pre_computed_scores['hero_rb_score']
+                elif hasattr(player, 'vbd') and player.vbd:
+                    player.hero_rb_score = player.vbd  # Fallback to VBD
+                else:
+                    player.hero_rb_score = 0.0  # Last resort
+                
+                # Debug info
+                logger.debug(f"Player {player.name} ({player.position.value}): hero_rb_score={player.hero_rb_score}, vbd={player.vbd}")
+            
+            return players
+    
+    def get_player(self, name: str) -> Optional[EnhancedPlayer]:
+        """Get specific player by name"""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            
+            row = conn.execute(
+                "SELECT * FROM players WHERE name = ?", (name,)
+            ).fetchone()
+            
+            if row:
+                player = self._row_to_player(row)
+                # Add hero_rb_score attribute for compatibility
+                if player.pre_computed_scores and 'hero_rb_score' in player.pre_computed_scores:
+                    player.hero_rb_score = player.pre_computed_scores['hero_rb_score']
+                else:
+                    player.hero_rb_score = player.vbd  # Fallback
+                return player
+            return None
+    
+    def mark_player_drafted(self, name: str, team: str, round_num: int, pick_num: int) -> bool:
+        """Mark a player as drafted"""
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.execute("""
+                UPDATE players 
+                SET draft_status = 'drafted', drafted_by = ?, drafted_round = ?, drafted_pick = ?, 
+                    last_updated = ?
+                WHERE name = ?
+            """, ('drafted', team, round_num, pick_num, datetime.now().isoformat(), name))
+            
+            return cursor.rowcount > 0
+    
+    def reset_draft_state(self) -> None:
+        """Reset all players to available status"""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.execute("""
+                UPDATE players 
+                SET draft_status = 'available', drafted_by = NULL, drafted_round = NULL, 
+                    drafted_pick = NULL, last_updated = ?
+            """, (datetime.now().isoformat(),))
+    
+    def get_available_players_by_position(self, position: Position) -> List[EnhancedPlayer]:
+        """Get all available players for a specific position"""
+        return self.get_top_players(limit=200, position=position)
+    
+    def search_players(self, query: str) -> List[EnhancedPlayer]:
+        """Search players by name"""
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            
+            rows = conn.execute("""
+                SELECT * FROM players 
+                WHERE name LIKE ? 
+                ORDER BY vbd DESC
+                LIMIT 20
+            """, (f"%{query}%",)).fetchall()
+            
+            players = [self._row_to_player(row) for row in rows]
+            
+            # Add hero_rb_score attribute for compatibility
+            for player in players:
+                if player.pre_computed_scores and 'hero_rb_score' in player.pre_computed_scores:
+                    player.hero_rb_score = player.pre_computed_scores['hero_rb_score']
+                else:
+                    player.hero_rb_score = player.vbd
+            
+            return players
