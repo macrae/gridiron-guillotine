@@ -32,6 +32,48 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ---
 
+## Week 7 punchlist (Oct 20 – Oct 26). Full plan in WEEK7-STRATEGY.md
+
+**Week 6 results:** both effectively won with MNF still in progress, and both opponents were done.
+- **2MD:** W 123.28–104.52 vs Sacala → **3-3**. Henry's swap in for Warren gained 14.8, and Golden scored 27.4.
+- **FD:** W 128.26–109.84 vs Literally the Worst → **2-4**. Shough 26.96, Tuten 24.7.
+- *Fill in the finals after MNF.*
+
+**Opponents and byes:**
+- **2MD vs DuffelBagBoy$$:** Yahoo has us at 53%, but realistically we're the underdog because they have St. Brown and Stroud on their bench.
+- **FD vs Deebo:** Yahoo has us at 40%.
+- **Byes:** BUF, JAX, LAC, WAS. Out for us: Tuten, McLaurin and Harris in FD.
+
+**Filed Mon Oct 19 (FD):**
+- Waiver 1: **Noel** (HOU WR, drop Hurts)
+- Waiver 2: **Cousins** (LV QB, drop Wright)
+- Both process early Wed Oct 21. FD uses a rolling list (we're 4th), and winning sends us to last.
+
+**2MD (nothing filed):**
+- The Juwan claim ($9, drop Murray) and the Murray-for-Dowdle offer were both set up, then **cancelled before submitting**:
+  - Juwan is being dropped league-wide (2,530 drops vs 281 adds; 1 catch for 15 yards in Week 6).
+  - Dowdle has 18.4 season points.
+- **Tue Oct 20, 6pm PT:** a cloud check (trig_01NsHsZA7oD68sMdyzZh8DDX) looks for Warren news and pushes a verdict to Sean's phone.
+  - If Warren is out multiple weeks: claim Juwan for ~$3, drop Murray.
+  - Otherwise: no claim.
+
+**Upcoming decisions:**
+- **Thursday before 5:15 PT:** 2MD TE call (Henry and Caleb play TNF).
+- **Sunday 6:30 AM PT:** the Paris game (PIT vs NO) locks Shough, K. Miller, the Steelers DEF and Olave.
+- **Friday:** Rice starts at FD FLEX only if he's a full practice participant.
+
+**News:**
+- Hurts likely out for the season (blood clots).
+- McLaurin has a **knee** injury (carted off on MNF).
+- Davante Adams out 6–10 weeks, which hurts Stafford.
+- Jordan Mason returns for MIN, which cuts into A. Jones.
+- Jacobs is back as GB's starter.
+
+**Lessons:**
+- **Check season and last-4-weeks points before recommending a player.** Yahoo projections and % rostered can be name-based (Dowdle 18.4, Sutton 31.3 season points).
+- On the Yahoo add page, **the drop button refs shift after the first click.** The first try selected Caleb Williams instead of Murray, and it was caught on the review button text. Always read the "Create claim to Add X, Drop Y" text before submitting.
+- The propose-trade checkbox refs were also off by rows (Likely got checked instead of Dowdle). Click by screenshot coordinates instead.
+
 ## Week 6 punchlist (Oct 13 – Oct 19)
 
 *Strategy doc: [`WEEK6-STRATEGY.md`](WEEK6-STRATEGY.md) has the full punch lists, slate research and rationale. Sean was away Oct 8–16: no claims or lineup changes were made, and TNF (SEA @ DEN) had none of our players.*
