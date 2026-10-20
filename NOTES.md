@@ -34,10 +34,12 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 
 ## Week 7 punchlist (Oct 20 – Oct 26). Full plan in WEEK7-STRATEGY.md
 
-**Week 6 results:** both effectively won with MNF still in progress, and both opponents were done.
+**Week 6 results:** both won.
 - **2MD:** W 123.28–104.52 vs Sacala → **3-3**. Henry's swap in for Warren gained 14.8, and Golden scored 27.4.
 - **FD:** W 128.26–109.84 vs Literally the Worst → **2-4**. Shough 26.96, Tuten 24.7.
-- *Fill in the finals after MNF.*
+- **Finals (after MNF):**
+  - **2MD W 127.28–104.52**. Pineiro added 4.0 on MNF.
+  - **FD W 134.16–109.84**. Kittle added 5.9 in the second half, for ~17.9.
 
 **Opponents and byes:**
 - **2MD vs DuffelBagBoy$$:** Yahoo has us at 53%, but realistically we're the underdog because they have St. Brown and Stroud on their bench.
