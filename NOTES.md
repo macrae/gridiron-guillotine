@@ -59,6 +59,15 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
   - If Warren is out multiple weeks: claim Juwan for ~$3, drop Murray.
   - Otherwise: no claim.
 
+**Wed Oct 21 results:**
+- **FD:** both claims won (Noel and Cousins on the roster; Hurts and Wright dropped). Waiver priority is now 9th.
+- **FD lineup set:**
+  - Gordon → RB, Tuten (bye) → BN
+  - Noel → WR, McLaurin (OUT, bye) → BN. The only IR slot is held by Love.
+  - There's an empty bench spot.
+- **2MD:** the Tuesday cloud check came back NO CLAIM (no Warren news), so nothing was filed.
+- **Thursday 3:30 PT:** a cloud check (trig_01UdHvZy7Kue4gFTdcKWh138) pushes the Warren vs Henry verdict.
+
 **Upcoming decisions:**
 - **Thursday before 5:15 PT:** 2MD TE call (Henry and Caleb play TNF).
 - **Sunday 6:30 AM PT:** the Paris game (PIT vs NO) locks Shough, K. Miller, the Steelers DEF and Olave.
