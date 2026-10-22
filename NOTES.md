@@ -68,6 +68,15 @@ not in code. Until then, league data is pulled from the Yahoo site in Chrome.
 - **2MD:** the Tuesday cloud check came back NO CLAIM (no Warren news), so nothing was filed.
 - **Thursday 3:30 PT:** a cloud check (trig_01UdHvZy7Kue4gFTdcKWh138) pushes the Warren vs Henry verdict.
 
+**Thu Oct 22 (2MD):**
+- **Juwan:** a free agent (unclaimed), projected 9.52. Holding him; he only matters if Warren is out multiple weeks.
+- **Warren:** DNP Wed. Henry stays at TE (no injury tag, TD in each of the last 2 weeks).
+- **QB:** keep Stafford (23.06 @ LV) over C. Williams (22.73, TNF) and Murray. Stafford isn't on the injury report; Adams is on IR, so more targets for Nacua.
+- **Hall:** DNP Wed, stays on IR; Allen at RB.
+- The 3:30 PT cloud check (trig_01UdHvZy7Kue4gFTdcKWh138) now pushes both the TE and QB verdicts.
+  - **TE:** keep Henry unless Warren practices fully.
+  - **QB:** switch to Williams only if Stafford misses Thursday practice or has a back flare-up.
+
 **Upcoming decisions:**
 - **Thursday before 5:15 PT:** 2MD TE call (Henry and Caleb play TNF).
 - **Sunday 6:30 AM PT:** the Paris game (PIT vs NO) locks Shough, K. Miller, the Steelers DEF and Olave.
